@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace VinhLB
@@ -7,6 +8,8 @@ namespace VinhLB
     [ExecuteInEditMode, RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class DrawPolygon2D : MonoBehaviour
     {
+        private const string WALL_LAYER_NAME = "Wall";
+
         public enum UVType
         {
             Fit = 0,
@@ -113,10 +116,13 @@ namespace VinhLB
                 GameObject go = new GameObject();
                 go.name = "PolygonCollider";
                 go.transform.SetParent(transform);
+                go.layer = LayerMask.NameToLayer(WALL_LAYER_NAME);
                 _polygonCollider2D = go.AddComponent<PolygonCollider2D>();
             }
 
-            _polygonCollider2D.points = VerticeList.ToArray();
+            _polygonCollider2D.points = VerticeList
+                .Select(vertice => vertice + (Vector2)transform.position)
+                .ToArray();
         }
 
         public void ClearPolygonCollider()
@@ -134,21 +140,34 @@ namespace VinhLB
                 _edgeCollider2DList = new List<EdgeCollider2D>();
             }
 
-            ClearEdgeCollider();
-
             for (int i = 0; i < _edgeVerticeIndexRangeList.Count; i++)
             {
-                GameObject go = new GameObject();
-                go.name = $"EdgeCollider{i}";
-                go.transform.SetParent(transform);
-                EdgeCollider2D edgeCollider = go.AddComponent<EdgeCollider2D>();
+                EdgeCollider2D edgeCollider;
+                if (i < _edgeCollider2DList.Count)
+                {
+                    edgeCollider = _edgeCollider2DList[i];
+                }
+                else
+                {
+                    GameObject go = new GameObject();
+                    go.name = $"EdgeCollider{i}";
+                    go.transform.SetParent(transform);
+                    go.layer = LayerMask.NameToLayer(WALL_LAYER_NAME);
+                    edgeCollider = go.AddComponent<EdgeCollider2D>();
+                }
+
                 List<Vector2> verticeList = new List<Vector2>();
                 for (int j = _edgeVerticeIndexRangeList[i].From; j <= _edgeVerticeIndexRangeList[i].To; j++)
                 {
-                    verticeList.Add(VerticeList[j]);
+                    Vector2 position = VerticeList[j] + (Vector2)transform.position;
+                    verticeList.Add(position);
                 }
                 edgeCollider.points = verticeList.ToArray();
-                _edgeCollider2DList.Add(edgeCollider);
+
+                if (i >= _edgeCollider2DList.Count)
+                {
+                    _edgeCollider2DList.Add(edgeCollider);
+                }
             }
         }
 
@@ -158,7 +177,10 @@ namespace VinhLB
             {
                 for (int i = _edgeCollider2DList.Count - 1; i >= 0; i--)
                 {
-                    DestroyImmediate(_edgeCollider2DList[i].gameObject);
+                    if (_edgeCollider2DList[i] != null)
+                    {
+                        DestroyImmediate(_edgeCollider2DList[i].gameObject);
+                    }
                     _edgeCollider2DList.RemoveAt(i);
                 }
             }

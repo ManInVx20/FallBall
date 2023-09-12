@@ -41,12 +41,15 @@ namespace VinhLB
         {
             serializedObject.Update();
 
+            GUILayout.Label("Mesh", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_meshUVType"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_rendererMaterial"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("VerticeList"));
 
             GUILayout.Space(10);
-            GUILayout.Label("Polygon Collider", EditorStyles.boldLabel);
+
+            GUILayout.Label("Colliders", EditorStyles.boldLabel);
+            GUILayout.Label("Polygon");
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Create"))
             {
@@ -70,8 +73,7 @@ namespace VinhLB
             }
             EditorGUILayout.EndHorizontal();
 
-            GUILayout.Space(10);
-            GUILayout.Label("Edge Collider", EditorStyles.boldLabel);
+            GUILayout.Label("Edge");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_edgeVerticeIndexRangeList"));
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Create"))
