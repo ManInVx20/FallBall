@@ -46,8 +46,7 @@ namespace VinhLB
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_rendererMaterial"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("VerticeList"));
 
-            GUILayout.Space(10);
-
+            GUILayout.Space(10.0f);
             GUILayout.Label("Colliders", EditorStyles.boldLabel);
             GUILayout.Label("Polygon");
             EditorGUILayout.BeginHorizontal();
@@ -55,7 +54,7 @@ namespace VinhLB
             {
                 foreach (DrawPolygon2D drawPolygon2D in targets)
                 {
-                    if (!PrefabUtility.IsPartOfAnyPrefab(drawPolygon2D))
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.CreatePolygonCollider();
                     }
@@ -65,7 +64,7 @@ namespace VinhLB
             {
                 foreach (DrawPolygon2D drawPolygon2D in targets)
                 {
-                    if (!PrefabUtility.IsPartOfAnyPrefab(drawPolygon2D))
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.ClearPolygonCollider();
                     }
@@ -80,7 +79,7 @@ namespace VinhLB
             {
                 foreach (DrawPolygon2D drawPolygon2D in targets)
                 {
-                    if (!PrefabUtility.IsPartOfAnyPrefab(drawPolygon2D))
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.CreateEdgeCollider();
                     }
@@ -90,7 +89,7 @@ namespace VinhLB
             {
                 foreach (DrawPolygon2D drawPolygon2D in targets)
                 {
-                    if (!PrefabUtility.IsPartOfAnyPrefab(drawPolygon2D))
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.ClearEdgeCollider();
                     }
@@ -103,7 +102,7 @@ namespace VinhLB
             {
                 foreach (DrawPolygon2D drawPolygon2D in targets)
                 {
-                    if (!PrefabUtility.IsPartOfAnyPrefab(drawPolygon2D))
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.UpdateMesh();
                     }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class GameplayManager : MonoSingleton<GameplayManager>
+    public class LevelManager : MonoSingleton<LevelManager>
     {
-        public Color GetColorByColorType(ColorType colorType)
+        public static Color GetColorByColorType(ColorType colorType)
         {
             Color color = Color.white;
             switch (colorType)

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 764910653683367196}
   - component: {fileID: 764910653683367197}
   - component: {fileID: 2099826294678663180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,9 +88,9 @@ MonoBehaviour:
   _ballRenderer: {fileID: 764910653715674304}
   _doneRenderer: {fileID: 3353285549469083198}
   _colorType: 0
-  _wallLayerMask:
+  _obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
 --- !u!1 &764910653715674306
 GameObject:
   m_ObjectHideFlags: 0

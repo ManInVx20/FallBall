@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
+  - Ball
   - Wall
-  - 
-  - 
-  - 
+  - Slot
+  - Deadzone
   - 
   - 
   - 
@@ -46,4 +46,7 @@ TagManager:
     locked: 0
   - name: Object
     uniqueID: 1144581475
+    locked: 0
+  - name: GUI
+    uniqueID: 494796959
     locked: 0
