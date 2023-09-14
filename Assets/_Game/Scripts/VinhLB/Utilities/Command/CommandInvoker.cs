@@ -42,6 +42,22 @@ namespace VinhLB
             }
         }
 
+        public static void UndoAllCommands()
+        {
+            while (undoStack.Count > 0)
+            {
+                UndoCommand();
+            }
+        }
+
+        public static void RedoAllCommands()
+        {
+            while (redoStack.Count > 0)
+            {
+                RedoCommand();
+            }
+        }
+
         public static void Clear()
         {
             undoStack.Clear();

@@ -7,6 +7,8 @@ namespace VinhLB
 {
     public class Level : MonoBehaviour
     {
+        public System.Action<bool> OnLevelFinishedAction;
+
         [SerializeField]
         private List<Slot> _slotList;
 
@@ -18,16 +20,23 @@ namespace VinhLB
             }
         }
 
-        public void Finish()
+        public void Win()
         {
-            Debug.Log("Finish level");
+            Debug.Log("Win");
+            OnLevelFinishedAction?.Invoke(true);
+        }
+
+        public void Lose()
+        {
+            Debug.Log("Lose");
+            OnLevelFinishedAction?.Invoke(false);
         }
 
         private void Slot_OnIsFilledChangedAction()
         {
             if (_slotList.FirstOrDefault(slot => !slot.IsFilled()) == null)
             {
-                Finish();
+                Win();
             }
         }
     }

@@ -130,18 +130,20 @@ namespace VinhLB
 
         private bool TryMoveToSides()
         {
-            float distance = 0.4f;
-            if (!Physics2D.Raycast(transform.position, Vector2.left, distance, _obstacleLayerMask))
+            float distance = 0.45f;
+            Vector2 leftDir = Quaternion.Euler(0.0f, 0.0f, 30.0f) * Vector2.left;
+            Vector2 rightDir = Quaternion.Euler(0.0f, 0.0f, -30.0f) * Vector2.right;
+            if (!Physics2D.Raycast(transform.position, leftDir, distance, _obstacleLayerMask))
             {
                 //Debug.Log("a");
-                _rigidbody2D.velocity += Vector2.left;
+                _rigidbody2D.velocity += leftDir;
 
                 return true;
             }
-            else if (!Physics2D.Raycast(transform.position, Vector2.right, distance, _obstacleLayerMask))
+            else if (!Physics2D.Raycast(transform.position, rightDir, distance, _obstacleLayerMask))
             {
                 //Debug.Log("b");
-                _rigidbody2D.velocity += Vector2.right;
+                _rigidbody2D.velocity += rightDir;
 
                 return true;
             }
@@ -161,8 +163,8 @@ namespace VinhLB
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawRay(transform.position, Vector2.left * 0.4f);
-            Gizmos.DrawRay(transform.position, Vector2.right * 0.4f);
+            Gizmos.DrawRay(transform.position, Quaternion.Euler(0.0f, 0.0f, 30.0f) * Vector2.left * 0.45f);
+            Gizmos.DrawRay(transform.position, Quaternion.Euler(0.0f, 0.0f, -30.0f) * Vector2.right * 0.45f);
         }
     }
 }

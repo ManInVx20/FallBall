@@ -150,7 +150,7 @@ namespace VinhLB
                 else
                 {
                     GameObject go = new GameObject();
-                    go.name = $"EdgeCollider{i}";
+                    go.name = "EdgeCollider" + (i == 0 ? string.Empty : "_" + i.ToString());
                     go.transform.SetParent(transform);
                     go.layer = LayerMask.NameToLayer(WALL_LAYER_NAME);
                     edgeCollider = go.AddComponent<EdgeCollider2D>();

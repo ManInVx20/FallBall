@@ -1,0 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace VinhLB
+{
+    public class GameUIScreen : MonoBehaviour
+    {
+        public virtual void Open()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public virtual void Close()
+        {
+            gameObject.SetActive(false);
+        }
+    }
+}

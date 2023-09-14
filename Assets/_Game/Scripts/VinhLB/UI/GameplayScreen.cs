@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace VinhLB
 {
-    public class GameplayScreen : MonoBehaviour
+    public class GameplayScreen : GameUIScreen
     {
         [SerializeField]
         private Button _undoButton;

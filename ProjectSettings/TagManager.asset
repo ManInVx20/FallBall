@@ -47,6 +47,6 @@ TagManager:
   - name: Object
     uniqueID: 1144581475
     locked: 0
-  - name: GUI
+  - name: GameUI
     uniqueID: 494796959
     locked: 0

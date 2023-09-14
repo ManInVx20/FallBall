@@ -28,6 +28,11 @@ namespace VinhLB
             return ball;
         }
 
+        public void RetrieveAll()
+        {
+            _ballPool.RetrieveAll();
+        }
+
         private void OnPullCallback(Ball ball)
         {
             ball.ResetState();

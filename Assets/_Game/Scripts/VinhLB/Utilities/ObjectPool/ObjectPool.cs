@@ -6,6 +6,7 @@ namespace VinhLB
 {
     public class ObjectPool<T> : IObjectPool<T> where T : MonoBehaviour, IPoolable<T>
     {
+        private List<T> _createdList = new List<T>();
         private Stack<T> _pooledStack = new Stack<T>();
         private GameObject _prefab;
         private System.Action<T> _onPullAction;
@@ -37,6 +38,8 @@ namespace VinhLB
             else
             {
                 t = GameObject.Instantiate(_prefab).GetComponent<T>();
+
+                _createdList.Add(t);
             }
 
             t.gameObject.SetActive(true);
@@ -56,11 +59,21 @@ namespace VinhLB
             t.gameObject.SetActive(false);
         }
 
+        public void RetrieveAll()
+        {
+            for (int i = 0; i < _createdList.Count; i++)
+            {
+                _createdList[i].ReturnToPool();
+            }
+        }
+
         private void Spawn(int spawnAmount)
         {
             for (int i = 0; i < spawnAmount; i++)
             {
                 T t = GameObject.Instantiate(_prefab).GetComponent<T>();
+
+                _createdList.Add(t);
 
                 _pooledStack.Push(t);
 

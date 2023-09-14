@@ -6,8 +6,8 @@ namespace VinhLB
 {
     public static class Cache
     {
-        private static Dictionary<Collider, Component> colliderToComponentDict = new Dictionary<Collider, Component>();
-        private static Dictionary<Collider2D, Component> collider2DToComponentDict = new Dictionary<Collider2D, Component>();
+        private static Dictionary<Collider, Component> cachedComponentDict = new Dictionary<Collider, Component>();
+        private static Dictionary<Collider2D, Component> cachedComponent2DDict = new Dictionary<Collider2D, Component>();
 
         //public static bool TryGetComponent<T>(Collider collider, out T component)
         //{
