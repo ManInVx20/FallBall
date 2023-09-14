@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class GameUIScreen : MonoBehaviour
+    public abstract class GameUIScreen : MonoBehaviour
     {
         public virtual void Open()
         {

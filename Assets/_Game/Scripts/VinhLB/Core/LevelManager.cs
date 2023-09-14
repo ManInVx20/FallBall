@@ -60,11 +60,11 @@ namespace VinhLB
             {
                 if (won)
                 {
-                    GameUIManager.Instance.GetGameUIScreen<ResultScreen>().OpenWin();
+                    GameUIManager.GetGameUIScreen<ResultScreen>().OpenWin();
                 }
                 else
                 {
-                    GameUIManager.Instance.GetGameUIScreen<ResultScreen>().OpenLose();
+                    GameUIManager.GetGameUIScreen<ResultScreen>().OpenLose();
                 }
             };
         }
