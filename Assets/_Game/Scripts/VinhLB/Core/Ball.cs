@@ -8,7 +8,7 @@ namespace VinhLB
 {
     public class Ball : MonoBehaviour, IPoolable<Ball>, IHasColor
     {
-        private const float MIN_SQR_MAGNITUDE = 0.01f;
+        private const float MIN_SQR_MAGNITUDE = 0.001f;
 
         [Header("References")]
         [SerializeField]
@@ -120,12 +120,12 @@ namespace VinhLB
         {
             _colorType = colorType;
 
-            _ballRenderer.color = LevelManager.GetColorByColorType(_colorType);
+            _ballRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorType);
         }
 
         public bool IsColorTypeMatching(ColorType colorType)
         {
-            return _colorType == colorType || _colorType == ColorType.Rainbow || colorType == ColorType.Rainbow;
+            return _colorType == colorType;
         }
 
         private bool TryMoveToSides()
@@ -135,14 +135,12 @@ namespace VinhLB
             Vector2 rightDir = Quaternion.Euler(0.0f, 0.0f, -30.0f) * Vector2.right;
             if (!Physics2D.Raycast(transform.position, leftDir, distance, _obstacleLayerMask))
             {
-                //Debug.Log("a");
                 _rigidbody2D.velocity += leftDir;
 
                 return true;
             }
             else if (!Physics2D.Raycast(transform.position, rightDir, distance, _obstacleLayerMask))
             {
-                //Debug.Log("b");
                 _rigidbody2D.velocity += rightDir;
 
                 return true;

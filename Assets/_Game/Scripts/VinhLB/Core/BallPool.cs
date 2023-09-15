@@ -12,10 +12,8 @@ namespace VinhLB
 
         private ObjectPool<Ball> _ballPool;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             _ballPool = new ObjectPool<Ball>(_ballPrefab, OnPullCallback, OnPushCallback);
         }
 

@@ -90,7 +90,7 @@ MonoBehaviour:
   _colorType: 0
   _obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 192
 --- !u!1 &764910653715674306
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,10 +8,16 @@ namespace VinhLB
     public class GameplayScreen : GameUIScreen
     {
         [SerializeField]
+        private Button _homeButton;
+        [SerializeField]
         private Button _undoButton;
 
-        private void Awake()
+        public override void Initialize()
         {
+            _homeButton.onClick.AddListener(() =>
+            {
+                GameManager.Instance.ReturnHome();
+            });
             _undoButton.onClick.AddListener(() =>
             {
                 CommandInvoker.UndoCommand();

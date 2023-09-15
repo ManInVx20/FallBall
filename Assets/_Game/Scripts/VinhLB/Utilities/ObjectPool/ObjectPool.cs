@@ -63,8 +63,18 @@ namespace VinhLB
         {
             for (int i = 0; i < _createdList.Count; i++)
             {
-                _createdList[i].ReturnToPool();
+                if (_createdList[i].gameObject.activeSelf)
+                {
+                    _createdList[i].ReturnToPool();
+                }
+
             }
+        }
+
+        public void Clear()
+        {
+            _createdList.Clear();
+            _pooledStack.Clear();
         }
 
         private void Spawn(int spawnAmount)

@@ -17,7 +17,7 @@ namespace VinhLB
         [SerializeField]
         private Button _nextButton;
 
-        private void Awake()
+        public override void Initialize()
         {
             _restartButton.onClick.AddListener(() =>
             {
@@ -27,7 +27,9 @@ namespace VinhLB
             });
             _homeButton.onClick.AddListener(() =>
             {
+                GameManager.Instance.ReturnHome();
 
+                Close();
             });
             _nextButton.onClick.AddListener(() =>
             {

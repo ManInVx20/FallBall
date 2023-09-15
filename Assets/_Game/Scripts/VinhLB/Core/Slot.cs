@@ -7,7 +7,7 @@ namespace VinhLB
     [ExecuteInEditMode]
     public class Slot : MonoBehaviour, IHasColor
     {
-        public event System.Action OnIsFilledChangedAction;
+        public event System.Action<Slot> OnIsFilledChangedAction;
 
         [SerializeField]
         private SpriteRenderer _spriteRenderer;
@@ -35,7 +35,7 @@ namespace VinhLB
         {
             if (_spriteRenderer != null)
             {
-                _spriteRenderer.color = LevelManager.GetColorByColorType(_colorType);
+                _spriteRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorType);
             }
         }
 
@@ -48,7 +48,7 @@ namespace VinhLB
         {
             _isFilled = value;
 
-            OnIsFilledChangedAction?.Invoke();
+            OnIsFilledChangedAction?.Invoke(this);
         }
 
         public ColorType GetColorType()
@@ -65,7 +65,7 @@ namespace VinhLB
 
         public bool IsColorTypeMatching(ColorType colorType)
         {
-            return _colorType == colorType || _colorType == ColorType.Rainbow || colorType == ColorType.Rainbow;
+            return _colorType == colorType;
         }
     }
 }

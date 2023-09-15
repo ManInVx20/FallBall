@@ -7,57 +7,74 @@ namespace VinhLB
     public class GameUIManager : MonoSingleton<GameUIManager>
     {
         [SerializeField]
+        private GameUIScreen _startingGameUIScreen;
+        [SerializeField]
         private GameUIScreen[] _gameUIScreenArray;
 
         private GameUIScreen _currentGameUIScreen;
         private Stack<GameUIScreen> _historyGameUIScreenStack = new Stack<GameUIScreen>();
 
-        public static T GetGameUIScreen<T>() where T : GameUIScreen
+        private void Start()
         {
-            for (int i = 0; i  != Instance._gameUIScreenArray.Length; i++)
+            for (int i = 0; i < _gameUIScreenArray.Length; i++)
             {
-                if (Instance._gameUIScreenArray[i] is T)
+                _gameUIScreenArray[i].Initialize();
+
+                _gameUIScreenArray[i].Close();
+            }
+
+            if (_startingGameUIScreen != null)
+            {
+                Open(_startingGameUIScreen);
+            }
+        }
+
+        public T GetGameUIScreen<T>() where T : GameUIScreen
+        {
+            for (int i = 0; i != _gameUIScreenArray.Length; i++)
+            {
+                if (_gameUIScreenArray[i] is T)
                 {
-                    return Instance._gameUIScreenArray[i] as T;
+                    return _gameUIScreenArray[i] as T;
                 }
             }
 
             return null;
         }
 
-        public static void Open<T>(bool rememeber = true) where T : GameUIScreen
+        public void Open<T>(bool rememeber = true) where T : GameUIScreen
         {
-            for (int i = 0; i != Instance._gameUIScreenArray.Length; i++)
+            for (int i = 0; i != _gameUIScreenArray.Length; i++)
             {
-                if (Instance._gameUIScreenArray[i] is T)
+                if (_gameUIScreenArray[i] is T)
                 {
-                    Open(Instance._gameUIScreenArray[i], rememeber);
+                    Open(_gameUIScreenArray[i], rememeber);
                 }
             }
         }
 
-        public static void Open(GameUIScreen gameUIScreen, bool remember = true)
+        public void Open(GameUIScreen gameUIScreen, bool remember = true)
         {
-            if (Instance._currentGameUIScreen != null)
+            if (_currentGameUIScreen != null)
             {
                 if (remember)
                 {
-                    Instance._historyGameUIScreenStack.Push(Instance._currentGameUIScreen);
+                    _historyGameUIScreenStack.Push(_currentGameUIScreen);
                 }
 
-                Instance._currentGameUIScreen.Close();
+                _currentGameUIScreen.Close();
             }
 
             gameUIScreen.Open();
 
-            Instance._currentGameUIScreen = gameUIScreen;
+            _currentGameUIScreen = gameUIScreen;
         }
 
-        public static void OpenLast()
+        public void OpenLast()
         {
-            if (Instance._historyGameUIScreenStack.Count > 0)
+            if (_historyGameUIScreenStack.Count > 0)
             {
-                Open(Instance._historyGameUIScreenStack.Pop(), false);
+                Open(_historyGameUIScreenStack.Pop(), false);
             }
         }
     }

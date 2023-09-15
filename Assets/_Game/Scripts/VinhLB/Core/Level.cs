@@ -12,31 +12,44 @@ namespace VinhLB
         [SerializeField]
         private List<Slot> _slotList;
 
+        private List<Slot> _notFilledSlotList;
+
         private void Start()
         {
-            for (int i = 0; i < _slotList.Count; i++)
+            _notFilledSlotList = _slotList.ToList();
+
+            for (int i = 0; i < _notFilledSlotList.Count; i++)
             {
-                _slotList[i].OnIsFilledChangedAction += Slot_OnIsFilledChangedAction;
+                _notFilledSlotList[i].OnIsFilledChangedAction += Slot_OnIsFilledChangedAction;
             }
         }
 
         public void Win()
         {
-            Debug.Log("Win");
+            //Debug.Log("Win");
             OnLevelFinishedAction?.Invoke(true);
         }
 
         public void Lose()
         {
-            Debug.Log("Lose");
+            //Debug.Log("Lose");
             OnLevelFinishedAction?.Invoke(false);
         }
 
-        private void Slot_OnIsFilledChangedAction()
+        private void Slot_OnIsFilledChangedAction(Slot slot)
         {
-            if (_slotList.FirstOrDefault(slot => !slot.IsFilled()) == null)
+            if (slot.IsFilled() && _notFilledSlotList.Contains(slot))
             {
-                Win();
+                _notFilledSlotList.Remove(slot);
+
+                if (_notFilledSlotList.Count == 0)
+                {
+                    Win();
+                }
+            }
+            else if (!slot.IsFilled() && !_notFilledSlotList.Contains(slot))
+            {
+                _notFilledSlotList.Add(slot);
             }
         }
     }

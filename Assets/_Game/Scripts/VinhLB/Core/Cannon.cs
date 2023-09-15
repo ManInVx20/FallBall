@@ -44,7 +44,7 @@ namespace VinhLB
 
         private void Start()
         {
-            _spawnButton.image.color = LevelManager.GetColorByColorType(_ballColorType);
+            _spawnButton.image.color = ResourceManager.Instance.GetColorByColorType(_ballColorType);
 
             _ballAmount = _maxBallAmount;
             _amountText.text = _ballAmount.ToString();
