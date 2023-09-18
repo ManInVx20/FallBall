@@ -8,6 +8,5 @@ namespace VinhLB
     {
         public ColorType GetColorType();
         public void SetColorType(ColorType colorType);
-        public bool IsColorTypeMatching(ColorType colorType);
     }
 }

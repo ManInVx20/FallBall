@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace VinhLB
 {
+    [ExecuteInEditMode]
     public class Ball : MonoBehaviour, IPoolable<Ball>, IHasColor
     {
         private const float MIN_SQR_MAGNITUDE = 0.001f;
 
-        [Header("References")]
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
         [SerializeField]
@@ -18,7 +18,8 @@ namespace VinhLB
         [SerializeField]
         private SpriteRenderer _doneRenderer;
 
-        [Header("Settings")]
+        [SerializeField]
+        private BallType _ballType;
         [SerializeField]
         private ColorType _colorType;
         [SerializeField]
@@ -27,6 +28,16 @@ namespace VinhLB
         private Action<Ball> _onReturnAction;
         private Slot _currentSlot;
         private Coroutine _waitToStickCoroutine;
+
+        private void OnEnable()
+        {
+            UpdateVisual();
+        }
+
+        private void Reset()
+        {
+            UpdateVisual();
+        }
 
         private void OnCollisionEnter2D(Collision2D collision2D)
         {
@@ -40,7 +51,7 @@ namespace VinhLB
         {
             if (collider2D.TryGetComponent<Slot>(out Slot slot))
             {
-                if (IsColorTypeMatching(slot.GetColorType()))
+                if (IsSlotMatching(slot))
                 {
                     _currentSlot = slot;
                     _waitToStickCoroutine = StartCoroutine(WaitToStickCoroutine());
@@ -79,6 +90,9 @@ namespace VinhLB
 
         public void ResetState()
         {
+            DOTween.Kill(transform);
+            DOTween.Kill(_doneRenderer);
+
             _rigidbody2D.constraints = RigidbodyConstraints2D.None;
             _rigidbody2D.velocity = Vector3.zero;
             _rigidbody2D.angularVelocity = 0.0f;
@@ -111,6 +125,33 @@ namespace VinhLB
             });
         }
 
+        public void UpdateVisual()
+        {
+            _ballRenderer.sprite = ResourceManager.Instance.GetBallSpriteByType(_ballType);
+
+            switch (_ballType)
+            {
+                case BallType.Normal:
+                    _ballRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorType);
+                    break;
+                case BallType.Rainbow:
+                    _ballRenderer.color = Color.white;
+                    break;
+            }
+        }
+
+        public BallType GetBallType()
+        {
+            return _ballType;
+        }
+
+        public void SetBallType(BallType ballType)
+        {
+            _ballType = ballType;
+
+            UpdateVisual();
+        }
+
         public ColorType GetColorType()
         {
             return _colorType;
@@ -120,12 +161,12 @@ namespace VinhLB
         {
             _colorType = colorType;
 
-            _ballRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorType);
+            UpdateVisual();
         }
 
-        public bool IsColorTypeMatching(ColorType colorType)
+        public bool IsSlotMatching(Slot slot)
         {
-            return _colorType == colorType;
+            return _ballType == BallType.Rainbow || _colorType == slot.GetColorType();
         }
 
         private bool TryMoveToSides()

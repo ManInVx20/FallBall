@@ -15,6 +15,10 @@ namespace VinhLB
         [SerializeField]
         private Button _spawnButton;
         [SerializeField]
+        private Button _addButton;
+        [SerializeField]
+        private Button _rainbowButton;
+        [SerializeField]
         private TMP_Text _amountText;
 
         [Header("Settings")]
@@ -25,29 +29,39 @@ namespace VinhLB
         [SerializeField]
         private float _spawnRate = 1.0f;
 
-        private int _ballAmount;
         private bool _canSpawn;
         private float _spawnTime;
+        private Stack<BallType> _ballTypeStack = new Stack<BallType>();
 
         private void Awake()
         {
             _spawnButton.onClick.AddListener(() =>
             {
-                if (_canSpawn && _ballAmount > 0)
+                if (_canSpawn && _ballTypeStack.Count > 0)
                 {
                     _canSpawn = false;
                     ICommand command = new SpawnCommand(this);
                     CommandInvoker.ExecuteCommand(command);
                 }
             });
+            _addButton.onClick.AddListener(() =>
+            {
+                ICommand command = new AddCommand(this, BallType.Normal);
+                CommandInvoker.ExecuteCommand(command);
+            });
+            _rainbowButton.onClick.AddListener(() =>
+            {
+                ICommand command = new AddCommand(this, BallType.Rainbow);
+                CommandInvoker.ExecuteCommand(command);
+            });
         }
 
         private void Start()
         {
-            _spawnButton.image.color = ResourceManager.Instance.GetColorByColorType(_ballColorType);
-
-            _ballAmount = _maxBallAmount;
-            _amountText.text = _ballAmount.ToString();
+            for (int i = 0; i < _maxBallAmount; i++)
+            {
+                PushBallType(BallType.Normal);
+            }
 
             _canSpawn = true;
             _spawnTime = 0.0f;
@@ -66,16 +80,10 @@ namespace VinhLB
             }
         }
 
-        public void ModifyBallAmount(int value)
-        {
-            _ballAmount += value;
-            _amountText.text = _ballAmount.ToString();
-        }
-
         public Ball SpawnBall()
         {
-            Ball ball = BallPool.Instance.SpawnBall(_spawnPoint.position, _spawnPoint.rotation, _ballColorType);
-            ModifyBallAmount(-1);
+            Ball ball = BallPool.Instance.SpawnBall(_spawnPoint.position, _spawnPoint.rotation,
+                PullBallType(), _ballColorType);
 
             return ball;
         }
@@ -83,7 +91,43 @@ namespace VinhLB
         public void RetrieveBall(Ball ball)
         {
             ball.ReturnToPool();
-            ModifyBallAmount(1);
+            PushBallType(ball.GetBallType());
+        }
+
+        public void PushBallType(BallType ballType)
+        {
+            _ballTypeStack.Push(ballType);
+            _amountText.text = _ballTypeStack.Count.ToString();
+
+            UpdateVisual(_ballTypeStack.Peek());
+        }
+
+        public BallType PullBallType()
+        {
+            BallType ballType = _ballTypeStack.Pop();
+            _amountText.text = _ballTypeStack.Count.ToString();
+
+            if (_ballTypeStack.Count > 0)
+            {
+                UpdateVisual(_ballTypeStack.Peek());
+            }
+
+            return ballType;
+        }
+
+        private void UpdateVisual(BallType ballType)
+        {
+            _spawnButton.image.sprite = ResourceManager.Instance.GetBallSpriteByType(ballType);
+
+            switch (ballType)
+            {
+                case BallType.Normal:
+                    _spawnButton.image.color = ResourceManager.Instance.GetColorByColorType(_ballColorType);
+                    break;
+                case BallType.Rainbow:
+                    _spawnButton.image.color = Color.white;
+                    break;
+            }
         }
     }
 }

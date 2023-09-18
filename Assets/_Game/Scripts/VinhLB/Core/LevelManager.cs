@@ -18,9 +18,14 @@ namespace VinhLB
             _currentLevelIndex = 0;
         }
 
-        public int GetCurrentLevel()
+        public int GetCurrentLevelIndex()
         {
-            return _currentLevelIndex + 1;
+            return _currentLevelIndex;
+        }
+
+        public Level GetCurrentLevel()
+        {
+            return _currentLevel;
         }
 
         public bool IsLastLevel()

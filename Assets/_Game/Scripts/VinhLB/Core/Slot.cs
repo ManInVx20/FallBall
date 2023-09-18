@@ -21,11 +21,6 @@ namespace VinhLB
             UpdateColor();
         }
 
-        private void Start()
-        {
-            UpdateColor();
-        }
-
         private void Reset()
         {
             UpdateColor();
@@ -61,11 +56,6 @@ namespace VinhLB
             _colorType = colorType;
 
             UpdateColor();
-        }
-
-        public bool IsColorTypeMatching(ColorType colorType)
-        {
-            return _colorType == colorType;
         }
     }
 }

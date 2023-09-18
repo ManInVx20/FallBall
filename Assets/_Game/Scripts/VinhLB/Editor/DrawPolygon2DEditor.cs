@@ -1,7 +1,5 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,6 +45,7 @@ namespace VinhLB
             EditorGUILayout.PropertyField(serializedObject.FindProperty("VerticeList"));
 
             GUILayout.Space(10.0f);
+
             GUILayout.Label("Colliders", EditorStyles.boldLabel);
             GUILayout.Label("Polygon");
             EditorGUILayout.BeginHorizontal();
@@ -57,6 +56,7 @@ namespace VinhLB
                     if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.CreatePolygonCollider();
+                        EditorUtility.SetDirty(drawPolygon2D);
                     }
                 }
             }
@@ -67,6 +67,7 @@ namespace VinhLB
                     if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.ClearPolygonCollider();
+                        EditorUtility.SetDirty(drawPolygon2D);
                     }
                 }
             }
@@ -82,6 +83,7 @@ namespace VinhLB
                     if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.CreateEdgeCollider();
+                        EditorUtility.SetDirty(drawPolygon2D);
                     }
                 }
             }
@@ -92,6 +94,7 @@ namespace VinhLB
                     if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
                         drawPolygon2D.ClearEdgeCollider();
+                        EditorUtility.SetDirty(drawPolygon2D);
                     }
                 }
             }

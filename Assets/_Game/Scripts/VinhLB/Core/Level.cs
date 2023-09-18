@@ -10,6 +10,8 @@ namespace VinhLB
         public System.Action<bool> OnLevelFinishedAction;
 
         [SerializeField]
+        private List<Cannon> _cannonList;
+        [SerializeField]
         private List<Slot> _slotList;
 
         private List<Slot> _notFilledSlotList;
@@ -22,6 +24,11 @@ namespace VinhLB
             {
                 _notFilledSlotList[i].OnIsFilledChangedAction += Slot_OnIsFilledChangedAction;
             }
+        }
+
+        public List<Cannon> GetCannonList()
+        {
+            return _cannonList;
         }
 
         public void Win()

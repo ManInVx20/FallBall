@@ -87,6 +87,7 @@ MonoBehaviour:
   _rigidbody2D: {fileID: 764910653683367197}
   _ballRenderer: {fileID: 764910653715674304}
   _doneRenderer: {fileID: 3353285549469083198}
+  _ballType: 0
   _colorType: 0
   _obstacleLayerMask:
     serializedVersion: 2
@@ -165,7 +166,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 100
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.75294125, g: 0.75294125, b: 0.75294125, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

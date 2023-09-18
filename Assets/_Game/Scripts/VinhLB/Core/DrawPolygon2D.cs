@@ -51,11 +51,6 @@ namespace VinhLB
             UpdateMesh();
         }
 
-        private void Start()
-        {
-            UpdateMesh();
-        }
-
         private void Reset()
         {
             UpdateMesh();
