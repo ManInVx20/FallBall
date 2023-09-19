@@ -9,7 +9,7 @@ namespace VinhLB
     [ExecuteInEditMode]
     public class Ball : MonoBehaviour, IPoolable<Ball>, IHasColor
     {
-        private const float MIN_SQR_MAGNITUDE = 0.001f;
+        private const float MIN_SQR_MAGNITUDE = 0.0015f;
 
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
@@ -47,34 +47,32 @@ namespace VinhLB
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collider2D)
+        public void EnterSlot(Slot slot)
         {
-            if (collider2D.TryGetComponent<Slot>(out Slot slot))
+            if (IsSlotMatching(slot))
             {
-                if (IsSlotMatching(slot))
-                {
-                    _currentSlot = slot;
-                    _waitToStickCoroutine = StartCoroutine(WaitToStickCoroutine());
-                }
-            }
-            else if (collider2D.TryGetComponent<Deadzone>(out _))
-            {
-                ReturnToPool();
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D collider2D)
-        {
-            if (collider2D.TryGetComponent<Slot>(out Slot slot))
-            {
-                if (_currentSlot == slot)
+                if (_currentSlot != slot)
                 {
                     if (_waitToStickCoroutine != null)
                     {
                         StopCoroutine(_waitToStickCoroutine);
                     }
-                    _currentSlot = null;
+
+                    _currentSlot = slot;
+                    _waitToStickCoroutine = StartCoroutine(WaitToStickCoroutine());
                 }
+            }
+        }
+
+        public void ExitSlot(Slot slot)
+        {
+            if (_currentSlot == slot)
+            {
+                if (_waitToStickCoroutine != null)
+                {
+                    StopCoroutine(_waitToStickCoroutine);
+                }
+                _currentSlot = null;
             }
         }
 
@@ -105,6 +103,11 @@ namespace VinhLB
             }
 
             _doneRenderer.DOFade(0.0f, 0.0f);
+        }
+
+        public void Push(Vector2 force)
+        {
+            _rigidbody2D.AddForce(force, ForceMode2D.Impulse);
         }
 
         public void StickToSlot()
@@ -171,18 +174,18 @@ namespace VinhLB
 
         private bool TryMoveToSides()
         {
-            float distance = 0.45f;
+            float distance = 0.5f;
             Vector2 leftDir = Quaternion.Euler(0.0f, 0.0f, 30.0f) * Vector2.left;
             Vector2 rightDir = Quaternion.Euler(0.0f, 0.0f, -30.0f) * Vector2.right;
             if (!Physics2D.Raycast(transform.position, leftDir, distance, _obstacleLayerMask))
             {
-                _rigidbody2D.velocity += leftDir;
+                _rigidbody2D.AddForce(leftDir, ForceMode2D.Impulse);
 
                 return true;
             }
             else if (!Physics2D.Raycast(transform.position, rightDir, distance, _obstacleLayerMask))
             {
-                _rigidbody2D.velocity += rightDir;
+                _rigidbody2D.AddForce(rightDir, ForceMode2D.Impulse);
 
                 return true;
             }
@@ -192,8 +195,14 @@ namespace VinhLB
 
         private IEnumerator WaitToStickCoroutine()
         {
-            while (_rigidbody2D.velocity.sqrMagnitude > MIN_SQR_MAGNITUDE)
+            while (true)
             {
+                //Debug.Log(_rigidbody2D.velocity.sqrMagnitude);
+                if (_rigidbody2D.velocity.sqrMagnitude < MIN_SQR_MAGNITUDE)
+                {
+                    break;
+                }
+
                 yield return null;
             }
 
@@ -202,8 +211,8 @@ namespace VinhLB
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawRay(transform.position, Quaternion.Euler(0.0f, 0.0f, 30.0f) * Vector2.left * 0.45f);
-            Gizmos.DrawRay(transform.position, Quaternion.Euler(0.0f, 0.0f, -30.0f) * Vector2.right * 0.45f);
+            Gizmos.DrawRay(transform.position, Quaternion.Euler(0.0f, 0.0f, 30.0f) * Vector2.left * 0.5f);
+            Gizmos.DrawRay(transform.position, Quaternion.Euler(0.0f, 0.0f, -30.0f) * Vector2.right * 0.5f);
         }
     }
 }

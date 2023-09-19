@@ -26,6 +26,22 @@ namespace VinhLB
             UpdateColor();
         }
 
+        private void OnTriggerEnter2D(Collider2D collider2D)
+        {
+            if (collider2D.TryGetComponent<Ball>(out Ball ball))
+            {
+                ball.EnterSlot(this);
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collider2D)
+        {
+            if (collider2D.TryGetComponent<Ball>(out Ball ball))
+            {
+                ball.ExitSlot(this);
+            }
+        }
+
         public void UpdateColor()
         {
             if (_spriteRenderer != null)

@@ -36,6 +36,8 @@ namespace VinhLB
                 if (LevelManager.Instance.TryLoadNextLevel())
                 {
                     Close();
+
+                    GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateLevelText();
                 }
             });
         }

@@ -17,7 +17,8 @@ namespace VinhLB
             _ballPool = new ObjectPool<Ball>(_ballPrefab, OnPullCallback, OnPushCallback);
         }
 
-        public Ball SpawnBall(Vector3 position, Quaternion rotation, BallType ballType, ColorType colorType = ColorType.White)
+        public Ball SpawnBall(Vector3 position, Quaternion rotation, 
+            BallType ballType = BallType.Normal, ColorType colorType = ColorType.White)
         {
             Ball ball = _ballPool.Pull();
             ball.transform.SetPositionAndRotation(position, rotation);

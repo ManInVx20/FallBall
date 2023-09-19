@@ -15,7 +15,7 @@ namespace VinhLB
         [SerializeField]
         private Button _spawnButton;
         [SerializeField]
-        private Button _addButton;
+        private Button _normalButton;
         [SerializeField]
         private Button _rainbowButton;
         [SerializeField]
@@ -44,7 +44,7 @@ namespace VinhLB
                     CommandInvoker.ExecuteCommand(command);
                 }
             });
-            _addButton.onClick.AddListener(() =>
+            _normalButton.onClick.AddListener(() =>
             {
                 ICommand command = new AddCommand(this, BallType.Normal);
                 CommandInvoker.ExecuteCommand(command);
@@ -84,6 +84,8 @@ namespace VinhLB
         {
             Ball ball = BallPool.Instance.SpawnBall(_spawnPoint.position, _spawnPoint.rotation,
                 PullBallType(), _ballColorType);
+            Vector2 force = Vector2.down * 3.0f;
+            ball.Push(force);
 
             return ball;
         }

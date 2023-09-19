@@ -13,12 +13,13 @@ namespace VinhLB
 
         private Level _currentLevel;
         private List<Button> _cannonItemButtonList = new List<Button>();
+        private BallType _currentBallType;
 
-
-
-        public void Open()
+        public void Open(BallType ballType)
         {
             gameObject.SetActive(true);
+
+            _currentBallType = ballType;
 
             if (_currentLevel != LevelManager.Instance.GetCurrentLevel())
             {
@@ -37,7 +38,7 @@ namespace VinhLB
                     Button cannonItemButton = Instantiate(_cannonItemButtonPrefab, transform);
                     cannonItemButton.onClick.AddListener(() =>
                     {
-                        ICommand command = new AddCommand(cannonList[index], BallType.Rainbow);
+                        ICommand command = new AddCommand(cannonList[index], _currentBallType);
                         CommandInvoker.ExecuteCommand(command);
                     });
                     cannonItemButton.GetComponentInChildren<TMP_Text>().text = (index + 1).ToString();

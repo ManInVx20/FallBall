@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4179750443925014186}
   - component: {fileID: 7018174157934273400}
   m_Layer: 0
-  m_Name: AddButton
+  m_Name: NormalButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: -0.35, y: 0.35}
   m_SizeDelta: {x: 0.3, y: 0.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5228760753029692241
@@ -183,7 +183,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 1144581475
-  m_SortingOrder: 121
+  m_SortingOrder: 131
   m_TargetDisplay: 0
 --- !u!114 &1129257632886064569
 MonoBehaviour:
@@ -297,7 +297,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1144581475
   m_SortingLayer: 1
-  m_SortingOrder: 120
+  m_SortingOrder: 130
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -567,7 +567,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1144581475
   m_SortingLayer: 1
-  m_SortingOrder: 120
+  m_SortingOrder: 130
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPoint: {fileID: 1129257633375787221}
   _spawnButton: {fileID: 1129257633519583280}
-  _addButton: {fileID: 7018174157934273400}
+  _normalButton: {fileID: 7018174157934273400}
   _rainbowButton: {fileID: 2374614254300417036}
   _amountText: {fileID: 1129257634522145020}
   _ballColorType: 0
@@ -805,7 +805,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.35, y: 0.35}
+  m_AnchoredPosition: {x: 0.35, y: 0.35}
   m_SizeDelta: {x: 0.3, y: 0.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4551963219731662686
