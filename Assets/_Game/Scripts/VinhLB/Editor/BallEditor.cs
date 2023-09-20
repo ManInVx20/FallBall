@@ -16,6 +16,7 @@ namespace VinhLB
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_rigidbody2D"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_ballRenderer"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_doneRenderer"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_trailRenderer"));
 
             GUILayout.Space(10.0f);
 

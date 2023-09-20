@@ -17,7 +17,7 @@ namespace VinhLB
 
             GUILayout.Space(10.0f);
             GUILayout.Label("Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_colorType"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_colorTypeList"));
 
             if (serializedObject.ApplyModifiedProperties() ||
                 (Event.current.type == EventType.ValidateCommand && Event.current.commandName == "UndoRedoPerformed"))

@@ -80,6 +80,8 @@ namespace VinhLB
         public void RestartLevel()
         {
             CommandInvoker.UndoAllCommands();
+
+            CommandInvoker.Clear();
         }
     }
 }

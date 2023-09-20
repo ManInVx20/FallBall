@@ -587,6 +587,22 @@ PrefabInstance:
       propertyPath: _colorType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1892808293847551644, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
+      propertyPath: _colorTypeList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1892808293847551644, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
+      propertyPath: _colorTypeList.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685056416055289111, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685056416055289111, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5384075845045793277, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
       propertyPath: m_Name
       value: ColorSwapRing_1
@@ -660,6 +676,14 @@ PrefabInstance:
     - target: {fileID: 1892808293847551644, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
       propertyPath: _colorType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1892808293847551644, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
+      propertyPath: _colorTypeList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1892808293847551644, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
+      propertyPath: _colorTypeList.Array.data[1]
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5384075845045793277, guid: 37e6a8389761d3f44996b55cd4dc493d, type: 3}
       propertyPath: m_Name

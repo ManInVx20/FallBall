@@ -17,6 +17,8 @@ namespace VinhLB
         private SpriteRenderer _ballRenderer;
         [SerializeField]
         private SpriteRenderer _doneRenderer;
+        [SerializeField]
+        private TrailRenderer _trailRenderer;
 
         [SerializeField]
         private BallType _ballType;
@@ -126,6 +128,14 @@ namespace VinhLB
             {
                 _currentSlot.SetIsFilled(true);
             });
+
+            EffectPool.Instance.SpawnHitVFX(_currentSlot.transform.position, Quaternion.identity);
+        }
+
+        public void Teleport(Vector3 position)
+        {
+            transform.position = position;
+            _trailRenderer.Clear();
         }
 
         public void UpdateVisual()
@@ -141,6 +151,8 @@ namespace VinhLB
                     _ballRenderer.color = Color.white;
                     break;
             }
+
+            _trailRenderer.startColor = _ballRenderer.color;
         }
 
         public BallType GetBallType()

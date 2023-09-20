@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -112,6 +111,10 @@ namespace VinhLB
             if (_ballTypeStack.Count > 0)
             {
                 UpdateVisual(_ballTypeStack.Peek());
+            }
+            else
+            {
+                UpdateVisual(BallType.Normal);
             }
 
             return ballType;
