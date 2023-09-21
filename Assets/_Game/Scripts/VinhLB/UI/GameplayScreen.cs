@@ -23,6 +23,8 @@ namespace VinhLB
         [SerializeField]
         private Button _rainbowButton;
         [SerializeField]
+        private Button _spikeButton;
+        [SerializeField]
         private CannonListPanel _cannonListPanel;
 
         public override void Initialize()
@@ -59,6 +61,17 @@ namespace VinhLB
                 if (!_cannonListPanel.gameObject.activeSelf)
                 {
                     _cannonListPanel.Open(BallType.Rainbow);
+                }
+                else
+                {
+                    _cannonListPanel.Close();
+                }
+            });
+            _spikeButton.onClick.AddListener(() =>
+            {
+                if (!_cannonListPanel.gameObject.activeSelf)
+                {
+                    _cannonListPanel.Open(BallType.Spike);
                 }
                 else
                 {

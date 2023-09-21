@@ -18,6 +18,8 @@ namespace VinhLB
         [SerializeField]
         private Button _rainbowButton;
         [SerializeField]
+        private Button _spikeButton;
+        [SerializeField]
         private TMP_Text _amountText;
 
         [Header("Settings")]
@@ -45,13 +47,15 @@ namespace VinhLB
             });
             _normalButton.onClick.AddListener(() =>
             {
-                ICommand command = new AddCommand(this, BallType.Normal);
-                CommandInvoker.ExecuteCommand(command);
+                AddBall(BallType.Normal);
             });
             _rainbowButton.onClick.AddListener(() =>
             {
-                ICommand command = new AddCommand(this, BallType.Rainbow);
-                CommandInvoker.ExecuteCommand(command);
+                AddBall(BallType.Rainbow);
+            });
+            _spikeButton.onClick.AddListener(() =>
+            {
+                AddBall(BallType.Spike);
             });
         }
 
@@ -120,6 +124,12 @@ namespace VinhLB
             return ballType;
         }
 
+        public void AddBall(BallType ballType)
+        {
+            ICommand command = new AddCommand(this, ballType);
+            CommandInvoker.ExecuteCommand(command);
+        }
+
         private void UpdateVisual(BallType ballType)
         {
             _spawnButton.image.sprite = ResourceManager.Instance.GetBallSpriteByType(ballType);
@@ -130,6 +140,7 @@ namespace VinhLB
                     _spawnButton.image.color = ResourceManager.Instance.GetColorByColorType(_ballColorType);
                     break;
                 case BallType.Rainbow:
+                case BallType.Spike:
                     _spawnButton.image.color = Color.white;
                     break;
             }

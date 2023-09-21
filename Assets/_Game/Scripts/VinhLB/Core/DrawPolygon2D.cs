@@ -19,6 +19,7 @@ namespace VinhLB
         [System.Serializable]
         public struct EdgeVerticeIndexRange
         {
+            public bool LoopThrough;
             public int From;
             public int To;
         }
@@ -58,6 +59,11 @@ namespace VinhLB
 
         public void UpdateMesh()
         {
+            if (VerticeList == null)
+            {
+                return;
+            }
+
             Vector2[] vertice2DArray = VerticeList.ToArray();
 
             Triangulator triangulator = new Triangulator(vertice2DArray);
@@ -115,9 +121,14 @@ namespace VinhLB
                 _polygonCollider2D = go.AddComponent<PolygonCollider2D>();
             }
 
-            _polygonCollider2D.points = VerticeList
-                .Select(vertice => vertice + (Vector2)transform.position)
-                .ToArray();
+            List<Vector2> verticeList = new List<Vector2>();
+            for (int i = 0; i < VerticeList.Count; i++)
+            {
+                Vector2 position = transform.rotation * VerticeList[i] + transform.position;
+                verticeList.Add(position);
+            }
+
+            _polygonCollider2D.points = verticeList.ToArray();
         }
 
         public void ClearPolygonCollider()
@@ -152,10 +163,26 @@ namespace VinhLB
                 }
 
                 List<Vector2> verticeList = new List<Vector2>();
-                for (int j = _edgeVerticeIndexRangeList[i].From; j <= _edgeVerticeIndexRangeList[i].To; j++)
+                if (!_edgeVerticeIndexRangeList[i].LoopThrough)
                 {
-                    Vector2 position = VerticeList[j] + (Vector2)transform.position;
-                    verticeList.Add(position);
+                    for (int j = _edgeVerticeIndexRangeList[i].From; j <= _edgeVerticeIndexRangeList[i].To; j++)
+                    {
+                        Vector2 position = transform.rotation * VerticeList[j] + transform.position;
+                        verticeList.Add(position);
+                    }
+                }
+                else
+                {
+                    for (int j = _edgeVerticeIndexRangeList[i].From; j < VerticeList.Count; j++)
+                    {
+                        Vector2 position = transform.rotation * VerticeList[j] + transform.position;
+                        verticeList.Add(position);
+                    }
+                    for (int j = 0; j <= _edgeVerticeIndexRangeList[i].To; j++)
+                    {
+                        Vector2 position = transform.rotation * VerticeList[j] + transform.position;
+                        verticeList.Add(position);
+                    }
                 }
                 edgeCollider.points = verticeList.ToArray();
 

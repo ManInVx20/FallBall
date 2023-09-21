@@ -20,18 +20,21 @@ namespace VinhLB
             handleLabelStyle.alignment = TextAnchor.MiddleCenter;
             handleLabelStyle.normal.textColor = Color.green;
 
-            for (int i = 0; i < drawPolygon2D.VerticeList.Count; i++)
+            if (drawPolygon2D.VerticeList != null)
             {
-                Vector3 oldPoint = polygon2DTransform.TransformPoint(drawPolygon2D.VerticeList[i]);
-                Vector3 newPoint = Handles.FreeMoveHandle(oldPoint, Quaternion.identity, HANDLE_SIZE, pointSnap, Handles.RectangleHandleCap);
-                if (newPoint != oldPoint)
+                for (int i = 0; i < drawPolygon2D.VerticeList.Count; i++)
                 {
-                    Undo.RecordObject(drawPolygon2D, "Move");
-                    drawPolygon2D.VerticeList[i] = polygon2DTransform.InverseTransformPoint(newPoint);
-                    drawPolygon2D.UpdateMesh();
-                }
+                    Vector3 oldPoint = polygon2DTransform.TransformPoint(drawPolygon2D.VerticeList[i]);
+                    Vector3 newPoint = Handles.FreeMoveHandle(oldPoint, Quaternion.identity, HANDLE_SIZE, pointSnap, Handles.RectangleHandleCap);
+                    if (newPoint != oldPoint)
+                    {
+                        Undo.RecordObject(drawPolygon2D, "Move");
+                        drawPolygon2D.VerticeList[i] = polygon2DTransform.InverseTransformPoint(newPoint);
+                        drawPolygon2D.UpdateMesh();
+                    }
 
-                Handles.Label(newPoint, i.ToString(), handleLabelStyle);
+                    Handles.Label(newPoint, i.ToString(), handleLabelStyle);
+                }
             }
         }
 
@@ -100,7 +103,7 @@ namespace VinhLB
             }
             EditorGUILayout.EndHorizontal();
 
-            if (serializedObject.ApplyModifiedProperties() || 
+            if (serializedObject.ApplyModifiedProperties() ||
                 (Event.current.type == EventType.ValidateCommand && Event.current.commandName == "UndoRedoPerformed"))
             {
                 foreach (DrawPolygon2D drawPolygon2D in targets)

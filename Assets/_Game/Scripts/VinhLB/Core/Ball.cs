@@ -43,9 +43,16 @@ namespace VinhLB
 
         private void OnCollisionEnter2D(Collision2D collision2D)
         {
-            if (collision2D.transform.TryGetComponent<Ball>(out _))
+            if (collision2D.transform.TryGetComponent<Ball>(out Ball ball))
             {
-                TryMoveToSides();
+                if (_ballType == BallType.Spike || ball.GetBallType() == BallType.Spike)
+                {
+                    ReturnToPool();
+                }
+                else
+                {
+                    TryMoveToSides();
+                }
             }
         }
 
@@ -142,17 +149,20 @@ namespace VinhLB
         {
             _ballRenderer.sprite = ResourceManager.Instance.GetBallSpriteByType(_ballType);
 
+            Color color = Color.white;
             switch (_ballType)
             {
                 case BallType.Normal:
-                    _ballRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorType);
+                    color = ResourceManager.Instance.GetColorByColorType(_colorType);
                     break;
                 case BallType.Rainbow:
-                    _ballRenderer.color = Color.white;
+                case BallType.Spike:
+                    color = Color.white;
                     break;
             }
 
-            _trailRenderer.startColor = _ballRenderer.color;
+            _ballRenderer.color = color;
+            _trailRenderer.startColor = color;
         }
 
         public BallType GetBallType()
@@ -181,7 +191,8 @@ namespace VinhLB
 
         public bool IsSlotMatching(Slot slot)
         {
-            return _ballType == BallType.Rainbow || _colorType == slot.GetColorType();
+            return (_ballType == BallType.Normal && _colorType == slot.GetColorType())
+                || (_ballType == BallType.Rainbow);
         }
 
         private bool TryMoveToSides()

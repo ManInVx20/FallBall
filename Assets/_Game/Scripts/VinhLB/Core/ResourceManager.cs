@@ -69,5 +69,6 @@ namespace VinhLB
     {
         Normal = 0,
         Rainbow = 1,
+        Spike = 2,
     }
 }

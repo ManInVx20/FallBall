@@ -63,7 +63,7 @@ namespace VinhLB
         {
             for (int i = 0; i < _createdList.Count; i++)
             {
-                if (_createdList[i].gameObject.activeSelf)
+                if (!_pooledStack.Contains(_createdList[i]))
                 {
                     _createdList[i].ReturnToPool();
                 }

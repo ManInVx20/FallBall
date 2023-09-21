@@ -38,8 +38,7 @@ namespace VinhLB
                     Button cannonItemButton = Instantiate(_cannonItemButtonPrefab, transform);
                     cannonItemButton.onClick.AddListener(() =>
                     {
-                        ICommand command = new AddCommand(cannonList[index], _currentBallType);
-                        CommandInvoker.ExecuteCommand(command);
+                        cannonList[index].AddBall(_currentBallType);
                     });
                     cannonItemButton.GetComponentInChildren<TMP_Text>().text = (index + 1).ToString();
                     _cannonItemButtonList.Add(cannonItemButton);
