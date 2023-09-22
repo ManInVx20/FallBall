@@ -9,8 +9,6 @@ namespace VinhLB
     [ExecuteInEditMode]
     public class Ball : MonoBehaviour, IPoolable<Ball>, IHasColor
     {
-        private const float MIN_SQR_MAGNITUDE = 0.0015f;
-
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
         [SerializeField]
@@ -221,7 +219,7 @@ namespace VinhLB
             while (true)
             {
                 //Debug.Log(_rigidbody2D.velocity.sqrMagnitude);
-                if (_rigidbody2D.velocity.sqrMagnitude < MIN_SQR_MAGNITUDE)
+                if (_rigidbody2D.velocity.sqrMagnitude < GameConstants.BALL_MIN_SQR_MAGNITUDE)
                 {
                     break;
                 }

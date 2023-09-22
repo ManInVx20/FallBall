@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace VinhLB
@@ -8,8 +9,6 @@ namespace VinhLB
     [ExecuteInEditMode, RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class DrawPolygon2D : MonoBehaviour
     {
-        private const string WALL_LAYER_NAME = "Wall";
-
         public enum UVType
         {
             Fit = 0,
@@ -38,6 +37,7 @@ namespace VinhLB
         private Mesh _mesh;
         private PolygonCollider2D _polygonCollider2D;
         private List<EdgeCollider2D> _edgeCollider2DList;
+        private List<LineRenderer> _edgeRendererList;
 
         private void Awake()
         {
@@ -45,6 +45,7 @@ namespace VinhLB
             _meshRenderer = GetComponent<MeshRenderer>();
             _polygonCollider2D = GetComponentInChildren<PolygonCollider2D>();
             _edgeCollider2DList = new List<EdgeCollider2D>(GetComponentsInChildren<EdgeCollider2D>());
+            _edgeRendererList = new List<LineRenderer>(GetComponentsInChildren<LineRenderer>());
         }
 
         private void OnEnable()
@@ -117,7 +118,7 @@ namespace VinhLB
                 GameObject go = new GameObject();
                 go.name = "PolygonCollider";
                 go.transform.SetParent(transform);
-                go.layer = LayerMask.NameToLayer(WALL_LAYER_NAME);
+                go.layer = LayerMask.NameToLayer(GameConstants.WALL_LAYER_NAME);
                 _polygonCollider2D = go.AddComponent<PolygonCollider2D>();
             }
 
@@ -136,6 +137,79 @@ namespace VinhLB
             if (_polygonCollider2D != null)
             {
                 DestroyImmediate(_polygonCollider2D.gameObject);
+            }
+        }
+
+        public void CreateEdgeRenderer()
+        {
+            if (_edgeRendererList == null)
+            {
+                _edgeRendererList = new List<LineRenderer>();
+            }
+
+            for (int i = 0; i < _edgeVerticeIndexRangeList.Count; i++)
+            {
+                LineRenderer edgeRenderer;
+                if (i < _edgeRendererList.Count)
+                {
+                    edgeRenderer = _edgeRendererList[i];
+                }
+                else
+                {
+                    GameObject go = new GameObject();
+                    go.name = "EdgeRenderer" + (i == 0 ? string.Empty : "_" + i.ToString());
+                    go.transform.SetParent(transform);
+                    edgeRenderer = go.AddComponent<LineRenderer>();
+                    edgeRenderer.widthMultiplier = 0.025f;
+                    edgeRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Edge.mat");
+                    edgeRenderer.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
+                    edgeRenderer.sortingOrder = 20;
+                }
+
+                List<Vector3> vertice3DList = new List<Vector3>();
+                if (!_edgeVerticeIndexRangeList[i].LoopThrough)
+                {
+                    for (int j = _edgeVerticeIndexRangeList[i].From; j <= _edgeVerticeIndexRangeList[i].To; j++)
+                    {
+                        Vector3 position = transform.rotation * VerticeList[j] + transform.position;
+                        vertice3DList.Add(position);
+                    }
+                }
+                else
+                {
+                    for (int j = _edgeVerticeIndexRangeList[i].From; j < VerticeList.Count; j++)
+                    {
+                        Vector3 position = transform.rotation * VerticeList[j] + transform.position;
+                        vertice3DList.Add(position);
+                    }
+                    for (int j = 0; j <= _edgeVerticeIndexRangeList[i].To; j++)
+                    {
+                        Vector3 position = transform.rotation * VerticeList[j] + transform.position;
+                        vertice3DList.Add(position);
+                    }
+                }
+                edgeRenderer.positionCount = vertice3DList.Count;
+                edgeRenderer.SetPositions(vertice3DList.ToArray());
+
+                if (i >= _edgeRendererList.Count)
+                {
+                    _edgeRendererList.Add(edgeRenderer);
+                }
+            }
+        }
+
+        public void ClearEdgeRenderer()
+        {
+            if (_edgeRendererList != null)
+            {
+                for (int i = _edgeRendererList.Count - 1; i >= 0; i--)
+                {
+                    if (_edgeRendererList[i] != null)
+                    {
+                        DestroyImmediate(_edgeRendererList[i].gameObject);
+                    }
+                    _edgeRendererList.RemoveAt(i);
+                }
             }
         }
 
@@ -158,7 +232,7 @@ namespace VinhLB
                     GameObject go = new GameObject();
                     go.name = "EdgeCollider" + (i == 0 ? string.Empty : "_" + i.ToString());
                     go.transform.SetParent(transform);
-                    go.layer = LayerMask.NameToLayer(WALL_LAYER_NAME);
+                    go.layer = LayerMask.NameToLayer(GameConstants.WALL_LAYER_NAME);
                     edgeCollider = go.AddComponent<EdgeCollider2D>();
                 }
 

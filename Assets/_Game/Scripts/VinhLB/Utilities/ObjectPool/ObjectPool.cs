@@ -52,6 +52,11 @@ namespace VinhLB
 
         public void Push(T t)
         {
+            if (_pooledStack.Contains(t))
+            {
+                return;
+            }
+
             _pooledStack.Push(t);
 
             _onPushAction?.Invoke(t);

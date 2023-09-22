@@ -42,15 +42,12 @@ namespace VinhLB
         {
             serializedObject.Update();
 
-            GUILayout.Label("Mesh", EditorStyles.boldLabel);
+            GUILayout.Label("Draw Polygon", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_meshUVType"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_rendererMaterial"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("VerticeList"));
 
-            GUILayout.Space(10.0f);
-
-            GUILayout.Label("Colliders", EditorStyles.boldLabel);
-            GUILayout.Label("Polygon");
+            GUILayout.Label("Polygon Collider");
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Create"))
             {
@@ -76,8 +73,38 @@ namespace VinhLB
             }
             EditorGUILayout.EndHorizontal();
 
-            GUILayout.Label("Edge");
+            GUILayout.Space(10.0f);
+
+            GUILayout.Label("Draw Edge", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_edgeVerticeIndexRangeList"));
+
+            GUILayout.Label("Edge Renderer");
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Create"))
+            {
+                foreach (DrawPolygon2D drawPolygon2D in targets)
+                {
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
+                    {
+                        drawPolygon2D.CreateEdgeRenderer();
+                        EditorUtility.SetDirty(drawPolygon2D);
+                    }
+                }
+            }
+            if (GUILayout.Button("Clear"))
+            {
+                foreach (DrawPolygon2D drawPolygon2D in targets)
+                {
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
+                    {
+                        drawPolygon2D.ClearEdgeRenderer();
+                        EditorUtility.SetDirty(drawPolygon2D);
+                    }
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+
+            GUILayout.Label("Edge Collider");
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Create"))
             {

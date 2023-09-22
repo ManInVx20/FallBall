@@ -15,20 +15,43 @@ namespace VinhLB
         private List<Slot> _slotList;
 
         private List<Slot> _notFilledSlotList;
+        private int _moves;
 
         private void Start()
         {
             _notFilledSlotList = _slotList.ToList();
-
             for (int i = 0; i < _notFilledSlotList.Count; i++)
             {
                 _notFilledSlotList[i].OnIsFilledChangedAction += Slot_OnIsFilledChangedAction;
             }
+
+            _moves = 0;
+
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesText();
         }
 
         public List<Cannon> GetCannonList()
         {
             return _cannonList;
+        }
+
+        public int GetMoves()
+        {
+            return _moves;
+        }
+
+        public void IncreaseMoves()
+        {
+            _moves += 1;
+
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesText();
+        }
+
+        public void DecreaseMoves()
+        {
+            _moves -= 1;
+
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesText();
         }
 
         public void Win()

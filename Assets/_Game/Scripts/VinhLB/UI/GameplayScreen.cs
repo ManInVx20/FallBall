@@ -11,6 +11,8 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _levelText;
         [SerializeField]
+        private TMP_Text _movesText;
+        [SerializeField]
         private Button _restartButton;
         [SerializeField]
         private Button _homeButton;
@@ -45,7 +47,7 @@ namespace VinhLB
             {
                 CommandInvoker.RedoCommand();
             });
-            _normalButton.onClick.AddListener(() => 
+            _normalButton.onClick.AddListener(() =>
             {
                 if (!_cannonListPanel.gameObject.activeSelf)
                 {
@@ -97,6 +99,11 @@ namespace VinhLB
         public void UpdateLevelText()
         {
             _levelText.text = $"LEVEL {LevelManager.Instance.GetCurrentLevelIndex() + 1}";
+        }
+
+        public void UpdateMovesText()
+        {
+            _movesText.text = LevelManager.Instance.GetCurrentLevel().GetMoves().ToString();
         }
     }
 }

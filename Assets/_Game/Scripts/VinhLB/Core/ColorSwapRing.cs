@@ -44,6 +44,11 @@ namespace VinhLB
             }
         }
 
+        private void OnDestroy()
+        {
+            DOTween.Kill(_spriteRenderer);
+        }
+
         private void OnTriggerEnter2D(Collider2D collider2D)
         {
             if (collider2D.TryGetComponent<Ball>(out Ball ball))
@@ -59,7 +64,6 @@ namespace VinhLB
                 Color color = ResourceManager.Instance.GetColorByColorType(_colorTypeList[_currentColorTypeIndex]);
                 if (_spriteRenderer.color != color)
                 {
-                    //_spriteRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorTypeList[_currentColorTypeIndex]);
                     _spriteRenderer.DOColor(color, 0.25f);
                 }
             }

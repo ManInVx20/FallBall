@@ -6,11 +6,23 @@ namespace VinhLB
 {
     public class Portal : MonoBehaviour
     {
-        private const float MAX_DISTANCE = 0.2f;
+        private const float MAX_DISTANCE = 0.25f;
 
         [Header("Preferences")]
         [SerializeField]
         private Portal _connectedPortal;
+        [SerializeField]
+        private ParticleSystem _portalVFX;
+
+        [Header("Settings")]
+        [SerializeField]
+        [Range(-1.0f, 1.0f)]
+        private float _colorOffset;
+
+        private void Start()
+        {
+            UpdatePortalVisual();
+        }
 
         private void OnTriggerEnter2D(Collider2D collider2D)
         {
@@ -21,6 +33,23 @@ namespace VinhLB
                     ball.Teleport(_connectedPortal.transform.position);
                 }
             }
+        }
+
+        private void UpdatePortalVisual()
+        {
+            ParticleSystem.ColorOverLifetimeModule col = _portalVFX.colorOverLifetime;
+            GradientColorKey[] gradientColorKeys = col.color.gradient.colorKeys;
+            for (int i = 0; i < gradientColorKeys.Length - 1; i++)
+            {
+                Color color = gradientColorKeys[i].color;
+                color.r = Utilities.RepeatValue(color.r + _colorOffset, 0.0f, 1.0f);
+                color.g = Utilities.RepeatValue(color.g + _colorOffset, 0.0f, 1.0f);
+                color.b = Utilities.RepeatValue(color.b + _colorOffset, 0.0f, 1.0f);
+                gradientColorKeys[i].color = color;
+            }
+            Gradient gradient = new Gradient();
+            gradient.SetKeys(gradientColorKeys, col.color.gradient.alphaKeys);
+            col.color = gradient;
         }
     }
 }

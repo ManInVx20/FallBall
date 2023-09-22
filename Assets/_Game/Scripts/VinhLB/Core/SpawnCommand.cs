@@ -17,11 +17,15 @@ namespace VinhLB
         public void Execute()
         {
             _ball = _cannon.SpawnBall();
+
+            LevelManager.Instance.GetCurrentLevel().IncreaseMoves();
         }
 
         public void Undo()
         {
             _cannon.RetrieveBall(_ball);
+
+            LevelManager.Instance.GetCurrentLevel().DecreaseMoves();
         }
     }
 }
