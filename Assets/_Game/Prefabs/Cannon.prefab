@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2189019746314355603
 RectTransform:
   m_ObjectHideFlags: 0
@@ -763,6 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPoint: {fileID: 1129257633375787221}
+  _worldCanvasRectTF: {fileID: 1129257632886064575}
   _spawnButton: {fileID: 1129257633519583280}
   _normalButton: {fileID: 7018174157934273400}
   _rainbowButton: {fileID: 2374614254300417036}
@@ -771,6 +772,7 @@ MonoBehaviour:
   _ballColorType: 0
   _maxBallAmount: 0
   _spawnRate: 2
+  _spawnForce: 3
 --- !u!1 &1436925772315358885
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,7 +943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1669791092742709509
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1139,7 +1141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6313541884758157160
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1254,6 +1256,7 @@ GameObject:
   - component: {fileID: 8930050086305489296}
   - component: {fileID: 1760723131483491518}
   - component: {fileID: 3221601627612107405}
+  - component: {fileID: 4165353362337658587}
   m_Layer: 0
   m_Name: AmountFrame
   m_TagString: Untagged
@@ -1320,3 +1323,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4165353362337658587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8570327345843417606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d801184cb4c704b9ab5ab201f3d85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _position: 0
+  _rotation: 1
+  _scale: 0

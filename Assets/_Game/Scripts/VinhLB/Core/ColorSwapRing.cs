@@ -13,19 +13,19 @@ namespace VinhLB
         [SerializeField]
         private List<ColorType> _colorTypeList;
         [SerializeField]
-        private float _changeColorRate = 0.5f;
+        private float _changeColorRate = 1.0f;
 
         private int _currentColorTypeIndex;
         private float _changeColorTimer;
 
         private void OnEnable()
         {
-            UpdateColor();
+            UpdateColor(true);
         }
 
         private void Reset()
         {
-            UpdateColor();
+            UpdateColor(true);
         }
 
         private void Update()
@@ -53,18 +53,21 @@ namespace VinhLB
         {
             if (collider2D.TryGetComponent<Ball>(out Ball ball))
             {
-                ball.SetColorType(_colorTypeList[_currentColorTypeIndex]);
+                if (ball.GetBallType() == BallType.Normal)
+                {
+                    ball.SetColorType(_colorTypeList[_currentColorTypeIndex]);
+                }
             }
         }
 
-        public void UpdateColor()
+        public void UpdateColor(bool instant = false)
         {
             if (_spriteRenderer != null && _colorTypeList.Count > 0)
             {
                 Color color = ResourceManager.Instance.GetColorByColorType(_colorTypeList[_currentColorTypeIndex]);
                 if (_spriteRenderer.color != color)
                 {
-                    _spriteRenderer.DOColor(color, 0.25f);
+                    _spriteRenderer.DOColor(color, instant ? 0.0f : 0.25f);
                 }
             }
         }

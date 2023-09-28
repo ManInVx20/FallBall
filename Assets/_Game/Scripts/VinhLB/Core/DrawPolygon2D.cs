@@ -161,7 +161,9 @@ namespace VinhLB
                     go.transform.SetParent(transform);
                     edgeRenderer = go.AddComponent<LineRenderer>();
                     edgeRenderer.widthMultiplier = 0.025f;
+#if UNITY_EDITOR
                     edgeRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Edge.mat");
+#endif
                     edgeRenderer.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
                     edgeRenderer.sortingOrder = 20;
                 }

@@ -24,6 +24,7 @@ namespace VinhLB
             ball.transform.SetPositionAndRotation(position, rotation);
             ball.SetBallType(ballType);
             ball.SetColorType(colorType);
+            ball.ResetState();
 
             return ball;
         }
@@ -35,7 +36,7 @@ namespace VinhLB
 
         private void OnPullCallback(Ball ball)
         {
-            ball.ResetState();
+            //ball.ResetState();
         }
 
         private void OnPushCallback(Ball ball)

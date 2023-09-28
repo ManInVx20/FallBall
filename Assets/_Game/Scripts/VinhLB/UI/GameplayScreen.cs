@@ -27,7 +27,7 @@ namespace VinhLB
         [SerializeField]
         private Button _spikeButton;
         [SerializeField]
-        private CannonListPanel _cannonListPanel;
+        private UnmaskPanel _unmaskPanel;
 
         public override void Initialize()
         {
@@ -49,35 +49,26 @@ namespace VinhLB
             });
             _normalButton.onClick.AddListener(() =>
             {
-                if (!_cannonListPanel.gameObject.activeSelf)
+                if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
                 {
-                    _cannonListPanel.Open(BallType.Normal);
+                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.NormalBall;
+                    _unmaskPanel.SetupUnmask(_normalButton.GetComponent<RectTransform>());
                 }
                 else
                 {
-                    _cannonListPanel.Close();
+                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
                 }
             });
             _rainbowButton.onClick.AddListener(() =>
             {
-                if (!_cannonListPanel.gameObject.activeSelf)
+                if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
                 {
-                    _cannonListPanel.Open(BallType.Rainbow);
+                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.RainbowBall;
+                    _unmaskPanel.SetupUnmask(_rainbowButton.GetComponent<RectTransform>());
                 }
                 else
                 {
-                    _cannonListPanel.Close();
-                }
-            });
-            _spikeButton.onClick.AddListener(() =>
-            {
-                if (!_cannonListPanel.gameObject.activeSelf)
-                {
-                    _cannonListPanel.Open(BallType.Spike);
-                }
-                else
-                {
-                    _cannonListPanel.Close();
+                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
                 }
             });
         }
@@ -87,13 +78,6 @@ namespace VinhLB
             base.Open();
 
             UpdateLevelText();
-        }
-
-        public override void Close()
-        {
-            base.Close();
-
-            _cannonListPanel.Close();
         }
 
         public void UpdateLevelText()

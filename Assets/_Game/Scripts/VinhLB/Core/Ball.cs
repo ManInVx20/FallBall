@@ -27,7 +27,11 @@ namespace VinhLB
 
         private Action<Ball> _onReturnAction;
         private Slot _currentSlot;
-        private Coroutine _waitToStickCoroutine;
+        private IEnumerator _waitToStickRoutine;
+        private float _despawnTimer = 0.0f;
+        private float _despawnTimerMax = 1.0f;
+        private bool _blinkingToDespawn = false;
+        private Tween _blinkingToDespawnTween;
 
         private void OnEnable()
         {
@@ -37,6 +41,38 @@ namespace VinhLB
         private void Reset()
         {
             UpdateVisual();
+        }
+
+        private void Update()
+        {
+            if (_currentSlot == null && _rigidbody2D.velocity.sqrMagnitude < GameConstants.BALL_MIN_SQR_MAGNITUDE)
+            {
+                if (!_blinkingToDespawn)
+                {
+                    //Debug.Log("a");
+                    _blinkingToDespawn = true;
+                    _blinkingToDespawnTween = _ballRenderer.DOColor(Color.black, 0.25f).SetLoops(-1, LoopType.Yoyo);
+                }
+
+                _despawnTimer += Time.deltaTime;
+                if (_despawnTimer >= _despawnTimerMax)
+                {
+                    _despawnTimer = 0.0f;
+                    ReturnToPool();
+                }
+            }
+            else
+            {
+                if (_blinkingToDespawn)
+                {
+                    //Debug.Log("b");
+                    _blinkingToDespawn = false;
+                    _blinkingToDespawnTween.Kill();
+                    _ballRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorType);
+                }
+
+                _despawnTimer = 0.0f;
+            }
         }
 
         private void OnCollisionEnter2D(Collision2D collision2D)
@@ -60,13 +96,14 @@ namespace VinhLB
             {
                 if (_currentSlot != slot)
                 {
-                    if (_waitToStickCoroutine != null)
+                    if (_waitToStickRoutine != null)
                     {
-                        StopCoroutine(_waitToStickCoroutine);
+                        StopCoroutine(_waitToStickRoutine);
                     }
 
                     _currentSlot = slot;
-                    _waitToStickCoroutine = StartCoroutine(WaitToStickCoroutine());
+                    _waitToStickRoutine = WaitToStickRoutine();
+                    StartCoroutine(_waitToStickRoutine);
                 }
             }
         }
@@ -75,9 +112,9 @@ namespace VinhLB
         {
             if (_currentSlot == slot)
             {
-                if (_waitToStickCoroutine != null)
+                if (_waitToStickRoutine != null)
                 {
-                    StopCoroutine(_waitToStickCoroutine);
+                    StopCoroutine(_waitToStickRoutine);
                 }
                 _currentSlot = null;
             }
@@ -96,7 +133,11 @@ namespace VinhLB
         public void ResetState()
         {
             DOTween.Kill(transform);
+            DOTween.Kill(_ballRenderer);
             DOTween.Kill(_doneRenderer);
+
+            _blinkingToDespawn = false;
+            _despawnTimer = 0.0f;
 
             _rigidbody2D.constraints = RigidbodyConstraints2D.None;
             _rigidbody2D.velocity = Vector3.zero;
@@ -110,6 +151,7 @@ namespace VinhLB
             }
 
             _doneRenderer.DOFade(0.0f, 0.0f);
+            _trailRenderer.Clear();
         }
 
         public void Push(Vector2 force)
@@ -214,11 +256,10 @@ namespace VinhLB
             return false;
         }
 
-        private IEnumerator WaitToStickCoroutine()
+        private IEnumerator WaitToStickRoutine()
         {
             while (true)
             {
-                //Debug.Log(_rigidbody2D.velocity.sqrMagnitude);
                 if (_rigidbody2D.velocity.sqrMagnitude < GameConstants.BALL_MIN_SQR_MAGNITUDE)
                 {
                     break;
@@ -228,6 +269,8 @@ namespace VinhLB
             }
 
             StickToSlot();
+
+            _waitToStickRoutine = null;
         }
 
         private void OnDrawGizmos()

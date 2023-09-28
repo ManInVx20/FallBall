@@ -14,6 +14,11 @@ namespace VinhLB
         {
             _playButton.onClick.AddListener(() =>
             {
+                if (!DataPersistenceManager.Instance.IsGameDataExist())
+                {
+                    DataPersistenceManager.Instance.NewGame();
+                }
+
                 GameManager.Instance.PlayGame();
             });
         }

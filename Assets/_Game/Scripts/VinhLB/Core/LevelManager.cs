@@ -5,18 +5,13 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class LevelManager : MonoSingleton<LevelManager>
+    public class LevelManager : MonoSingleton<LevelManager>, IDataPersistence
     {
         [SerializeField]
         private Level[] _levelArray;
 
         private int _currentLevelIndex;
         private Level _currentLevel;
-
-        private void Start()
-        {
-            _currentLevelIndex = 0;
-        }
 
         public int GetCurrentLevelIndex()
         {
@@ -57,6 +52,7 @@ namespace VinhLB
                 if (won)
                 {
                     GameUIManager.Instance.GetGameUIScreen<ResultScreen>().OpenWin();
+                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
                 }
                 else
                 {
@@ -82,6 +78,16 @@ namespace VinhLB
             CommandInvoker.UndoAllCommands();
 
             CommandInvoker.Clear();
+        }
+
+        public void LoadData(GameData data)
+        {
+            _currentLevelIndex = data.CurrentLevelIndex;
+        }
+
+        public void SaveData(GameData data)
+        {
+            data.CurrentLevelIndex = _currentLevelIndex;
         }
     }
 }

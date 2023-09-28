@@ -12,6 +12,8 @@ namespace VinhLB
         [SerializeField]
         private Transform _spawnPoint;
         [SerializeField]
+        private RectTransform _worldCanvasRectTF;
+        [SerializeField]
         private Button _spawnButton;
         [SerializeField]
         private Button _normalButton;
@@ -29,6 +31,8 @@ namespace VinhLB
         private int _maxBallAmount;
         [SerializeField]
         private float _spawnRate = 1.0f;
+        [SerializeField]
+        private float _spawnForce = 3.0f;
 
         private bool _canSpawn;
         private float _spawnTime;
@@ -38,12 +42,31 @@ namespace VinhLB
         {
             _spawnButton.onClick.AddListener(() =>
             {
-                if (_canSpawn && _ballTypeStack.Count > 0)
+                if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
                 {
-                    _canSpawn = false;
-                    ICommand command = new SpawnCommand(this);
-                    CommandInvoker.ExecuteCommand(command);
+                    if (_canSpawn && _ballTypeStack.Count > 0)
+                    {
+                        _canSpawn = false;
+                        ICommand command = new SpawnCommand(this);
+                        CommandInvoker.ExecuteCommand(command);
+                    }
                 }
+                else
+                {
+                    if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.NormalBall)
+                    {
+                        AddBall(BallType.Normal);
+
+                        GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+                    }
+                    else if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.RainbowBall)
+                    {
+                        AddBall(BallType.Rainbow);
+
+                        GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+                    }
+                }
+
             });
             _normalButton.onClick.AddListener(() =>
             {
@@ -83,11 +106,16 @@ namespace VinhLB
             }
         }
 
+        public RectTransform GetWorldCanvasRectTF()
+        {
+            return _worldCanvasRectTF;
+        }
+
         public Ball SpawnBall()
         {
             Ball ball = BallPool.Instance.SpawnBall(_spawnPoint.position, _spawnPoint.rotation,
                 PullBallType(), _ballColorType);
-            Vector2 force = Vector2.down * 3.0f;
+            Vector2 force = transform.rotation * Vector2.down * _spawnForce;
             ball.Push(force);
 
             return ball;
