@@ -1,5 +1,4 @@
 using Coffee.UIExtensions;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,14 +9,29 @@ namespace VinhLB
 {
     public class UnmaskPanel : MonoBehaviour
     {
+        [System.Serializable]
+        public enum UnmaskShape
+        {
+            Circle = 0,
+            Square = 1
+        }
+
+        private struct UnmaskData
+        {
+            public UnmaskShape Shape;
+            public Unmask Unmask;
+            public UnmaskRaycastFilter Filter;
+        }
+
         [SerializeField]
         private RectTransform _unmaskPanelRectTF;
         [SerializeField]
         private Unmask _unmaskPrefab;
+        [SerializeField]
+        private Sprite[] unmaskSpriteArray;
 
         private Level _currentLevel;
-        private List<Unmask> _unmaskList = new List<Unmask>();
-        private List<UnmaskRaycastFilter> _unmaskRaycastFilterList = new List<UnmaskRaycastFilter>();
+        private Dictionary<RectTransform, UnmaskData> _unmaskDataDict = new Dictionary<RectTransform, UnmaskData>();
 
         private void Start()
         {
@@ -38,39 +52,65 @@ namespace VinhLB
             }
         }
 
-        public void SetupUnmask(RectTransform rectTransform)
+        public void OpenUnmask(RectTransform rectTransform, UnmaskShape shape)
         {
+            if (_unmaskDataDict.ContainsKey(rectTransform))
+            {
+                _unmaskDataDict[rectTransform].Unmask.gameObject.SetActive(true);
+                _unmaskDataDict[rectTransform].Filter.enabled = true;
+            }
+            else
+            {
+                SetupUnmask(rectTransform, shape);
+            }
+        }
+
+        public void CloseUnmask(RectTransform rectTransform)
+        {
+            if (_unmaskDataDict.ContainsKey(rectTransform))
+            {
+                _unmaskDataDict[rectTransform].Unmask.gameObject.SetActive(false);
+                _unmaskDataDict[rectTransform].Filter.enabled = false;
+            }
+        }
+
+        public void SetupUnmask(RectTransform rectTransform, UnmaskShape shape)
+        {
+            UnmaskData unmaskData = new UnmaskData();
+
             Unmask unmask = Instantiate(_unmaskPrefab, _unmaskPanelRectTF);
             unmask.transform.SetAsFirstSibling();
             unmask.fitTarget = rectTransform;
-            _unmaskList.Add(unmask);
+            unmask.GetComponent<Image>().sprite = unmaskSpriteArray[(int)shape];
+            unmaskData.Unmask = unmask;
 
-            UnmaskRaycastFilter unmaskRaycastFilter = _unmaskPanelRectTF.gameObject.AddComponent<UnmaskRaycastFilter>();
-            unmaskRaycastFilter.targetUnmask = unmask;
-            _unmaskRaycastFilterList.Add(unmaskRaycastFilter);
+            UnmaskRaycastFilter filter = _unmaskPanelRectTF.gameObject.AddComponent<UnmaskRaycastFilter>();
+            filter.targetUnmask = unmask;
+            unmaskData.Filter = filter;
+
+            _unmaskDataDict.Add(rectTransform, unmaskData);
         }
 
         public void Open()
         {
             gameObject.SetActive(true);
 
-            if (_currentLevel != LevelManager.Instance.GetCurrentLevel())
+            if (_currentLevel != LevelManager.Instance.CurrentLevel)
             {
-                _currentLevel = LevelManager.Instance.GetCurrentLevel();
+                _currentLevel = LevelManager.Instance.CurrentLevel;
 
-                for (int i = _unmaskList.Count - 1; i >= 0; i--)
+                foreach (KeyValuePair<RectTransform, UnmaskData> data in _unmaskDataDict)
                 {
-                    Destroy(_unmaskList[i].gameObject);
-                    _unmaskList.RemoveAt(i);
-
-                    Destroy(_unmaskRaycastFilterList[i]);
-                    _unmaskRaycastFilterList.RemoveAt(i);
+                    Destroy(data.Value.Unmask.gameObject);
+                    Destroy(data.Value.Filter);
                 }
 
-                List<Cannon> cannonList = _currentLevel.GetCannonList();
+                _unmaskDataDict.Clear();
+
+                List<Cannon> cannonList = _currentLevel.CannonList;
                 for (int i = 0; i < cannonList.Count; i++)
                 {
-                    SetupUnmask(cannonList[i].GetWorldCanvasRectTF());
+                    SetupUnmask(cannonList[i].WorldCanvasRectTF,UnmaskShape.Circle);
                 }
             }
         }

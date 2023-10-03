@@ -11,6 +11,12 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _titleText;
         [SerializeField]
+        private Image[] _starImageArray;
+        [SerializeField]
+        private Color _lockColor;
+        [SerializeField]
+        private Color _unlockColor;
+        [SerializeField]
         private Button _restartButton;
         [SerializeField]
         private Button _homeButton;
@@ -42,7 +48,7 @@ namespace VinhLB
             });
         }
 
-        public void OpenWin()
+        public void OpenWin(int starAmount)
         {
             Open();
 
@@ -52,6 +58,10 @@ namespace VinhLB
             {
                 _nextButton.gameObject.SetActive(false);
             }
+
+            LevelManager.Instance.CompleteLevel(starAmount);
+
+            SetStar(starAmount);
         }
 
         public void OpenLose()
@@ -61,6 +71,21 @@ namespace VinhLB
             _titleText.text = "LOSE";
 
             _nextButton.gameObject.SetActive(false);
+        }
+
+        public void SetStar(int starAchieved)
+        {
+            for (int i = 0; i < _starImageArray.Length; i++)
+            {
+                if (i < starAchieved)
+                {
+                    _starImageArray[i].color = _unlockColor;
+                }
+                else
+                {
+                    _starImageArray[i].color = _lockColor;
+                }
+            }
         }
     }
 }

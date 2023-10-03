@@ -21,9 +21,9 @@ namespace VinhLB
 
             _currentBallType = ballType;
 
-            if (_currentLevel != LevelManager.Instance.GetCurrentLevel())
+            if (_currentLevel != LevelManager.Instance.CurrentLevel)
             {
-                _currentLevel = LevelManager.Instance.GetCurrentLevel();
+                _currentLevel = LevelManager.Instance.CurrentLevel;
 
                 for (int i = _cannonItemButtonList.Count - 1; i >= 0 ; i--)
                 {
@@ -31,7 +31,7 @@ namespace VinhLB
                     _cannonItemButtonList.RemoveAt(i);
                 }
 
-                List<Cannon> cannonList = _currentLevel.GetCannonList();
+                List<Cannon> cannonList = _currentLevel.CannonList;
                 for (int i = 0; i < cannonList.Count; i++)
                 {
                     int index = i;

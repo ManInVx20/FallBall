@@ -27,7 +27,7 @@ namespace VinhLB
 
         private Action<Ball> _onReturnAction;
         private Slot _currentSlot;
-        private IEnumerator _waitToStickRoutine;
+        private IEnumerator _waitToStickCoroutine;
         private float _despawnTimer = 0.0f;
         private float _despawnTimerMax = 1.0f;
         private bool _blinkingToDespawn = false;
@@ -96,14 +96,14 @@ namespace VinhLB
             {
                 if (_currentSlot != slot)
                 {
-                    if (_waitToStickRoutine != null)
+                    if (_waitToStickCoroutine != null)
                     {
-                        StopCoroutine(_waitToStickRoutine);
+                        StopCoroutine(_waitToStickCoroutine);
                     }
 
                     _currentSlot = slot;
-                    _waitToStickRoutine = WaitToStickRoutine();
-                    StartCoroutine(_waitToStickRoutine);
+                    _waitToStickCoroutine = WaitToStickCoroutine();
+                    StartCoroutine(_waitToStickCoroutine);
                 }
             }
         }
@@ -112,9 +112,9 @@ namespace VinhLB
         {
             if (_currentSlot == slot)
             {
-                if (_waitToStickRoutine != null)
+                if (_waitToStickCoroutine != null)
                 {
-                    StopCoroutine(_waitToStickRoutine);
+                    StopCoroutine(_waitToStickCoroutine);
                 }
                 _currentSlot = null;
             }
@@ -256,7 +256,7 @@ namespace VinhLB
             return false;
         }
 
-        private IEnumerator WaitToStickRoutine()
+        private IEnumerator WaitToStickCoroutine()
         {
             while (true)
             {
@@ -270,7 +270,7 @@ namespace VinhLB
 
             StickToSlot();
 
-            _waitToStickRoutine = null;
+            _waitToStickCoroutine = null;
         }
 
         private void OnDrawGizmos()

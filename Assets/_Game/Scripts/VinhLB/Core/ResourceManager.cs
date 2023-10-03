@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class ResourceManager : MonoSingleton<ResourceManager>
+    public class ResourceManager : PersistentMonoSingleton<ResourceManager>
     {
         [System.Serializable]
         private struct SpriteByType

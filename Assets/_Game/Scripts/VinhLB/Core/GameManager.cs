@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class GameManager : MonoSingleton<GameManager>
+    public class GameManager : PersistentMonoSingleton<GameManager>
     {
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             Initialize();
         }
 

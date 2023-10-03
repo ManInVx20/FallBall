@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,19 +9,39 @@ namespace VinhLB
     public class HomeScreen : GameUIScreen
     {
         [SerializeField]
-        private Button _playButton;
+        private TMP_Text _startAmountText;
+        [SerializeField]
+        private RectTransform _levelItemButtonHolderTF;
+        [SerializeField]
+        private LevelItemButton _levelItemButtonPrefab;
+
+        private List<LevelItemButton> _levelItemButtonList = new List<LevelItemButton>();
 
         public override void Initialize()
         {
-            _playButton.onClick.AddListener(() =>
+            LevelItem[] levelItemArray = LevelManager.Instance.LevelData.LevelItemArray;
+            for (int i = 0; i < levelItemArray.Length; i++)
             {
-                if (!DataPersistenceManager.Instance.IsGameDataExist())
-                {
-                    DataPersistenceManager.Instance.NewGame();
-                }
+                LevelItemButton levelItemButton = Instantiate(_levelItemButtonPrefab, _levelItemButtonHolderTF);
+                levelItemButton.Setup(levelItemArray[i], i, 
+                    i == LevelManager.Instance.LevelData.LastUnlockedLevelIndex);
 
-                GameManager.Instance.PlayGame();
-            });
+                _levelItemButtonList.Add(levelItemButton);
+            }
+        }
+
+        public override void Open()
+        {
+            base.Open();
+
+            _startAmountText.text = LevelManager.Instance.LevelData.GetAllStarAchievedAmount().ToString();
+
+            LevelItem[] levelItemArray = LevelManager.Instance.LevelData.LevelItemArray;
+            for (int i = 0; i < _levelItemButtonList.Count; i++)
+            {
+                _levelItemButtonList[i].Setup(levelItemArray[i], i,
+                    i == LevelManager.Instance.LevelData.LastUnlockedLevelIndex);
+            }
         }
     }
 }

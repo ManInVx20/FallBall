@@ -8,6 +8,8 @@ namespace VinhLB
 {
     public class Cannon : MonoBehaviour
     {
+        public RectTransform WorldCanvasRectTF => _worldCanvasRectTF;
+
         [Header("Referances")]
         [SerializeField]
         private Transform _spawnPoint;
@@ -104,11 +106,6 @@ namespace VinhLB
                     _spawnTime = 0.0f;
                 }
             }
-        }
-
-        public RectTransform GetWorldCanvasRectTF()
-        {
-            return _worldCanvasRectTF;
         }
 
         public Ball SpawnBall()

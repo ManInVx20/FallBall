@@ -8,12 +8,11 @@ namespace VinhLB
     [Serializable]
     public class GameData
     {
-        public int CurrentLevelIndex;
+        public LevelData LevelData;
         public int CurrentStarAmount;
 
         public GameData()
         {
-            CurrentLevelIndex = 0;
             CurrentStarAmount = 0;
         }
     }

@@ -40,7 +40,7 @@ namespace VinhLB
             SaveGame();
         }
 
-        public bool IsGameDataExist()
+        public bool HasGameData()
         {
             return _gameData != null;
         }
@@ -71,7 +71,7 @@ namespace VinhLB
         {
             if (_gameData == null)
             {
-                Debug.Log("No data was found. A NewGame must be started before data can be loaded.");
+                Debug.Log("No data was made. A NewGame must be started before data can be saved.");
 
                 return;
             }

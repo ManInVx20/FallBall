@@ -12,6 +12,7 @@ namespace VinhLB
             None = 0,
             NormalBall = 1,
             RainbowBall = 2,
+            SpikeBall = 3
         }
 
         public event Action OnActiveBoosterChanged;

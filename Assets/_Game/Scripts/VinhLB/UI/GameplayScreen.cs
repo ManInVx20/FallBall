@@ -47,30 +47,9 @@ namespace VinhLB
             {
                 CommandInvoker.RedoCommand();
             });
-            _normalButton.onClick.AddListener(() =>
-            {
-                if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
-                {
-                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.NormalBall;
-                    _unmaskPanel.SetupUnmask(_normalButton.GetComponent<RectTransform>());
-                }
-                else
-                {
-                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
-                }
-            });
-            _rainbowButton.onClick.AddListener(() =>
-            {
-                if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
-                {
-                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.RainbowBall;
-                    _unmaskPanel.SetupUnmask(_rainbowButton.GetComponent<RectTransform>());
-                }
-                else
-                {
-                    GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
-                }
-            });
+            _normalButton.onClick.AddListener(OnNormalButtonClicked);
+            _rainbowButton.onClick.AddListener(OnRainbowButtonClicked);
+            _spikeButton.onClick.AddListener(OnSpikeButtonClicked);
         }
 
         public override void Open()
@@ -82,12 +61,54 @@ namespace VinhLB
 
         public void UpdateLevelText()
         {
-            _levelText.text = $"LEVEL {LevelManager.Instance.GetCurrentLevelIndex() + 1}";
+            _levelText.text = $"LEVEL {LevelManager.Instance.CurrentLevelIndex + 1}";
         }
 
         public void UpdateMovesText()
         {
-            _movesText.text = LevelManager.Instance.GetCurrentLevel().GetMoves().ToString();
+            _movesText.text = LevelManager.Instance.CurrentLevel.Moves.ToString();
+        }
+
+        public void OnNormalButtonClicked()
+        {
+            if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
+            {
+                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.NormalBall;
+                _unmaskPanel.OpenUnmask(_normalButton.GetComponent<RectTransform>(), UnmaskPanel.UnmaskShape.Square);
+            }
+            else
+            {
+                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+                _unmaskPanel.CloseUnmask(_normalButton.GetComponent<RectTransform>());
+            }
+        }
+
+        public void OnRainbowButtonClicked()
+        {
+            if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
+            {
+                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.RainbowBall;
+                _unmaskPanel.OpenUnmask(_rainbowButton.GetComponent<RectTransform>(), UnmaskPanel.UnmaskShape.Square);
+            }
+            else
+            {
+                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+                _unmaskPanel.CloseUnmask(_rainbowButton.GetComponent<RectTransform>());
+            }
+        }
+        
+        public void OnSpikeButtonClicked()
+        {
+            if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
+            {
+                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.SpikeBall;
+                _unmaskPanel.OpenUnmask(_spikeButton.GetComponent<RectTransform>(), UnmaskPanel.UnmaskShape.Square);
+            }
+            else
+            {
+                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+                _unmaskPanel.CloseUnmask(_spikeButton.GetComponent<RectTransform>());
+            }
         }
     }
 }

@@ -44,44 +44,59 @@ namespace VinhLB
             GUILayout.Label("Ball");
             if (GUILayout.Button("Normal"))
             {
-                foreach (GameObject gameObject in Selection.gameObjects)
-                {
-                    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
-                    {
-                        cannon.AddBall(BallType.Normal);
-                    }
-                }
+                //foreach (GameObject gameObject in Selection.gameObjects)
+                //{
+                //    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
+                //    {
+                //        cannon.AddBall(BallType.Normal);
+                //    }
+                //}
+                GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().OnNormalButtonClicked();
             }
             if (GUILayout.Button("Rainbow"))
             {
-                foreach (GameObject gameObject in Selection.gameObjects)
-                {
-                    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
-                    {
-                        cannon.AddBall(BallType.Rainbow);
-                    }
-                }
+                //foreach (GameObject gameObject in Selection.gameObjects)
+                //{
+                //    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
+                //    {
+                //        cannon.AddBall(BallType.Rainbow);
+                //    }
+                //}
+                GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().OnRainbowButtonClicked();
             }
             if (GUILayout.Button("Spike"))
             {
-                foreach (GameObject gameObject in Selection.gameObjects)
-                {
-                    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
-                    {
-                        cannon.AddBall(BallType.Spike);
-                    }
-                }
+                //foreach (GameObject gameObject in Selection.gameObjects)
+                //{
+                //    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
+                //    {
+                //        cannon.AddBall(BallType.Spike);
+                //    }
+                //}
+                GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().OnSpikeButtonClicked();
             }
 
             GUILayout.Space(10.0f);
             GUILayout.Label("Level Features", EditorStyles.boldLabel);
             if (GUILayout.Button("Restart"))
             {
-                LevelManager.Instance?.RestartLevel();
+                LevelManager.Instance.RestartLevel();
             }
-            if (GUILayout.Button("Next"))
+            //if (GUILayout.Button("Next"))
+            //{
+            //    LevelManager.Instance.TryLoadNextLevel();
+            //}
+            if (GUILayout.Button("Win 1 Stars"))
             {
-                LevelManager.Instance?.TryLoadNextLevel();
+                LevelManager.Instance.CurrentLevel.Win(true, 1);
+            }
+            if (GUILayout.Button("Win 2 Stars"))
+            {
+                LevelManager.Instance.CurrentLevel.Win(true, 2);
+            }
+            if (GUILayout.Button("Win 3 Stars"))
+            {
+                LevelManager.Instance.CurrentLevel.Win(true, 3);
             }
         }
     }

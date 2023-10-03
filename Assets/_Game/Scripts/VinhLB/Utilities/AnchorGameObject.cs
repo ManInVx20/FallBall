@@ -28,26 +28,26 @@ namespace VinhLB
         [SerializeField]
         private bool _executeInUpdate;
 
-        private IEnumerator _updateAnchorRoutine;
+        private IEnumerator _updateAnchorCoroutine;
 
         private void Start()
         {
-            _updateAnchorRoutine = UpdateAnchorRoutine();
-            StartCoroutine(_updateAnchorRoutine);
+            _updateAnchorCoroutine = UpdateAnchorCoroutine();
+            StartCoroutine(_updateAnchorCoroutine);
         }
 
         private void Update()
         {
 #if UNITY_EDITOR
-            if (_updateAnchorRoutine == null && _executeInUpdate)
+            if (_updateAnchorCoroutine == null && _executeInUpdate)
             {
-                _updateAnchorRoutine = UpdateAnchorRoutine();
-                StartCoroutine(_updateAnchorRoutine);
+                _updateAnchorCoroutine = UpdateAnchorCoroutine();
+                StartCoroutine(_updateAnchorCoroutine);
             }
 #endif
         }
 
-        private IEnumerator UpdateAnchorRoutine()
+        private IEnumerator UpdateAnchorCoroutine()
         {
             uint cameraWaitCycles = 0;
             while (CameraViewportHandler.Instance == null)
@@ -63,7 +63,7 @@ namespace VinhLB
             }
 
             UpdateAnchor();
-            _updateAnchorRoutine = null;
+            _updateAnchorCoroutine = null;
         }
 
         private void UpdateAnchor()
