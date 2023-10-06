@@ -31,7 +31,7 @@ namespace VinhLB
         {
             _button.onClick.AddListener(() =>
             {
-                LevelManager.Instance.LoadLevel(_levelIndex);
+                LevelManager.Instance.TryLoadLevel(_levelIndex);
 
                 GameUIManager.Instance.Open<GameplayScreen>();
             });

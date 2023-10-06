@@ -67,6 +67,12 @@ namespace VinhLB
 
                         GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
                     }
+                    else if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.SpikeBall)
+                    {
+                        AddBall(BallType.Spike);
+
+                        GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+                    }
                 }
 
             });

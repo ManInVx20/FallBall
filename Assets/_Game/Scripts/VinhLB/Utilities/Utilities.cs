@@ -17,4 +17,27 @@ public static class Utilities
 
         return value;
     }
+
+    public static Vector3 FindCenterPosition(Vector3[] positionArray)
+    {
+        if (positionArray == null || positionArray.Length == 0)
+        {
+            return Vector3.zero;
+        }
+
+        float totalX = 0.0f;
+        float totalY = 0.0f;
+        float totalZ = 0.0f;
+        for (int i = 0; i < positionArray.Length; i++)
+        {
+            totalX += positionArray[i].x;
+            totalY += positionArray[i].y;
+            totalZ += positionArray[i].z;
+        }
+        float centerX = totalX / positionArray.Length;
+        float centerY = totalY / positionArray.Length;
+        float centerZ = totalZ / positionArray.Length;
+
+        return new Vector3(centerX, centerY, centerZ);
+    }
 }

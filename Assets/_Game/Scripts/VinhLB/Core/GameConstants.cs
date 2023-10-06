@@ -10,5 +10,5 @@ public static class GameConstants
 
     public const float BALL_MIN_SQR_MAGNITUDE = 0.0015f;
 
-    public const float FLOOR_MIN_DISTANCE = 0.002f;
+    public const float FLOOR_MIN_DISTANCE = 0.01f;
 }

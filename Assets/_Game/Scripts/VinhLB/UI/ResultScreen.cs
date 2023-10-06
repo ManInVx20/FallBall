@@ -39,7 +39,7 @@ namespace VinhLB
             });
             _nextButton.onClick.AddListener(() =>
             {
-                if (LevelManager.Instance.TryLoadNextLevel())
+                if (LevelManager.Instance.TryLoadLevel(LevelManager.Instance.CurrentLevelIndex + 1))
                 {
                     Close();
 
@@ -52,12 +52,9 @@ namespace VinhLB
         {
             Open();
 
-            _titleText.text = "WIN";
+            _titleText.text = $"LEVEL {LevelManager.Instance.CurrentLevelIndex + 1} COMPLETED!";
 
-            if (LevelManager.Instance.IsLastLevel())
-            {
-                _nextButton.gameObject.SetActive(false);
-            }
+            _nextButton.gameObject.SetActive(!LevelManager.Instance.IsLastLevel());
 
             LevelManager.Instance.CompleteLevel(starAmount);
 

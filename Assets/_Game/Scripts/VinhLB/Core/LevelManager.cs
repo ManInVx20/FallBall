@@ -13,6 +13,8 @@ namespace VinhLB
 
         [SerializeField]
         private LevelInfo[] _levelInfoArray;
+        [SerializeField]
+        private bool _unlockAll = false;
 
         private LevelData _levelData;
         private int _currentLevelIndex;
@@ -23,11 +25,11 @@ namespace VinhLB
             return _currentLevelIndex == _levelInfoArray.Length - 1;
         }
 
-        public bool TryLoadNextLevel()
+        public bool TryLoadLevel(int levelIndex)
         {
-            if (_currentLevelIndex + 1 < _levelInfoArray.Length)
+            if (levelIndex >= 0 && levelIndex < _levelInfoArray.Length)
             {
-                _currentLevelIndex += 1;
+                _currentLevelIndex = levelIndex;
 
                 LoadLevel();
 
@@ -35,13 +37,6 @@ namespace VinhLB
             }
 
             return false;
-        }
-
-        public void LoadLevel(int levelIndex)
-        {
-            _currentLevelIndex = levelIndex;
-
-            LoadLevel();
         }
 
         public void LoadLevel()
@@ -75,7 +70,7 @@ namespace VinhLB
         {
             _levelData.LevelItemArray[_currentLevelIndex].StarAchieved = starAchieved;
 
-            if (_levelData.LastUnlockedLevelIndex < _currentLevelIndex + 1)
+            if (_levelData.LastUnlockedLevelIndex < _currentLevelIndex)
             {
                 _levelData.LastUnlockedLevelIndex = _currentLevelIndex + 1;
                 _levelData.LevelItemArray[_levelData.LastUnlockedLevelIndex].Unlocked = true;
@@ -88,7 +83,7 @@ namespace VinhLB
 
             if (_levelData == null)
             {
-                _levelData = new LevelData(_levelInfoArray.Length);
+                _levelData = new LevelData(_levelInfoArray.Length, _unlockAll);
             }
         }
 
@@ -109,7 +104,7 @@ namespace VinhLB
             LastUnlockedLevelIndex = 0;
         }
 
-        public LevelData(int levelAmount) : this()
+        public LevelData(int levelAmount, bool unlockAll) : this()
         {
             if (levelAmount <= 0)
             {
@@ -118,6 +113,14 @@ namespace VinhLB
 
             LevelItemArray = new LevelItem[levelAmount];
             LevelItemArray[0].Unlocked = true;
+
+            if (unlockAll)
+            {
+                for (int i = 1; i < LevelItemArray.Length; i++)
+                {
+                    LevelItemArray[i].Unlocked = true;
+                }
+            }
         }
 
         public int GetAllStarAchievedAmount()

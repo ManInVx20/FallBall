@@ -68,7 +68,7 @@ namespace VinhLB
                     //Debug.Log("b");
                     _blinkingToDespawn = false;
                     _blinkingToDespawnTween.Kill();
-                    _ballRenderer.color = ResourceManager.Instance.GetColorByColorType(_colorType);
+                    UpdateVisual();
                 }
 
                 _despawnTimer = 0.0f;

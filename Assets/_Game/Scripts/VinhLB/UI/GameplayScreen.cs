@@ -15,7 +15,7 @@ namespace VinhLB
         [SerializeField]
         private Button _restartButton;
         [SerializeField]
-        private Button _homeButton;
+        private Button _settingsButton;
         [SerializeField]
         private Button _undoButton;
         [SerializeField]
@@ -35,7 +35,7 @@ namespace VinhLB
             {
                 LevelManager.Instance.RestartLevel();
             });
-            _homeButton.onClick.AddListener(() =>
+            _settingsButton.onClick.AddListener(() =>
             {
                 GameManager.Instance.ReturnHome();
             });

@@ -110,7 +110,7 @@ namespace VinhLB
                 List<Cannon> cannonList = _currentLevel.CannonList;
                 for (int i = 0; i < cannonList.Count; i++)
                 {
-                    SetupUnmask(cannonList[i].WorldCanvasRectTF,UnmaskShape.Circle);
+                    SetupUnmask(cannonList[i].WorldCanvasRectTF, UnmaskShape.Circle);
                 }
             }
         }

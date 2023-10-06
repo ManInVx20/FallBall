@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5028310695476632713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5028310695476632712}
+  - component: {fileID: 5028310695476632719}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5028310695476632712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028310695476632713}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5028310695476632719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028310695476632713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c5127a5d8360b540b87f2dbbff5c006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelInfoArray:
+  - Prefab: {fileID: 1359155538733991624, guid: 4115d916120ec3044bedde68341be38d, type: 3}
+    MaxMoves3Stars: 6
+    MaxMoves2Stars: 8
+  - Prefab: {fileID: 4673805534737256599, guid: 86a942cebe306bd4296f002f5d1d168d, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 5169939125648285702, guid: 2a98c2dafa006da4a8a57971558d75fa, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 2286001755328325266, guid: b4b1ea46b7bfb704eb6d371860e87d1b, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 7152743207572421750, guid: 948274d723236534bba96951d0fef857, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 1359155538733991624, guid: 09d65faeb644b76489c73b168f881a15, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 5169939125648285702, guid: 2f4aa05ff7e39c5439bb7af6f79609a3, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 5169939125648285702, guid: da4aa29110c8122449915c82d7165cb6, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 7152743207572421750, guid: 1d2106b38ecf01b418721163fdb33394, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 7152743207572421750, guid: 02ac819b33a5e884199139769947e60a, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 1359155538733991624, guid: 14f503a1d0516a0479275a5c7fecf6a5, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 1359155538733991624, guid: 519a6370b1aaadf48943259336fc33d6, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 1359155538733991624, guid: 6dea78457e6dbd043a234a9b55538a72, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 1359155538733991624, guid: 09ca38dde84d7534ba812f8783a2e0c1, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 5169939125648285702, guid: b6286df6d8cf6554ebe9762e9d3f068e, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  _unlockAll: 0
