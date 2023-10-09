@@ -22,6 +22,8 @@ namespace VinhLB
         private Button _homeButton;
         [SerializeField]
         private Button _nextButton;
+        [SerializeField]
+        private ParticleSystem _confettiVFX;
 
         public override void Initialize()
         {
@@ -46,6 +48,20 @@ namespace VinhLB
                     GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateLevelText();
                 }
             });
+        }
+
+        public override void Open()
+        {
+            base.Open();
+
+            _confettiVFX.gameObject.SetActive(true);
+        }
+
+        public override void Close()
+        {
+            _confettiVFX.gameObject.SetActive(false);
+
+            base.Close();
         }
 
         public void OpenWin(int starAmount)
