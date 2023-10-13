@@ -6,7 +6,7 @@ namespace VinhLB
 {
     public class Portal : MonoBehaviour
     {
-        private const float MAX_DISTANCE = 0.25f;
+        private const float MIN_DISTANCE = 0.25f;
 
         [Header("Preferences")]
         [SerializeField]
@@ -32,7 +32,7 @@ namespace VinhLB
         {
             if (collider2D.TryGetComponent<Ball>(out Ball ball))
             {
-                if (Vector2.Distance(ball.transform.position, transform.position) > MAX_DISTANCE)
+                if (Vector2.Distance(ball.transform.position, transform.position) > MIN_DISTANCE)
                 {
                     ball.Teleport(_connectedPortal.transform.position);
                 }

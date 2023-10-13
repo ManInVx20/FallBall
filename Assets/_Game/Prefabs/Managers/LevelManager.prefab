@@ -90,4 +90,13 @@ MonoBehaviour:
   - Prefab: {fileID: 5169939125648285702, guid: b6286df6d8cf6554ebe9762e9d3f068e, type: 3}
     MaxMoves3Stars: 0
     MaxMoves2Stars: 0
-  _unlockAll: 0
+  - Prefab: {fileID: 5169939125648285702, guid: f142e7a221224e04c9ff108fc1316e8e, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 1359155538733991624, guid: dae450c36d959c0468d46f24cedfc267, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  - Prefab: {fileID: 1359155538733991624, guid: d0094c4925ec7a84db326e0e381d2623, type: 3}
+    MaxMoves3Stars: 0
+    MaxMoves2Stars: 0
+  _unlockAll: 1

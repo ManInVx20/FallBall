@@ -30,8 +30,11 @@ namespace VinhLB
         private IEnumerator _waitToStickCoroutine;
         private float _despawnTimer = 0.0f;
         private float _despawnTimerMax = 1.0f;
-        private bool _blinkingToDespawn = false;
-        private Tween _blinkingToDespawnTween;
+        private bool _startToDespawn = false;
+        private Tween _startToDespawnTween;
+        private int _dissolveAmountPropID;
+        private int _spiralStrengthPropID;
+        private bool _destroyed = false;
 
         private void OnEnable()
         {
@@ -43,15 +46,33 @@ namespace VinhLB
             UpdateVisual();
         }
 
+        private void Start()
+        {
+            _dissolveAmountPropID = Shader.PropertyToID("_DissolveAmount");
+            _spiralStrengthPropID = Shader.PropertyToID("_SpiralStrength");
+        }
+
         private void Update()
         {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+
+            if (_destroyed)
+            {
+                return;
+            }
+
             if (_currentSlot == null && _rigidbody2D.velocity.sqrMagnitude < GameConstants.BALL_MIN_SQR_MAGNITUDE)
             {
-                if (!_blinkingToDespawn)
+                if (!_startToDespawn)
                 {
                     //Debug.Log("a");
-                    _blinkingToDespawn = true;
-                    _blinkingToDespawnTween = _ballRenderer.DOColor(Color.black, 0.25f).SetLoops(-1, LoopType.Yoyo);
+                    _startToDespawn = true;
+                    //_startToDespawnTween = _ballRenderer.DOColor(Color.black, 0.25f).SetLoops(-1, LoopType.Yoyo);
+                    _startToDespawnTween = _ballRenderer.material.DOFloat(1.0f, _dissolveAmountPropID, _despawnTimerMax);
+                    _trailRenderer.enabled = false;
                 }
 
                 _despawnTimer += Time.deltaTime;
@@ -63,12 +84,13 @@ namespace VinhLB
             }
             else
             {
-                if (_blinkingToDespawn)
+                if (_startToDespawn)
                 {
                     //Debug.Log("b");
-                    _blinkingToDespawn = false;
-                    _blinkingToDespawnTween.Kill();
-                    UpdateVisual();
+                    _startToDespawn = false;
+                    _startToDespawnTween.Kill();
+                    _ballRenderer.material.SetFloat(_dissolveAmountPropID, 0.0f);
+                    _trailRenderer.enabled = true;
                 }
 
                 _despawnTimer = 0.0f;
@@ -136,9 +158,13 @@ namespace VinhLB
             DOTween.Kill(_ballRenderer);
             DOTween.Kill(_doneRenderer);
 
-            _blinkingToDespawn = false;
+            _destroyed = false;
             _despawnTimer = 0.0f;
+            _startToDespawn = false;
+            _ballRenderer.material.SetFloat(_dissolveAmountPropID, 0.0f);
+            _ballRenderer.material.SetFloat(_spiralStrengthPropID, 5.0f);
 
+            _rigidbody2D.simulated = true;
             _rigidbody2D.constraints = RigidbodyConstraints2D.None;
             _rigidbody2D.velocity = Vector3.zero;
             _rigidbody2D.angularVelocity = 0.0f;
@@ -151,6 +177,7 @@ namespace VinhLB
             }
 
             _doneRenderer.DOFade(0.0f, 0.0f);
+            _trailRenderer.enabled = true;
             _trailRenderer.Clear();
         }
 
@@ -183,6 +210,26 @@ namespace VinhLB
         {
             transform.position = position;
             _trailRenderer.Clear();
+        }
+
+        public void SelfDestroy(bool instant = false)
+        {
+            if (_destroyed)
+            {
+                return;
+            }
+
+            _destroyed = true;
+            _rigidbody2D.simulated = false;
+            //_rigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+            _trailRenderer.enabled = false;
+            _ballRenderer.material.SetFloat(_spiralStrengthPropID, 0.0f);
+            _ballRenderer.material.DOFloat(1.0f, _dissolveAmountPropID, instant ? 0.0f : 0.25f)
+                .SetEase(Ease.OutCubic)
+                .OnComplete(() =>
+            {
+                ReturnToPool();
+            });
         }
 
         public void UpdateVisual()

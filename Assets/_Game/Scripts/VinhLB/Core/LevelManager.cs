@@ -99,23 +99,22 @@ namespace VinhLB
         public int LastUnlockedLevelIndex;
         public LevelItem[] LevelItemArray;
 
-        public LevelData()
-        {
-            LastUnlockedLevelIndex = 0;
-        }
+        public LevelData() { }
 
-        public LevelData(int levelAmount, bool unlockAll) : this()
+        public LevelData(int levelAmount, bool unlockAll)
         {
             if (levelAmount <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(levelAmount), "Level amount must be greater than 0");
             }
 
+            LastUnlockedLevelIndex = 0;
             LevelItemArray = new LevelItem[levelAmount];
             LevelItemArray[0].Unlocked = true;
 
             if (unlockAll)
             {
+                LastUnlockedLevelIndex = LevelItemArray.Length - 1;
                 for (int i = 1; i < LevelItemArray.Length; i++)
                 {
                     LevelItemArray[i].Unlocked = true;

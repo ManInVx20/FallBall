@@ -7,23 +7,14 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class FileDataHandler
+    public static class FileDataHandler
     {
-        private string _dataDirPath = "";
-        private string _dataFileName = "";
-        private bool _useEncryption = false;
-        private readonly string _encryptionCodeWord = "retro";
+        private static readonly string encryptionCodeWord = "retro";
 
-        public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
+        public static void Save(GameData data, string fileName, bool useEncryption)
         {
-            _dataDirPath = dataDirPath;
-            _dataFileName = dataFileName;
-            _useEncryption = useEncryption;
-        }
-
-        public void Save(GameData data)
-        {
-            string fullPath = Path.Combine(_dataDirPath, _dataFileName);
+            string basePath = Path.GetFullPath(Application.persistentDataPath);
+            string fullPath = Path.Combine(basePath, fileName);
 
             try
             {
@@ -31,7 +22,7 @@ namespace VinhLB
 
                 string dataToSave = JsonConvert.SerializeObject(data, Formatting.Indented);
 
-                if (_useEncryption)
+                if (useEncryption)
                 {
                     dataToSave = EncryptDecrypt(dataToSave);
                 }
@@ -50,16 +41,17 @@ namespace VinhLB
             }
         }
 
-        public GameData Load()
+        public static GameData Load(string fileName, bool useEncryption)
         {
-            string fullPath = Path.Combine(_dataDirPath, _dataFileName);
-
             GameData loadedData = null;
+            string basePath = Path.GetFullPath(Application.persistentDataPath);
+            string fullPath = Path.Combine(basePath, fileName);
+
             if (File.Exists(fullPath))
             {
                 try
                 {
-                    string dataToLoad = "";
+                    string dataToLoad = string.Empty;
                     using (FileStream stream = new FileStream(fullPath, FileMode.Open))
                     {
                         using (StreamReader reader = new StreamReader(stream))
@@ -68,7 +60,7 @@ namespace VinhLB
                         }
                     }
 
-                    if (_useEncryption)
+                    if (useEncryption)
                     {
                         dataToLoad = EncryptDecrypt(dataToLoad);
                     }
@@ -84,12 +76,23 @@ namespace VinhLB
             return loadedData;
         }
 
-        private string EncryptDecrypt(string data)
+        public static void Delete(string fileName)
+        {
+            string basePath = Path.GetFullPath(Application.persistentDataPath);
+            string fullPath = Path.Combine(basePath, fileName);
+
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+        }
+
+        private static string EncryptDecrypt(string data)
         {
             string modifiedData = "";
             for (int i = 0; i < data.Length; i++)
             {
-                modifiedData += (char)(data[i] ^ _encryptionCodeWord[i % _encryptionCodeWord.Length]);
+                modifiedData += (char)(data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
             }
 
             return modifiedData;

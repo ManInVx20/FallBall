@@ -5,10 +5,10 @@ using UnityEngine;
 namespace VinhLB
 {
 
-    public class MovingFloor : MonoBehaviour
+    public class MovingObject : MonoBehaviour
     {
         [SerializeField]
-        private Transform _floorTransform;
+        private Transform _objectTransform;
         [SerializeField]
         private Transform[] _pointArray;
         [SerializeField]
@@ -20,17 +20,17 @@ namespace VinhLB
 
         private void Start()
         {
-            _floorTransform.position = _pointArray[_startingPointIndex].position;
+            _objectTransform.position = _pointArray[_startingPointIndex].position;
         }
 
         private void Update()
         {
-            if (Vector2.Distance(_floorTransform.position, _pointArray[_currentIndex].position) < GameConstants.FLOOR_MIN_DISTANCE)
+            if (Vector2.Distance(_objectTransform.position, _pointArray[_currentIndex].position) < GameConstants.FLOOR_MIN_DISTANCE)
             {
                 _currentIndex = (_currentIndex + 1) % _pointArray.Length;
             }
 
-            _floorTransform.position = Vector2.MoveTowards(_floorTransform.position, 
+            _objectTransform.position = Vector2.MoveTowards(_objectTransform.position, 
                 _pointArray[_currentIndex].position, _speed * Time.deltaTime);
         }
     }

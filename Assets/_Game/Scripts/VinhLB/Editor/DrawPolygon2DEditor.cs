@@ -79,6 +79,7 @@ namespace VinhLB
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_edgeVerticeIndexRangeList"));
 
             GUILayout.Label("Edge Renderer");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_edgeWidth"));
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Create"))
             {

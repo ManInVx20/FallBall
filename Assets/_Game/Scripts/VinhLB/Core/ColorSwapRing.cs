@@ -5,11 +5,13 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    [ExecuteInEditMode]
     public class ColorSwapRing : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField]
         private SpriteRenderer _spriteRenderer;
+
+        [Header("Settings")]
         [SerializeField]
         private List<ColorType> _colorTypeList;
         [SerializeField]
@@ -18,14 +20,9 @@ namespace VinhLB
         private int _currentColorTypeIndex;
         private float _changeColorTimer;
 
-        private void OnEnable()
+        private void Start()
         {
-            UpdateColor(true);
-        }
-
-        private void Reset()
-        {
-            UpdateColor(true);
+            UpdateColor();
         }
 
         private void Update()

@@ -10,20 +10,10 @@ namespace VinhLB
     public class DataPersistenceManager : PersistentMonoSingleton<DataPersistenceManager>
     {
         [SerializeField]
-        private string _fileName;
-        [SerializeField]
         private bool _useEncryption;
 
-        private FileDataHandler _dataHandler;
         private GameData _gameData;
         private List<IDataPersistence> _dataPersistenceObjectList;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            _dataHandler = new FileDataHandler(Application.persistentDataPath, _fileName, _useEncryption);
-        }
 
         private void OnEnable()
         {
@@ -52,7 +42,7 @@ namespace VinhLB
 
         public void LoadGame()
         {
-            _gameData = _dataHandler.Load();
+            _gameData = FileDataHandler.Load(GameConstants.DATA_FILE_NAME, _useEncryption);
 
             if (_gameData == null)
             {
@@ -81,7 +71,7 @@ namespace VinhLB
                 dataPersistenceObject.SaveData(_gameData);
             }
 
-            _dataHandler.Save(_gameData);
+            FileDataHandler.Save(_gameData, GameConstants.DATA_FILE_NAME, _useEncryption);
         }
 
         private List<IDataPersistence> FindAllDataPersisteceObjects()
@@ -97,6 +87,12 @@ namespace VinhLB
             _dataPersistenceObjectList = FindAllDataPersisteceObjects();
 
             LoadGame();
+        }
+
+        [UnityEditor.MenuItem("Tools/VinhLB/Clear Game Data")]
+        private static void ClearGameData()
+        {
+            FileDataHandler.Delete(GameConstants.DATA_FILE_NAME);
         }
     }
 }

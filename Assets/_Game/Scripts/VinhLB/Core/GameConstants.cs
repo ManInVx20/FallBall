@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class GameConstants
 {
+    public const string DATA_FILE_NAME = "data.gs";
+
     public const string WALL_LAYER_NAME = "Wall";
 
     public const string OBJECT_SORTING_LAYER_NAME = "Object";

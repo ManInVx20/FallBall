@@ -29,6 +29,7 @@ namespace VinhLB
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("_colorType"));
                     break;
                 case BallType.Rainbow:
+                case BallType.Spike:
                     break;
             }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_obstacleLayerMask"));

@@ -31,6 +31,8 @@ namespace VinhLB
         private Material _rendererMaterial;
         [SerializeField]
         private List<EdgeVerticeIndexRange> _edgeVerticeIndexRangeList;
+        [SerializeField]
+        private float _edgeWidth = 0.025f;
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
@@ -160,7 +162,7 @@ namespace VinhLB
                     go.name = "EdgeRenderer" + (i == 0 ? string.Empty : "_" + i.ToString());
                     go.transform.SetParent(transform);
                     edgeRenderer = go.AddComponent<LineRenderer>();
-                    edgeRenderer.widthMultiplier = 0.025f;
+                    edgeRenderer.widthMultiplier = _edgeWidth;
 #if UNITY_EDITOR
                     edgeRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Edge.mat");
 #endif

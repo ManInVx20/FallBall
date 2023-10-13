@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteByTypeArray:
   - BallType: 0
-    Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+    Sprite: {fileID: 21300000, guid: 0e9211582ec919143a11709cca912eed, type: 3}
   - BallType: 1
     Sprite: {fileID: 21300000, guid: 8c745bf987aa13d4d817bb486305603f, type: 3}
   - BallType: 2

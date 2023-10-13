@@ -52,6 +52,7 @@ Material:
     m_Floats:
     - _DissolveAmount: 0
     - _DissolveScale: 30
+    - _DissolveWidth: 0.5
     - _EnableExternalAlpha: 0
     - _OutlineThickness: 0.1
     - _SpiralStrength: 5
@@ -59,6 +60,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0, g: 2.5254903, b: 2.5568628, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
