@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    [ExecuteInEditMode]
     public class Slot : MonoBehaviour, IHasColor
     {
         public event System.Action<Slot> OnIsFilledChangedAction;

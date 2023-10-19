@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VinhLB;
 
 public static class Utilities
 {
@@ -39,5 +40,15 @@ public static class Utilities
         float centerZ = totalZ / positionArray.Length;
 
         return new Vector3(centerX, centerY, centerZ);
+    }
+
+    public static Vector2[] ToVector2Array(this Vector3[] vector3Array)
+    {
+        return System.Array.ConvertAll<Vector3, Vector2>(vector3Array, GetVector3FromVector2);
+    }
+
+    public static Vector2 GetVector3FromVector2(Vector3 vector3)
+    {
+        return new Vector2(vector3.x, vector3.y);
     }
 }

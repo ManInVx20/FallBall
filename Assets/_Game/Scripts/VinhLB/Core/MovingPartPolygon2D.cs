@@ -36,7 +36,7 @@ namespace VinhLB
             Vector3[] positionArray = new Vector3[_veticeIndexArray.Length];
             for (int i = 0; i < _veticeIndexArray.Length; i++)
             {
-                positionArray[i] = _drawPolygon2D.VerticeList[_veticeIndexArray[i]];
+                positionArray[i] = _drawPolygon2D.VertexList[_veticeIndexArray[i]];
             }
 
             if (_calulateCenterPoint)
@@ -59,7 +59,7 @@ namespace VinhLB
             _centerPoint.position += deltaPosition;
             for (int i = 0; i < _veticeIndexArray.Length; i++)
             {
-                _drawPolygon2D.VerticeList[_veticeIndexArray[i]] += (Vector2)deltaPosition;
+                _drawPolygon2D.VertexList[_veticeIndexArray[i]] += (Vector2)deltaPosition;
             }
 
             if (_updatePolygonRenderer)

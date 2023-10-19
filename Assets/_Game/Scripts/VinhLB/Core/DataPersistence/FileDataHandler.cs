@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using SystemPath = System.IO.Path;
 
 namespace VinhLB
 {
@@ -13,12 +14,12 @@ namespace VinhLB
 
         public static void Save(GameData data, string fileName, bool useEncryption)
         {
-            string basePath = Path.GetFullPath(Application.persistentDataPath);
-            string fullPath = Path.Combine(basePath, fileName);
+            string basePath = SystemPath.GetFullPath(Application.persistentDataPath);
+            string fullPath = SystemPath.Combine(basePath, fileName);
 
             try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+                Directory.CreateDirectory(SystemPath.GetDirectoryName(fullPath));
 
                 string dataToSave = JsonConvert.SerializeObject(data, Formatting.Indented);
 
@@ -44,8 +45,8 @@ namespace VinhLB
         public static GameData Load(string fileName, bool useEncryption)
         {
             GameData loadedData = null;
-            string basePath = Path.GetFullPath(Application.persistentDataPath);
-            string fullPath = Path.Combine(basePath, fileName);
+            string basePath = SystemPath.GetFullPath(Application.persistentDataPath);
+            string fullPath = SystemPath.Combine(basePath, fileName);
 
             if (File.Exists(fullPath))
             {
@@ -78,8 +79,8 @@ namespace VinhLB
 
         public static void Delete(string fileName)
         {
-            string basePath = Path.GetFullPath(Application.persistentDataPath);
-            string fullPath = Path.Combine(basePath, fileName);
+            string basePath = SystemPath.GetFullPath(Application.persistentDataPath);
+            string fullPath = SystemPath.Combine(basePath, fileName);
 
             if (File.Exists(fullPath))
             {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static VinhLB.DrawPolygon2D;
 
 namespace VinhLB
 {
@@ -12,6 +13,25 @@ namespace VinhLB
 
         private const float HANDLE_SIZE = 0.15f;
 
+        private SerializedProperty _meshUVTypeProp;
+        private SerializedProperty _rendererMaterialProp;
+        private SerializedProperty _vertexListProp;
+        private SerializedProperty _edgeWidthProp;
+        private SerializedProperty _edgeOffsetProp;
+        private SerializedProperty _loopProp;
+        private SerializedProperty _edgeVertexIndexRangeListProp;
+
+        private void OnEnable()
+        {
+            _meshUVTypeProp = serializedObject.FindProperty("_meshUVType");
+            _rendererMaterialProp = serializedObject.FindProperty("_rendererMaterial");
+            _vertexListProp = serializedObject.FindProperty("VertexList");
+            _edgeWidthProp = serializedObject.FindProperty("_edgeWidth");
+            _edgeOffsetProp = serializedObject.FindProperty("_edgeOffset");
+            _loopProp = serializedObject.FindProperty("_loop");
+            _edgeVertexIndexRangeListProp = serializedObject.FindProperty("_edgeVertexIndexRangeList");
+        }
+
         private void OnSceneGUI()
         {
             DrawPolygon2D drawPolygon2D = target as DrawPolygon2D;
@@ -20,16 +40,16 @@ namespace VinhLB
             handleLabelStyle.alignment = TextAnchor.MiddleCenter;
             handleLabelStyle.normal.textColor = Color.green;
 
-            if (drawPolygon2D.VerticeList != null)
+            if (drawPolygon2D.VertexList != null)
             {
-                for (int i = 0; i < drawPolygon2D.VerticeList.Count; i++)
+                for (int i = 0; i < drawPolygon2D.VertexList.Count; i++)
                 {
-                    Vector3 oldPoint = polygon2DTransform.TransformPoint(drawPolygon2D.VerticeList[i]);
+                    Vector3 oldPoint = polygon2DTransform.TransformPoint(drawPolygon2D.VertexList[i]);
                     Vector3 newPoint = Handles.FreeMoveHandle(oldPoint, Quaternion.identity, HANDLE_SIZE, pointSnap, Handles.RectangleHandleCap);
                     if (newPoint != oldPoint)
                     {
                         Undo.RecordObject(drawPolygon2D, "Move");
-                        drawPolygon2D.VerticeList[i] = polygon2DTransform.InverseTransformPoint(newPoint);
+                        drawPolygon2D.VertexList[i] = polygon2DTransform.InverseTransformPoint(newPoint);
                         drawPolygon2D.UpdateMesh();
                     }
 
@@ -43,9 +63,9 @@ namespace VinhLB
             serializedObject.Update();
 
             GUILayout.Label("Draw Polygon", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_meshUVType"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_rendererMaterial"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("VerticeList"));
+            EditorGUILayout.PropertyField(_meshUVTypeProp);
+            EditorGUILayout.PropertyField(_rendererMaterialProp);
+            EditorGUILayout.PropertyField(_vertexListProp);
 
             GUILayout.Label("Polygon Collider");
             EditorGUILayout.BeginHorizontal();
@@ -76,10 +96,15 @@ namespace VinhLB
             GUILayout.Space(10.0f);
 
             GUILayout.Label("Draw Edge", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_edgeVerticeIndexRangeList"));
+            EditorGUILayout.PropertyField(_edgeWidthProp);
+            EditorGUILayout.PropertyField(_edgeOffsetProp);
+            EditorGUILayout.PropertyField(_loopProp);
+            if (!_loopProp.boolValue)
+            {
+                EditorGUILayout.PropertyField(_edgeVertexIndexRangeListProp);
+            }
 
             GUILayout.Label("Edge Renderer");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_edgeWidth"));
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Create"))
             {

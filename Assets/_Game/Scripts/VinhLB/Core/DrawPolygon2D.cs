@@ -16,23 +16,27 @@ namespace VinhLB
         }
 
         [System.Serializable]
-        public struct EdgeVerticeIndexRange
+        public struct EdgeVertexIndexRange
         {
             public bool LoopThrough;
             public int From;
             public int To;
         }
 
-        public List<Vector2> VerticeList;
+        public List<Vector2> VertexList;
 
         [SerializeField]
         private UVType _meshUVType;
         [SerializeField]
         private Material _rendererMaterial;
         [SerializeField]
-        private List<EdgeVerticeIndexRange> _edgeVerticeIndexRangeList;
+        private bool _loop = false;
         [SerializeField]
-        private float _edgeWidth = 0.025f;
+        private List<EdgeVertexIndexRange> _edgeVertexIndexRangeList;
+        [SerializeField]
+        private float _edgeWidth = 0.05f;
+        [SerializeField]
+        private float _edgeOffset = 0.0f;
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
@@ -62,15 +66,15 @@ namespace VinhLB
 
         public void UpdateMesh()
         {
-            if (VerticeList == null)
+            if (VertexList == null)
             {
                 return;
             }
 
-            Vector2[] vertice2DArray = VerticeList.ToArray();
+            Vector2[] vertice2DArray = VertexList.ToArray();
 
             Triangulator triangulator = new Triangulator(vertice2DArray);
-            int[] indiceArray = triangulator.Triangulate();
+            int[] triangleArray = triangulator.Triangulate();
 
             Vector3[] vertice3DArray = new Vector3[vertice2DArray.Length];
             for (int i = 0; i < vertice2DArray.Length; i++)
@@ -86,26 +90,26 @@ namespace VinhLB
             }
             _mesh.Clear();
             _mesh.vertices = vertice3DArray;
-            _mesh.triangles = indiceArray;
+            _mesh.triangles = triangleArray;
             _mesh.RecalculateBounds();
             _mesh.RecalculateNormals();
 
             _meshFilter.mesh = _mesh;
 
-            Vector2[] uvArray = new Vector2[VerticeList.Count];
+            Vector2[] uvArray = new Vector2[VertexList.Count];
             if (_meshUVType == UVType.Fit)
             {
-                for (int i = 0; i < VerticeList.Count; i++)
+                for (int i = 0; i < VertexList.Count; i++)
                 {
-                    uvArray[i] = new Vector2((VerticeList[i].x - _mesh.bounds.min.x) / (_mesh.bounds.max.x - _mesh.bounds.min.x),
-                        (VerticeList[i].y - _mesh.bounds.min.y) / (_mesh.bounds.max.y - _mesh.bounds.min.y));
+                    uvArray[i] = new Vector2((VertexList[i].x - _mesh.bounds.min.x) / (_mesh.bounds.max.x - _mesh.bounds.min.x),
+                        (VertexList[i].y - _mesh.bounds.min.y) / (_mesh.bounds.max.y - _mesh.bounds.min.y));
                 }
             }
             else
             {
-                for (int i = 0; i < VerticeList.Count; i++)
+                for (int i = 0; i < VertexList.Count; i++)
                 {
-                    uvArray[i] = new Vector2(VerticeList[i].x - _mesh.bounds.min.x, VerticeList[i].y - _mesh.bounds.min.y);
+                    uvArray[i] = new Vector2(VertexList[i].x - _mesh.bounds.min.x, VertexList[i].y - _mesh.bounds.min.y);
                 }
             }
             _mesh.uv = uvArray;
@@ -125,9 +129,9 @@ namespace VinhLB
             }
 
             List<Vector2> verticeList = new List<Vector2>();
-            for (int i = 0; i < VerticeList.Count; i++)
+            for (int i = 0; i < VertexList.Count; i++)
             {
-                Vector2 position = transform.rotation * VerticeList[i] + transform.position;
+                Vector2 position = transform.rotation * VertexList[i] + transform.position;
                 verticeList.Add(position);
             }
 
@@ -144,60 +148,23 @@ namespace VinhLB
 
         public void CreateEdgeRenderer()
         {
-            if (_edgeRendererList == null)
+            if (_loop)
             {
-                _edgeRendererList = new List<LineRenderer>();
+                Vector3[] pointArray = GetPointArrayFromIndexRange(new EdgeVertexIndexRange
+                {
+                    From = 0,
+                    To = VertexList.Count - 1
+                });
+
+                CreateEdgeRendererInternal(0, pointArray, true);
             }
-
-            for (int i = 0; i < _edgeVerticeIndexRangeList.Count; i++)
+            else
             {
-                LineRenderer edgeRenderer;
-                if (i < _edgeRendererList.Count)
+                for (int i = 0; i < _edgeVertexIndexRangeList.Count; i++)
                 {
-                    edgeRenderer = _edgeRendererList[i];
-                }
-                else
-                {
-                    GameObject go = new GameObject();
-                    go.name = "EdgeRenderer" + (i == 0 ? string.Empty : "_" + i.ToString());
-                    go.transform.SetParent(transform);
-                    edgeRenderer = go.AddComponent<LineRenderer>();
-                    edgeRenderer.widthMultiplier = _edgeWidth;
-#if UNITY_EDITOR
-                    edgeRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Edge.mat");
-#endif
-                    edgeRenderer.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
-                    edgeRenderer.sortingOrder = 20;
-                }
+                    Vector3[] pointArray = GetPointArrayFromIndexRange(_edgeVertexIndexRangeList[i]);
 
-                List<Vector3> vertice3DList = new List<Vector3>();
-                if (!_edgeVerticeIndexRangeList[i].LoopThrough)
-                {
-                    for (int j = _edgeVerticeIndexRangeList[i].From; j <= _edgeVerticeIndexRangeList[i].To; j++)
-                    {
-                        Vector3 position = transform.rotation * VerticeList[j] + transform.position;
-                        vertice3DList.Add(position);
-                    }
-                }
-                else
-                {
-                    for (int j = _edgeVerticeIndexRangeList[i].From; j < VerticeList.Count; j++)
-                    {
-                        Vector3 position = transform.rotation * VerticeList[j] + transform.position;
-                        vertice3DList.Add(position);
-                    }
-                    for (int j = 0; j <= _edgeVerticeIndexRangeList[i].To; j++)
-                    {
-                        Vector3 position = transform.rotation * VerticeList[j] + transform.position;
-                        vertice3DList.Add(position);
-                    }
-                }
-                edgeRenderer.positionCount = vertice3DList.Count;
-                edgeRenderer.SetPositions(vertice3DList.ToArray());
-
-                if (i >= _edgeRendererList.Count)
-                {
-                    _edgeRendererList.Add(edgeRenderer);
+                    CreateEdgeRendererInternal(i, pointArray);
                 }
             }
         }
@@ -219,55 +186,11 @@ namespace VinhLB
 
         public void CreateEdgeCollider()
         {
-            if (_edgeCollider2DList == null)
+            for (int i = 0; i < _edgeVertexIndexRangeList.Count; i++)
             {
-                _edgeCollider2DList = new List<EdgeCollider2D>();
-            }
+                Vector3[] pointArray = GetPointArrayFromIndexRange(_edgeVertexIndexRangeList[i]);
 
-            for (int i = 0; i < _edgeVerticeIndexRangeList.Count; i++)
-            {
-                EdgeCollider2D edgeCollider;
-                if (i < _edgeCollider2DList.Count)
-                {
-                    edgeCollider = _edgeCollider2DList[i];
-                }
-                else
-                {
-                    GameObject go = new GameObject();
-                    go.name = "EdgeCollider" + (i == 0 ? string.Empty : "_" + i.ToString());
-                    go.transform.SetParent(transform);
-                    go.layer = LayerMask.NameToLayer(GameConstants.WALL_LAYER_NAME);
-                    edgeCollider = go.AddComponent<EdgeCollider2D>();
-                }
-
-                List<Vector2> verticeList = new List<Vector2>();
-                if (!_edgeVerticeIndexRangeList[i].LoopThrough)
-                {
-                    for (int j = _edgeVerticeIndexRangeList[i].From; j <= _edgeVerticeIndexRangeList[i].To; j++)
-                    {
-                        Vector2 position = transform.rotation * VerticeList[j] + transform.position;
-                        verticeList.Add(position);
-                    }
-                }
-                else
-                {
-                    for (int j = _edgeVerticeIndexRangeList[i].From; j < VerticeList.Count; j++)
-                    {
-                        Vector2 position = transform.rotation * VerticeList[j] + transform.position;
-                        verticeList.Add(position);
-                    }
-                    for (int j = 0; j <= _edgeVerticeIndexRangeList[i].To; j++)
-                    {
-                        Vector2 position = transform.rotation * VerticeList[j] + transform.position;
-                        verticeList.Add(position);
-                    }
-                }
-                edgeCollider.points = verticeList.ToArray();
-
-                if (i >= _edgeCollider2DList.Count)
-                {
-                    _edgeCollider2DList.Add(edgeCollider);
-                }
+                CreateEdgeColliderInternal(i, pointArray.ToVector2Array());
             }
         }
 
@@ -284,6 +207,119 @@ namespace VinhLB
                     _edgeCollider2DList.RemoveAt(i);
                 }
             }
+        }
+
+        private void CreateEdgeRendererInternal(int index, Vector3[] pointArray, bool loop = false)
+        {
+            if (_edgeRendererList == null)
+            {
+                _edgeRendererList = new List<LineRenderer>();
+            }
+
+            LineRenderer edgeRenderer;
+            if (index < _edgeRendererList.Count)
+            {
+                edgeRenderer = _edgeRendererList[index];
+            }
+            else
+            {
+                GameObject go = new GameObject();
+                go.name = "EdgeRenderer" + (index == 0 ? string.Empty : "_" + index.ToString());
+                go.transform.SetParent(transform);
+                edgeRenderer = go.AddComponent<LineRenderer>();
+                edgeRenderer.loop = loop;
+                edgeRenderer.startWidth = _edgeWidth;
+                edgeRenderer.endWidth = _edgeWidth;
+#if UNITY_EDITOR
+                edgeRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Edge.mat");
+#endif
+                edgeRenderer.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
+                edgeRenderer.sortingOrder = 20;
+
+                _edgeRendererList.Add(edgeRenderer);
+            }
+
+            edgeRenderer.positionCount = pointArray.Length;
+            edgeRenderer.SetPositions(pointArray);
+        }
+
+        private void CreateEdgeColliderInternal(int index, Vector2[] pointArray)
+        {
+            if (_edgeCollider2DList == null)
+            {
+                _edgeCollider2DList = new List<EdgeCollider2D>();
+            }
+
+            EdgeCollider2D edgeCollider;
+            if (index < _edgeCollider2DList.Count)
+            {
+                edgeCollider = _edgeCollider2DList[index];
+            }
+            else
+            {
+                GameObject go = new GameObject();
+                go.name = "EdgeCollider" + (index == 0 ? string.Empty : "_" + index.ToString());
+                go.transform.SetParent(transform);
+                go.layer = LayerMask.NameToLayer(GameConstants.WALL_LAYER_NAME);
+                edgeCollider = go.AddComponent<EdgeCollider2D>();
+                edgeCollider.edgeRadius = _edgeWidth * 0.5f;
+
+                _edgeCollider2DList.Add(edgeCollider);
+            }
+
+            edgeCollider.points = pointArray;
+        }
+
+        private Vector3[] GetPointArrayFromIndexRange(EdgeVertexIndexRange indexRange)
+        {
+            List<Vector3> vertexList = new List<Vector3>();
+            if (!indexRange.LoopThrough)
+            {
+                for (int i = indexRange.From; i <= indexRange.To; i++)
+                {
+                    Vector3 point = transform.rotation * VertexList[i] + transform.position;
+                    Vector3 prevPoint = (i == indexRange.From) ? point : transform.rotation * VertexList[i - 1] + transform.position;
+                    Vector3 nextPoint = (i == indexRange.To) ? point : transform.rotation * VertexList[i + 1] + transform.position;
+                    Vector3 v1 = (point - prevPoint).normalized;
+                    Vector3 v2 = (nextPoint - point).normalized;
+                    float sign = Mathf.Sign(Vector3.Cross(v1, v2).z);
+                    Debug.Log((sign * (v1 - v2)));
+                    Vector3 offset = (sign * (v1 - v2)) * _edgeOffset;
+                    point += offset;
+                    vertexList.Add(point);
+                }
+            }
+            else
+            {
+                for (int i = indexRange.From; i < VertexList.Count; i++)
+                {
+                    Vector3 position = transform.rotation * VertexList[i] + transform.position;
+                    if (i > indexRange.From)
+                    {
+                        int prevIndex = i - indexRange.From - 1;
+                        Vector3 direction = (position - vertexList[prevIndex]).normalized;
+                        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
+                        vertexList[prevIndex] += offset;
+                        position += offset;
+                    }
+                    vertexList.Add(position);
+                }
+                for (int i = 0; i <= indexRange.To; i++)
+                {
+                    Vector3 position = transform.rotation * VertexList[i] + transform.position;
+                    if (i > 0)
+                    {
+                        int prevIndex = i - 1;
+                        Vector3 direction = (position - vertexList[prevIndex]).normalized;
+                        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
+                        vertexList[prevIndex] += offset;
+                        position += offset;
+                    }
+                    vertexList.Add(position);
+                }
+            }
+
+            return vertexList.ToArray();
         }
     }
 }

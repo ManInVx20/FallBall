@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    [ExecuteInEditMode]
     public class Ball : MonoBehaviour, IPoolable<Ball>, IHasColor
     {
         [SerializeField]
@@ -54,11 +53,6 @@ namespace VinhLB
 
         private void Update()
         {
-            if (!Application.isPlaying)
-            {
-                return;
-            }
-
             if (_destroyed)
             {
                 return;
