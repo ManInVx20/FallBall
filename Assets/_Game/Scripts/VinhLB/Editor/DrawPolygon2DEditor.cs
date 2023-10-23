@@ -66,6 +66,28 @@ namespace VinhLB
             EditorGUILayout.PropertyField(_meshUVTypeProp);
             EditorGUILayout.PropertyField(_rendererMaterialProp);
             EditorGUILayout.PropertyField(_vertexListProp);
+            if (GUILayout.Button("Align To Center"))
+            {
+                foreach (DrawPolygon2D drawPolygon2D in targets)
+                {
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
+                    {
+                        drawPolygon2D.AlignToCenter();
+                        EditorUtility.SetDirty(drawPolygon2D);
+                    }
+                }
+            }
+
+            GUILayout.Space(10.0f);
+
+            GUILayout.Label("Draw Edge", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(_edgeWidthProp);
+            EditorGUILayout.PropertyField(_edgeOffsetProp);
+            EditorGUILayout.PropertyField(_loopProp);
+            if (!_loopProp.boolValue)
+            {
+                EditorGUILayout.PropertyField(_edgeVertexIndexRangeListProp);
+            }
 
             GUILayout.Label("Polygon Collider");
             EditorGUILayout.BeginHorizontal();
@@ -92,17 +114,6 @@ namespace VinhLB
                 }
             }
             EditorGUILayout.EndHorizontal();
-
-            GUILayout.Space(10.0f);
-
-            GUILayout.Label("Draw Edge", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(_edgeWidthProp);
-            EditorGUILayout.PropertyField(_edgeOffsetProp);
-            EditorGUILayout.PropertyField(_loopProp);
-            if (!_loopProp.boolValue)
-            {
-                EditorGUILayout.PropertyField(_edgeVertexIndexRangeListProp);
-            }
 
             GUILayout.Label("Edge Renderer");
             EditorGUILayout.BeginHorizontal();

@@ -34,9 +34,9 @@ namespace VinhLB
         [SerializeField]
         private List<EdgeVertexIndexRange> _edgeVertexIndexRangeList;
         [SerializeField]
-        private float _edgeWidth = 0.05f;
+        private float _edgeWidth = 0.06f;
         [SerializeField]
-        private float _edgeOffset = 0.0f;
+        private float _edgeOffset = 0.03f;
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
@@ -117,6 +117,30 @@ namespace VinhLB
             _meshRenderer.material = _rendererMaterial;
         }
 
+        public void AlignToCenter()
+        {
+            if (VertexList.Count < 1)
+            {
+                return;
+            }
+
+            float totalX = 0.0f;
+            float totalY = 0.0f;
+            for (int i = 0; i < VertexList.Count; i++)
+            {
+                totalX += VertexList[i].x;
+                totalY += VertexList[i].y;
+            }
+            Vector3 centerPoint = new Vector2(totalX / VertexList.Count, totalY / VertexList.Count);
+
+            for (int i = 0; i < VertexList.Count; i++)
+            {
+                VertexList[i] -= (Vector2)centerPoint;
+            }
+
+            UpdateMesh();
+        }
+
         public void CreatePolygonCollider()
         {
             if (_polygonCollider2D == null)
@@ -154,7 +178,7 @@ namespace VinhLB
                 {
                     From = 0,
                     To = VertexList.Count - 1
-                });
+                }, true);
 
                 CreateEdgeRendererInternal(0, pointArray, true);
             }
@@ -270,56 +294,112 @@ namespace VinhLB
             edgeCollider.points = pointArray;
         }
 
-        private Vector3[] GetPointArrayFromIndexRange(EdgeVertexIndexRange indexRange)
+        private Vector3[] GetPointArrayFromIndexRange(EdgeVertexIndexRange indexRange, bool loop = false)
         {
             List<Vector3> vertexList = new List<Vector3>();
             if (!indexRange.LoopThrough)
             {
-                for (int i = indexRange.From; i <= indexRange.To; i++)
-                {
-                    Vector3 point = transform.rotation * VertexList[i] + transform.position;
-                    Vector3 prevPoint = (i == indexRange.From) ? point : transform.rotation * VertexList[i - 1] + transform.position;
-                    Vector3 nextPoint = (i == indexRange.To) ? point : transform.rotation * VertexList[i + 1] + transform.position;
-                    Vector3 v1 = (point - prevPoint).normalized;
-                    Vector3 v2 = (nextPoint - point).normalized;
-                    float sign = Mathf.Sign(Vector3.Cross(v1, v2).z);
-                    Debug.Log((sign * (v1 - v2)));
-                    Vector3 offset = (sign * (v1 - v2)) * _edgeOffset;
-                    point += offset;
-                    vertexList.Add(point);
-                }
+                CalculatePoint(vertexList, indexRange.From, indexRange.To, loop);
+                //for (int i = indexRange.From; i <= indexRange.To; i++)
+                //{
+                //    Vector3 point = transform.rotation * VertexList[i] + transform.position;
+                //    Vector3 prevPoint, nextPoint, offset;
+                //    if (i == indexRange.From)
+                //    {
+                //        nextPoint = transform.rotation * VertexList[i + 1] + transform.position;
+                //        Vector3 v = (nextPoint - point).normalized;
+                //        offset = Quaternion.Euler(0.0f, 0.0f, -90.0f) * v * _edgeOffset;
+                //    }
+                //    else if (i == indexRange.To)
+                //    {
+                //        prevPoint = transform.rotation * VertexList[i - 1] + transform.position;
+                //        Vector3 v = (point - prevPoint).normalized;
+                //        offset = Quaternion.Euler(0.0f, 0.0f, -90.0f) * v * _edgeOffset;
+                //    }
+                //    else
+                //    {
+                //        prevPoint = transform.rotation * VertexList[i - 1] + transform.position;
+                //        nextPoint = transform.rotation * VertexList[i + 1] + transform.position;
+                //        Vector3 v1 = (point - prevPoint).normalized;
+                //        Vector3 v2 = (nextPoint - point).normalized;
+                //        float sign = Mathf.Sign(Vector3.Cross(v1, v2).z);
+                //        offset = (sign * (v1 - v2)).normalized;
+                //        float angle = Mathf.Abs(90.0f - Vector3.Angle(v1, offset)) * Mathf.Deg2Rad;
+                //        offset *= 1.0f / Mathf.Cos(angle) * _edgeOffset;
+                //    }
+                //    point += offset;
+                //    vertexList.Add(point);
+                //}
             }
             else
             {
-                for (int i = indexRange.From; i < VertexList.Count; i++)
-                {
-                    Vector3 position = transform.rotation * VertexList[i] + transform.position;
-                    if (i > indexRange.From)
-                    {
-                        int prevIndex = i - indexRange.From - 1;
-                        Vector3 direction = (position - vertexList[prevIndex]).normalized;
-                        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
-                        vertexList[prevIndex] += offset;
-                        position += offset;
-                    }
-                    vertexList.Add(position);
-                }
-                for (int i = 0; i <= indexRange.To; i++)
-                {
-                    Vector3 position = transform.rotation * VertexList[i] + transform.position;
-                    if (i > 0)
-                    {
-                        int prevIndex = i - 1;
-                        Vector3 direction = (position - vertexList[prevIndex]).normalized;
-                        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
-                        vertexList[prevIndex] += offset;
-                        position += offset;
-                    }
-                    vertexList.Add(position);
-                }
+                CalculatePoint(vertexList, indexRange.From, VertexList.Count - 1, loop);
+                CalculatePoint(vertexList, 0, indexRange.To, loop);
+                //for (int i = indexRange.From; i < VertexList.Count; i++)
+                //{
+                //    Vector3 position = transform.rotation * VertexList[i] + transform.position;
+                //    if (i > indexRange.From)
+                //    {
+                //        int prevIndex = i - indexRange.From - 1;
+                //        Vector3 direction = (position - vertexList[prevIndex]).normalized;
+                //        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
+                //        vertexList[prevIndex] += offset;
+                //        position += offset;
+                //    }
+                //    vertexList.Add(position);
+                //}
+                //for (int i = 0; i <= indexRange.To; i++)
+                //{
+                //    Vector3 position = transform.rotation * VertexList[i] + transform.position;
+                //    if (i > 0)
+                //    {
+                //        int prevIndex = i - 1;
+                //        Vector3 direction = (position - vertexList[prevIndex]).normalized;
+                //        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
+                //        vertexList[prevIndex] += offset;
+                //        position += offset;
+                //    }
+                //    vertexList.Add(position);
+                //}
             }
 
             return vertexList.ToArray();
+        }
+
+        private void CalculatePoint(List<Vector3> pointList, int from, int to, bool loop)
+        {
+            int length = to - from + 1;
+            for (int i = from; i <= to; i++)
+            {
+                Vector3 point = transform.rotation * VertexList[i] + transform.position;
+                Vector3 prevPoint, nextPoint;
+                Vector3 offset = Vector3.zero;
+                if (loop || (i > from && i < to))
+                {
+                    prevPoint = transform.rotation * VertexList[(i - 1 - from + length) % length + from] + transform.position;
+                    nextPoint = transform.rotation * VertexList[(i + 1 - from + length) % length + from] + transform.position;
+                    Vector3 v1 = (point - prevPoint).normalized;
+                    Vector3 v2 = (nextPoint - point).normalized;
+                    float sign = Mathf.Sign(Vector3.Cross(v1, v2).z);
+                    offset = (sign * (v1 - v2)).normalized;
+                    float angle = Mathf.Abs(90.0f - Vector3.Angle(v1, offset)) * Mathf.Deg2Rad;
+                    offset *= 1.0f / Mathf.Cos(angle) * _edgeOffset;
+                }
+                else if (i == from)
+                {
+                    nextPoint = transform.rotation * VertexList[i + 1] + transform.position;
+                    Vector3 v = (nextPoint - point).normalized;
+                    offset = Quaternion.Euler(0.0f, 0.0f, -90.0f) * v * _edgeOffset;
+                }
+                else if (i == to)
+                {
+                    prevPoint = transform.rotation * VertexList[i - 1] + transform.position;
+                    Vector3 v = (point - prevPoint).normalized;
+                    offset = Quaternion.Euler(0.0f, 0.0f, -90.0f) * v * _edgeOffset;
+                }
+                point += offset;
+                pointList.Add(point);
+            }
         }
     }
 }
