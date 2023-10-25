@@ -17,11 +17,11 @@ namespace VinhLB
         [SerializeField]
         private Camera _camera;
         [SerializeField]
-        private Constraint _constraint = Constraint.Potrait;
+        private Constraint _constraint = Constraint.Landscape;
         [SerializeField]
         private Color _wireColor = Color.white;
         [SerializeField]
-        private float _unitsSize = 1.0f;
+        private float _unitsSize = 10.0f;
         [SerializeField]
         private bool _execureInUpdate;
 

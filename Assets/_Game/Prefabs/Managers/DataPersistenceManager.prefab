@@ -44,5 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48e93fb4711cbe408e5574dc78e96b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fileName: data.gs
   _useEncryption: 0

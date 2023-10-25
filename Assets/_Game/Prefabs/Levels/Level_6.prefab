@@ -997,6 +997,18 @@ PrefabInstance:
       value: Portal_1
       objectReference: {fileID: 0}
     - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
+      propertyPath: _color.b
+      value: 11.984314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
+      propertyPath: _color.g
+      value: 0.8784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
+      propertyPath: _color.r
+      value: 6.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
       propertyPath: _connectedPortal
       value: 
       objectReference: {fileID: 5317224037288117163}
@@ -1679,6 +1691,18 @@ PrefabInstance:
     - target: {fileID: 5594636465707565380, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
       propertyPath: m_Name
       value: Portal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
+      propertyPath: _color.b
+      value: 11.984314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
+      propertyPath: _color.g
+      value: 0.8784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
+      propertyPath: _color.r
+      value: 6.4
       objectReference: {fileID: 0}
     - target: {fileID: 8939724196326956484, guid: a38ca5320514d6546b0ba4972ec3dd16, type: 3}
       propertyPath: _connectedPortal

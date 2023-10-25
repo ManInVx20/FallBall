@@ -70,7 +70,7 @@ namespace VinhLB
         {
             _levelData.LevelItemArray[_currentLevelIndex].StarAchieved = starAchieved;
 
-            if (_levelData.LastUnlockedLevelIndex < _currentLevelIndex)
+            if (_levelData.LastUnlockedLevelIndex < _currentLevelIndex + 1)
             {
                 _levelData.LastUnlockedLevelIndex = _currentLevelIndex + 1;
                 _levelData.LevelItemArray[_levelData.LastUnlockedLevelIndex].Unlocked = true;

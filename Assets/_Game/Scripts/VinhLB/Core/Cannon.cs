@@ -25,6 +25,12 @@ namespace VinhLB
         private Button _spikeButton;
         [SerializeField]
         private TMP_Text _amountText;
+        [SerializeField]
+        private SpriteRenderer[] _rendererArray;
+        [SerializeField]
+        private Material _idleMaterial;
+        [SerializeField]
+        private Material _highlightMaterial;
 
         [Header("Settings")]
         [SerializeField]
@@ -159,6 +165,21 @@ namespace VinhLB
         {
             ICommand command = new AddCommand(this, ballType);
             CommandInvoker.ExecuteCommand(command);
+        }
+
+        public void ChangeMaterial(bool highlight)
+        {
+            for (int i = 0; i < _rendererArray.Length; i++)
+            {
+                if (highlight)
+                {
+                    _rendererArray[i].material = _highlightMaterial;
+                }
+                else
+                {
+                    _rendererArray[i].material = _idleMaterial;
+                }
+            }
         }
 
         private void UpdateVisual(BallType ballType)

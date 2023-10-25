@@ -57,10 +57,10 @@ Material:
     - _Brightness: 1.5
     - _Density: 3
     - _EnableExternalAlpha: 0
-    - _Speed: 0.2
-    - _Strength: 25
+    - _Speed: 0.25
+    - _Strength: 30
     m_Colors:
-    - _Color: {r: 6.4, g: 0.8784314, b: 11.984314, a: 1}
+    - _Color: {r: 3.2627451, g: 0.4392157, b: 5.992157, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

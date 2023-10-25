@@ -113,10 +113,28 @@ namespace VinhLB
                     SetupUnmask(cannonList[i].WorldCanvasRectTF, UnmaskShape.Circle);
                 }
             }
+
+            if (_currentLevel != null)
+            {
+                List<Cannon> cannonList = _currentLevel.CannonList;
+                for (int i = 0; i < cannonList.Count; i++)
+                {
+                    cannonList[i].ChangeMaterial(true);
+                }
+            }
         }
 
         public void Close()
         {
+            if (_currentLevel != null)
+            {
+                List<Cannon> cannonList = _currentLevel.CannonList;
+                for (int i = 0; i < cannonList.Count; i++)
+                {
+                    cannonList[i].ChangeMaterial(false);
+                }
+            }
+
             gameObject.SetActive(false);
         }
     }

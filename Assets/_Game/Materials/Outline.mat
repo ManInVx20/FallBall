@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Outline
-  m_Shader: {fileID: -6465566751694194690, guid: ea6e345408009f84798bdf4196c04106, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 99424d0e2e998704280952a79c22d641, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -25,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b48ea72478eba98478dacbf867105ee8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 33f1d2ab244fad34e8cb28f78144c33a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -52,11 +52,11 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _Speed: 0.5
-    - _Thickness: 0.025
+    - _Thickness: 2
     m_Colors:
     - _Color: {r: 2.9960785, g: 2.164706, b: 0, a: 1}
-    - _Color1: {r: 0.9471819, g: 1, b: 0, a: 1}
-    - _Color2: {r: 0.5649486, g: 0, b: 0.9254902, a: 1}
+    - _Color1: {r: 0, g: 1, b: 0.79607844, a: 1}
+    - _Color2: {r: 0.9254902, g: 0.1254902, b: 0, a: 1}
     - _Color_1: {r: 0.5821636, g: 2.9960785, b: 0, a: 1}
     - _Color_2: {r: 1.8352941, g: 0, b: 2.9960785, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
