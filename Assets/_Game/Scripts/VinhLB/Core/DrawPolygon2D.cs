@@ -300,67 +300,11 @@ namespace VinhLB
             if (!indexRange.LoopThrough)
             {
                 CalculatePoint(vertexList, indexRange.From, indexRange.To, loop);
-                //for (int i = indexRange.From; i <= indexRange.To; i++)
-                //{
-                //    Vector3 point = transform.rotation * VertexList[i] + transform.position;
-                //    Vector3 prevPoint, nextPoint, offset;
-                //    if (i == indexRange.From)
-                //    {
-                //        nextPoint = transform.rotation * VertexList[i + 1] + transform.position;
-                //        Vector3 v = (nextPoint - point).normalized;
-                //        offset = Quaternion.Euler(0.0f, 0.0f, -90.0f) * v * _edgeOffset;
-                //    }
-                //    else if (i == indexRange.To)
-                //    {
-                //        prevPoint = transform.rotation * VertexList[i - 1] + transform.position;
-                //        Vector3 v = (point - prevPoint).normalized;
-                //        offset = Quaternion.Euler(0.0f, 0.0f, -90.0f) * v * _edgeOffset;
-                //    }
-                //    else
-                //    {
-                //        prevPoint = transform.rotation * VertexList[i - 1] + transform.position;
-                //        nextPoint = transform.rotation * VertexList[i + 1] + transform.position;
-                //        Vector3 v1 = (point - prevPoint).normalized;
-                //        Vector3 v2 = (nextPoint - point).normalized;
-                //        float sign = Mathf.Sign(Vector3.Cross(v1, v2).z);
-                //        offset = (sign * (v1 - v2)).normalized;
-                //        float angle = Mathf.Abs(90.0f - Vector3.Angle(v1, offset)) * Mathf.Deg2Rad;
-                //        offset *= 1.0f / Mathf.Cos(angle) * _edgeOffset;
-                //    }
-                //    point += offset;
-                //    vertexList.Add(point);
-                //}
             }
             else
             {
                 CalculatePoint(vertexList, indexRange.From, VertexList.Count - 1, loop);
                 CalculatePoint(vertexList, 0, indexRange.To, loop);
-                //for (int i = indexRange.From; i < VertexList.Count; i++)
-                //{
-                //    Vector3 position = transform.rotation * VertexList[i] + transform.position;
-                //    if (i > indexRange.From)
-                //    {
-                //        int prevIndex = i - indexRange.From - 1;
-                //        Vector3 direction = (position - vertexList[prevIndex]).normalized;
-                //        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
-                //        vertexList[prevIndex] += offset;
-                //        position += offset;
-                //    }
-                //    vertexList.Add(position);
-                //}
-                //for (int i = 0; i <= indexRange.To; i++)
-                //{
-                //    Vector3 position = transform.rotation * VertexList[i] + transform.position;
-                //    if (i > 0)
-                //    {
-                //        int prevIndex = i - 1;
-                //        Vector3 direction = (position - vertexList[prevIndex]).normalized;
-                //        Vector3 offset = Vector3.Cross(direction, Vector3.forward).normalized * _edgeOffset;
-                //        vertexList[prevIndex] += offset;
-                //        position += offset;
-                //    }
-                //    vertexList.Add(position);
-                //}
             }
 
             return vertexList.ToArray();

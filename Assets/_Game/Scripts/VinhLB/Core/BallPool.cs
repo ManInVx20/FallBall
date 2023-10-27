@@ -9,12 +9,19 @@ namespace VinhLB
     {
         [SerializeField]
         private GameObject _ballPrefab;
+        [SerializeField]
+        private bool _isAllInactive;
 
         private ObjectPool<Ball> _ballPool;
 
         private void Awake()
         {
             _ballPool = new ObjectPool<Ball>(_ballPrefab, OnPullCallback, OnPushCallback);
+        }
+
+        private void Update()
+        {
+            _isAllInactive = IsAllInactive();
         }
 
         public Ball SpawnBall(Vector3 position, Quaternion rotation, 
@@ -27,6 +34,21 @@ namespace VinhLB
             ball.ResetState();
 
             return ball;
+        }
+
+        public bool IsAllInactive()
+        {
+            List<Ball> ballList = _ballPool.GetAll();
+
+            for (int i = 0; i < ballList.Count; i++)
+            {
+                if (ballList[i].IsActive())
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void RetrieveAll()

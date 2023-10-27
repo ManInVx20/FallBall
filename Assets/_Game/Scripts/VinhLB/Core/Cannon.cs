@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,8 +23,6 @@ namespace VinhLB
         [SerializeField]
         private Button _spikeButton;
         [SerializeField]
-        private TMP_Text _amountText;
-        [SerializeField]
         private SpriteRenderer[] _rendererArray;
         [SerializeField]
         private Material _idleMaterial;
@@ -36,15 +33,13 @@ namespace VinhLB
         [SerializeField]
         private ColorType _ballColorType;
         [SerializeField]
-        private int _maxBallAmount;
-        [SerializeField]
         private float _spawnRate = 1.0f;
         [SerializeField]
         private float _spawnForce = 3.0f;
 
         private bool _canSpawn;
         private float _spawnTime;
-        private Stack<BallType> _ballTypeStack = new Stack<BallType>();
+        private Stack<BallType> _specialBallTypeStack = new Stack<BallType>();
 
         private void Awake()
         {
@@ -52,7 +47,7 @@ namespace VinhLB
             {
                 if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
                 {
-                    if (_canSpawn && _ballTypeStack.Count > 0)
+                    if (_canSpawn && LevelManager.Instance.CurrentLevel.MovesLeft > 0)
                     {
                         _canSpawn = false;
                         ICommand command = new SpawnCommand(this);
@@ -98,13 +93,10 @@ namespace VinhLB
 
         private void Start()
         {
-            for (int i = 0; i < _maxBallAmount; i++)
-            {
-                PushBallType(BallType.Normal);
-            }
-
             _canSpawn = true;
             _spawnTime = 0.0f;
+
+            UpdateVisual(BallType.Normal);
         }
 
         private void Update()
@@ -138,20 +130,32 @@ namespace VinhLB
 
         public void PushBallType(BallType ballType)
         {
-            _ballTypeStack.Push(ballType);
-            _amountText.text = _ballTypeStack.Count.ToString();
+            if (ballType != BallType.Normal)
+            {
+                _specialBallTypeStack.Push(ballType);
+            }
 
-            UpdateVisual(_ballTypeStack.Peek());
+            if (_specialBallTypeStack.Count > 0)
+            {
+                UpdateVisual(_specialBallTypeStack.Peek());
+            }
+            else
+            {
+                UpdateVisual(BallType.Normal);
+            }
         }
 
         public BallType PullBallType()
         {
-            BallType ballType = _ballTypeStack.Pop();
-            _amountText.text = _ballTypeStack.Count.ToString();
-
-            if (_ballTypeStack.Count > 0)
+            BallType ballType = BallType.Normal;
+            if (_specialBallTypeStack.Count > 0)
             {
-                UpdateVisual(_ballTypeStack.Peek());
+                ballType = _specialBallTypeStack.Pop();
+            }
+
+            if (_specialBallTypeStack.Count > 0)
+            {
+                UpdateVisual(_specialBallTypeStack.Peek());
             }
             else
             {

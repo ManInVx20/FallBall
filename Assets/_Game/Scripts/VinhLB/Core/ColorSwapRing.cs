@@ -22,7 +22,7 @@ namespace VinhLB
 
         private void Start()
         {
-            UpdateColor();
+            UpdateColor(true);
         }
 
         private void Update()
@@ -46,9 +46,9 @@ namespace VinhLB
             DOTween.Kill(_spriteRenderer);
         }
 
-        private void OnTriggerEnter2D(Collider2D collider2D)
+        private void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider2D.TryGetComponent<Ball>(out Ball ball))
+            if (collider.TryGetComponent<Ball>(out Ball ball))
             {
                 if (ball.GetBallType() == BallType.Normal)
                 {

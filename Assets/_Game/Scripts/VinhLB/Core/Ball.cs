@@ -91,9 +91,9 @@ namespace VinhLB
             }
         }
 
-        private void OnCollisionEnter2D(Collision2D collision2D)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision2D.transform.TryGetComponent<Ball>(out Ball ball))
+            if (collision.transform.TryGetComponent<Ball>(out Ball ball))
             {
                 if (_ballType == BallType.Spike || ball.GetBallType() == BallType.Spike)
                 {
@@ -104,6 +104,11 @@ namespace VinhLB
                     TryMoveToSides();
                 }
             }
+        }
+
+        public bool IsActive()
+        {
+            return gameObject.activeInHierarchy && _rigidbody2D.constraints != RigidbodyConstraints2D.FreezeAll;
         }
 
         public void EnterSlot(Slot slot)
@@ -228,6 +233,11 @@ namespace VinhLB
 
         public void UpdateVisual()
         {
+            if (ResourceManager.Instance == null)
+            {
+                return;
+            }
+
             _ballRenderer.sprite = ResourceManager.Instance.GetBallSpriteByType(_ballType);
 
             Color color = Color.white;

@@ -28,9 +28,9 @@ namespace VinhLB
             UpdatePortalVisual();
         }
 
-        private void OnTriggerEnter2D(Collider2D collider2D)
+        private void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider2D.TryGetComponent<Ball>(out Ball ball))
+            if (collider.TryGetComponent<Ball>(out Ball ball))
             {
                 if (Vector2.Distance(ball.transform.position, transform.position) > MIN_DISTANCE)
                 {

@@ -54,12 +54,12 @@ namespace VinhLB
         {
             base.Open();
 
-            _confettiVFX.gameObject.SetActive(true);
+            
         }
 
         public override void Close()
         {
-            _confettiVFX.gameObject.SetActive(false);
+            _confettiVFX.Stop();
 
             base.Close();
         }
@@ -75,6 +75,8 @@ namespace VinhLB
             LevelManager.Instance.CompleteLevel(starAmount);
 
             SetStar(starAmount);
+
+            _confettiVFX.Play();
         }
 
         public void OpenLose()
@@ -84,6 +86,8 @@ namespace VinhLB
             _titleText.text = "LOSE";
 
             _nextButton.gameObject.SetActive(false);
+
+            SetStar(0);
         }
 
         public void SetStar(int starAchieved)

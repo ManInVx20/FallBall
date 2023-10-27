@@ -72,8 +72,12 @@ namespace VinhLB
                 {
                     _createdList[i].ReturnToPool();
                 }
-
             }
+        }
+
+        public List<T> GetAll()
+        {
+            return _createdList;
         }
 
         public void Clear()

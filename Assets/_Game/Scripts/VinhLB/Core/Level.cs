@@ -9,7 +9,7 @@ namespace VinhLB
     public class Level : MonoBehaviour
     {
         public List<Cannon> CannonList => _cannonList;
-        public int Moves => _moves;
+        public int MovesLeft => _movesLeft;
 
         [SerializeField]
         private List<Cannon> _cannonList;
@@ -18,38 +18,44 @@ namespace VinhLB
 
         private LevelInfo _levelInfo;
         private List<Slot> _notFilledSlotList;
-        private int _moves;
+        private int _movesLeft;
 
-        private void Start()
+        public void Initialize(LevelInfo info)
         {
+            _levelInfo = info;
             _notFilledSlotList = _slotList.ToList();
             for (int i = 0; i < _notFilledSlotList.Count; i++)
             {
                 _notFilledSlotList[i].OnIsFilledChangedAction += Slot_OnIsFilledChangedAction;
             }
 
-            _moves = 0;
-
-            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesText();
+            ResetState();
         }
 
-        public void Initialize(LevelInfo info)
+        public void ResetState()
         {
-            _levelInfo = info;
+            _movesLeft = _levelInfo.MaxMoves;
+
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText();
         }
 
         public void IncreaseMoves()
         {
-            _moves += 1;
+            _movesLeft += 1;
 
-            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesText();
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText();
         }
 
         public void DecreaseMoves()
         {
-            _moves -= 1;
+            _movesLeft -= 1;
 
-            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesText();
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText();
+
+            if (_movesLeft == 0)
+            {
+                StartCoroutine(WaitingToLoseCoroutine());
+            }
         }
 
         public void Win(bool skipMoves = false, int forcedStarAmount = 3)
@@ -64,11 +70,12 @@ namespace VinhLB
             }
             else
             {
-                if (_moves <= _levelInfo.MaxMoves3Stars)
+                int movesUsed = _levelInfo.MaxMoves - _movesLeft;
+                if (movesUsed <= _levelInfo.MaxMoves3Stars)
                 {
                     starAmount = 3;
                 }
-                else if (_moves <= _levelInfo.MaxMoves2Stars)
+                else if (movesUsed <= _levelInfo.MaxMoves2Stars)
                 {
                     starAmount = 2;
                 }
@@ -101,6 +108,21 @@ namespace VinhLB
             {
                 _notFilledSlotList.Add(slot);
             }
+        }
+
+        private IEnumerator WaitingToLoseCoroutine()
+        {
+            while (true)
+            {
+                if (BallPool.Instance.IsAllInactive())
+                {
+                    break;
+                }
+
+                yield return null;
+            }
+
+            Lose();
         }
     }
 }

@@ -768,14 +768,12 @@ MonoBehaviour:
   _normalButton: {fileID: 7018174157934273400}
   _rainbowButton: {fileID: 2374614254300417036}
   _spikeButton: {fileID: 8366572850343078873}
-  _amountText: {fileID: 1129257634522145020}
   _rendererArray:
   - {fileID: 1129257634451561132}
   - {fileID: 1129257633128483646}
   _idleMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   _highlightMaterial: {fileID: 2100000, guid: 616ad764d8fa328409ce629aeff00e54, type: 2}
   _ballColorType: 0
-  _maxBallAmount: 0
   _spawnRate: 2
   _spawnForce: 3
 --- !u!1 &1436925772315358885
@@ -1268,7 +1266,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8930050086305489296
 RectTransform:
   m_ObjectHideFlags: 0

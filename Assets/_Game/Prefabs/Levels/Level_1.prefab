@@ -1047,6 +1047,10 @@ PrefabInstance:
       propertyPath: _maxBallAmount
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1129257634732077378, guid: 1a456a9870b2f2f40b7c7fd2206470d8, type: 3}
+      propertyPath: _startBallAmount
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a456a9870b2f2f40b7c7fd2206470d8, type: 3}
 --- !u!4 &2123268103978384868 stripped
@@ -1126,6 +1130,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1129257634732077378, guid: 1a456a9870b2f2f40b7c7fd2206470d8, type: 3}
       propertyPath: _maxBallAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1129257634732077378, guid: 1a456a9870b2f2f40b7c7fd2206470d8, type: 3}
+      propertyPath: _startBallAmount
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []

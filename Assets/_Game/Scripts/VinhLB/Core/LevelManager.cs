@@ -64,13 +64,15 @@ namespace VinhLB
             CommandInvoker.UndoAllCommands();
 
             CommandInvoker.Clear();
+
+            _currentLevel.ResetState();
         }
 
         public void CompleteLevel(int starAchieved)
         {
             _levelData.LevelItemArray[_currentLevelIndex].StarAchieved = starAchieved;
 
-            if (_levelData.LastUnlockedLevelIndex < _currentLevelIndex + 1)
+            if (!IsLastLevel() && _levelData.LastUnlockedLevelIndex < _currentLevelIndex + 1)
             {
                 _levelData.LastUnlockedLevelIndex = _currentLevelIndex + 1;
                 _levelData.LevelItemArray[_levelData.LastUnlockedLevelIndex].Unlocked = true;
@@ -159,6 +161,7 @@ namespace VinhLB
     public struct LevelInfo
     {
         public Level Prefab;
+        public int MaxMoves;
         public int MaxMoves3Stars;
         public int MaxMoves2Stars;
     }

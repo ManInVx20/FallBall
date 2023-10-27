@@ -18,14 +18,14 @@ namespace VinhLB
         {
             _ball = _cannon.SpawnBall();
 
-            LevelManager.Instance.CurrentLevel.IncreaseMoves();
+            LevelManager.Instance.CurrentLevel.DecreaseMoves();
         }
 
         public void Undo()
         {
             _cannon.RetrieveBall(_ball);
 
-            LevelManager.Instance.CurrentLevel.DecreaseMoves();
+            LevelManager.Instance.CurrentLevel.IncreaseMoves();
         }
     }
 }

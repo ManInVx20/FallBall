@@ -11,7 +11,7 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _levelText;
         [SerializeField]
-        private TMP_Text _movesText;
+        private TMP_Text _movesLeftText;
         [SerializeField]
         private Button _restartButton;
         [SerializeField]
@@ -20,6 +20,8 @@ namespace VinhLB
         private Button _undoButton;
         [SerializeField]
         private Button _redoButton;
+        [SerializeField]
+        private Button _moveButton;
         [SerializeField]
         private Button _normalButton;
         [SerializeField]
@@ -47,6 +49,10 @@ namespace VinhLB
             {
                 CommandInvoker.RedoCommand();
             });
+            _moveButton.onClick.AddListener(() =>
+            {
+                LevelManager.Instance.CurrentLevel.IncreaseMoves();
+            });
             _normalButton.onClick.AddListener(OnNormalButtonClicked);
             _rainbowButton.onClick.AddListener(OnRainbowButtonClicked);
             _spikeButton.onClick.AddListener(OnSpikeButtonClicked);
@@ -64,9 +70,9 @@ namespace VinhLB
             _levelText.text = $"LEVEL {LevelManager.Instance.CurrentLevelIndex + 1}";
         }
 
-        public void UpdateMovesText()
+        public void UpdateMovesLeftText()
         {
-            _movesText.text = LevelManager.Instance.CurrentLevel.Moves.ToString();
+            _movesLeftText.text = LevelManager.Instance.CurrentLevel.MovesLeft.ToString();
         }
 
         public void OnNormalButtonClicked()
