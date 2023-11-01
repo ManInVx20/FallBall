@@ -19,6 +19,7 @@ namespace VinhLB
         private LevelInfo _levelInfo;
         private List<Slot> _notFilledSlotList;
         private int _movesLeft;
+        private Coroutine _waitingToLoseCoroutine;
 
         public void Initialize(LevelInfo info)
         {
@@ -44,6 +45,11 @@ namespace VinhLB
             _movesLeft += 1;
 
             GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText();
+
+            if (_waitingToLoseCoroutine != null)
+            {
+                StopCoroutine(_waitingToLoseCoroutine);
+            }
         }
 
         public void DecreaseMoves()
@@ -54,7 +60,10 @@ namespace VinhLB
 
             if (_movesLeft == 0)
             {
-                StartCoroutine(WaitingToLoseCoroutine());
+                if (_waitingToLoseCoroutine == null)
+                {
+                    _waitingToLoseCoroutine = StartCoroutine(WaitingToLoseCoroutine());
+                }
             }
         }
 
@@ -123,6 +132,8 @@ namespace VinhLB
             }
 
             Lose();
+
+            _waitingToLoseCoroutine = null;
         }
     }
 }

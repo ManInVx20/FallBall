@@ -8,10 +8,10 @@ namespace VinhLB
 {
     public class GameSceneManager : PersistentMonoSingleton<GameSceneManager>
     {
-        public enum Scene
+        public enum GameScene
         {
             Init = 0,
-            Game = 1,
+            Main = 1,
         }
 
         public event Action OnSceneLoadStarted;
@@ -23,12 +23,12 @@ namespace VinhLB
             return UnitySceneManagement.SceneManager.GetActiveScene().name;
         }
 
-        public bool IsSceneActive(Scene scene)
+        public bool IsSceneActive(GameScene scene)
         {
             return UnitySceneManagement.SceneManager.GetActiveScene().name.Equals(scene.ToString());
         }
 
-        public void LoadScene(Scene scene)
+        public void LoadScene(GameScene scene)
         {
             StartCoroutine(HandleLoadingSceneCoroutine(UnitySceneManagement.SceneManager.LoadSceneAsync(scene.ToString())));
         }

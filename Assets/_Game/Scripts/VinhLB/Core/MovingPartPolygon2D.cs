@@ -17,8 +17,6 @@ namespace VinhLB
         [SerializeField]
         private float _speed = 1.0f;
         [SerializeField]
-        private bool _calulateCenterPoint = true;
-        [SerializeField]
         private bool _updatePolygonRenderer = true;
         [SerializeField]
         private bool _updatePolygonCollider = false;
@@ -33,17 +31,6 @@ namespace VinhLB
 
         private void Start()
         {
-            Vector3[] positionArray = new Vector3[_veticeIndexArray.Length];
-            for (int i = 0; i < _veticeIndexArray.Length; i++)
-            {
-                positionArray[i] = _drawPolygon2D.VertexList[_veticeIndexArray[i]];
-            }
-
-            if (_calulateCenterPoint)
-            {
-                _centerPoint.position = Utilities.FindCenterPosition(positionArray);
-            }
-
             _moveDirection = (_pointArray[_currentIndex].position - _centerPoint.position).normalized;
         }
 
@@ -64,7 +51,7 @@ namespace VinhLB
 
             if (_updatePolygonRenderer)
             {
-                _drawPolygon2D.UpdateMesh();
+                _drawPolygon2D.UpdateMeshes();
             }
             if (_updatePolygonCollider)
             {
@@ -78,6 +65,17 @@ namespace VinhLB
             {
                 _drawPolygon2D.CreateEdgeCollider();
             }
+        }
+
+        public void CalculateCenterPoint()
+        {
+            Vector3[] positionArray = new Vector3[_veticeIndexArray.Length];
+            for (int i = 0; i < _veticeIndexArray.Length; i++)
+            {
+                positionArray[i] = _drawPolygon2D.VertexList[_veticeIndexArray[i]];
+            }
+
+            _centerPoint.position = Utilities.FindCenterPosition(positionArray);
         }
     }
 }

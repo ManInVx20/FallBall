@@ -42,13 +42,23 @@ public static class Utilities
         return new Vector3(centerX, centerY, centerZ);
     }
 
-    public static Vector2[] ToVector2Array(this Vector3[] vector3Array)
+    public static Vector2[] ToVector2Array(this Vector3[] vectorArray)
     {
-        return System.Array.ConvertAll<Vector3, Vector2>(vector3Array, GetVector3FromVector2);
+        return System.Array.ConvertAll<Vector3, Vector2>(vectorArray, GetVector2FromVector3);
     }
 
-    public static Vector2 GetVector3FromVector2(Vector3 vector3)
+    public static Vector2 GetVector2FromVector3(Vector3 vector)
     {
-        return new Vector2(vector3.x, vector3.y);
+        return new Vector2(vector.x, vector.y);
+    }
+    
+    public static Vector3[] ToVector3Array(this Vector2[] vectorArray)
+    {
+        return System.Array.ConvertAll<Vector2, Vector3>(vectorArray, GetVector3FromVector2);
+    }
+
+    public static Vector3 GetVector3FromVector2(Vector2 vector)
+    {
+        return new Vector3(vector.x, vector.y, 0.0f);
     }
 }

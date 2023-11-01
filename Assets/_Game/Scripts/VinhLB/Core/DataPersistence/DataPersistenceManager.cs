@@ -88,13 +88,5 @@ namespace VinhLB
 
             LoadGame();
         }
-
-#if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tools/VinhLB/Clear Game Data")]
-        private static void ClearGameData()
-        {
-            FileDataHandler.Delete(GameConstants.DATA_FILE_NAME);
-        }
-#endif
     }
 }

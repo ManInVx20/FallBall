@@ -9,9 +9,14 @@ namespace VinhLB
     public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField]
-        private TabGroup _tabGroup;
-        [SerializeField]
         private Image _background;
+
+        private TabGroup _tabGroup;
+
+        public void Initialize(TabGroup group)
+        {
+            _tabGroup = group;
+        }
 
         public void ChangeBackgroundSprite(Sprite sprite)
         {

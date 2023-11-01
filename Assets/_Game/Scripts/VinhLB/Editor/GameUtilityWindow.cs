@@ -9,7 +9,7 @@ namespace VinhLB
     public class GameUtilityWindow : EditorWindow
     {
         [MenuItem("Tools/VinhLB/Game Utility Panel")]
-        public static void ShowWindow()
+        private static void ShowWindow()
         {
             GetWindow<GameUtilityWindow>(true, "Game Utility Panel");
         }
@@ -23,11 +23,6 @@ namespace VinhLB
                 GameObject gameObject = new GameObject();
                 gameObject.name = "Tube";
                 gameObject.AddComponent<DrawPolygon2D>();
-                gameObject.GetComponent<Renderer>().material =
-                    AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Tube.mat");
-                SortingGroup sortingGroup = gameObject.AddComponent<SortingGroup>();
-                sortingGroup.sortingLayerName = "Object";
-                sortingGroup.sortingOrder = 10;
             }
 
             GUILayout.Space(10.0f);

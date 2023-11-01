@@ -21,7 +21,7 @@ namespace VinhLB
 
                 DataPersistenceManager.Instance.SaveGame();
 
-                GameSceneManager.Instance.LoadScene(GameSceneManager.Scene.Game);
+                GameSceneManager.Instance.LoadScene(GameSceneManager.GameScene.Main);
             });
         }
     }

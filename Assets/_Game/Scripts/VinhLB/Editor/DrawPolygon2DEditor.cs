@@ -14,7 +14,7 @@ namespace VinhLB
         private const float HANDLE_SIZE = 0.15f;
 
         private SerializedProperty _meshUVTypeProp;
-        private SerializedProperty _rendererMaterialProp;
+        private SerializedProperty _canDropShadowProp;
         private SerializedProperty _vertexListProp;
         private SerializedProperty _edgeWidthProp;
         private SerializedProperty _edgeOffsetProp;
@@ -24,7 +24,7 @@ namespace VinhLB
         private void OnEnable()
         {
             _meshUVTypeProp = serializedObject.FindProperty("_meshUVType");
-            _rendererMaterialProp = serializedObject.FindProperty("_rendererMaterial");
+            _canDropShadowProp = serializedObject.FindProperty("_canDropShadow");
             _vertexListProp = serializedObject.FindProperty("VertexList");
             _edgeWidthProp = serializedObject.FindProperty("_edgeWidth");
             _edgeOffsetProp = serializedObject.FindProperty("_edgeOffset");
@@ -50,7 +50,7 @@ namespace VinhLB
                     {
                         Undo.RecordObject(drawPolygon2D, "Move");
                         drawPolygon2D.VertexList[i] = polygon2DTransform.InverseTransformPoint(newPoint);
-                        drawPolygon2D.UpdateMesh();
+                        drawPolygon2D.UpdateMeshes();
                     }
 
                     Handles.Label(newPoint, i.ToString(), handleLabelStyle);
@@ -64,7 +64,27 @@ namespace VinhLB
 
             GUILayout.Label("Draw Polygon", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_meshUVTypeProp);
-            EditorGUILayout.PropertyField(_rendererMaterialProp);
+            EditorGUILayout.PropertyField(_canDropShadowProp);
+            if (_canDropShadowProp.boolValue)
+            {
+                foreach (DrawPolygon2D drawPolygon2D in targets)
+                {
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
+                    {
+                        drawPolygon2D.CreateDropShadowGameObject();
+                    }
+                }
+            }
+            else
+            {
+                foreach (DrawPolygon2D drawPolygon2D in targets)
+                {
+                    if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
+                    {
+                        drawPolygon2D.ClearDropShadowGameObject();
+                    }
+                }
+            }
             EditorGUILayout.PropertyField(_vertexListProp);
             if (GUILayout.Button("Align To Center"))
             {
@@ -174,7 +194,7 @@ namespace VinhLB
                 {
                     if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
                     {
-                        drawPolygon2D.UpdateMesh();
+                        drawPolygon2D.UpdateMeshes();
                     }
                 }
             }

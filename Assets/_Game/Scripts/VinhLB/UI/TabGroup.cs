@@ -13,6 +13,8 @@ namespace VinhLB
         [SerializeField]
         private int _startTabIndex;
         [SerializeField]
+        private bool _customSprite;
+        [SerializeField]
         private Sprite _tabIdleSprite;
         [SerializeField]
         private Sprite _tabHoverSprite;
@@ -21,8 +23,17 @@ namespace VinhLB
 
         private TabButton _selectedTabButton;
 
+        private void Awake()
+        {
+            for (int i = 0; i < _tabButtonList.Count; i++)
+            {
+                _tabButtonList[i].Initialize(this);
+            }
+        }
+
         private void Start()
         {
+
             if (_tabButtonList.Count > 0)
             {
                 if (_startTabIndex < 0 || _startTabIndex >= _tabButtonList.Count)
@@ -40,7 +51,10 @@ namespace VinhLB
 
             if (_selectedTabButton == null || button != _selectedTabButton)
             {
-                button.ChangeBackgroundSprite(_tabHoverSprite);
+                if (_customSprite)
+                {
+                    button.ChangeBackgroundSprite(_tabHoverSprite);
+                }
             }
         }
 
@@ -60,7 +74,10 @@ namespace VinhLB
 
             ResetTabs();
 
-            button.ChangeBackgroundSprite(_tabActiveSprite);
+            if (_customSprite)
+            {
+                button.ChangeBackgroundSprite(_tabActiveSprite);
+            }
 
             int index = _tabButtonList.IndexOf(button);
             for (int i = 0; i < _pageGOList.Count; i++)
@@ -85,7 +102,10 @@ namespace VinhLB
                     continue;
                 }
 
-                _tabButtonList[i].ChangeBackgroundSprite(_tabIdleSprite);
+                if (_customSprite)
+                {
+                    _tabButtonList[i].ChangeBackgroundSprite(_tabIdleSprite);
+                }
             }
         }
     }
