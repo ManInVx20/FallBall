@@ -26,7 +26,7 @@ namespace VinhLB
 
         private Action<Ball> _onReturnAction;
         private Slot _currentSlot;
-        private IEnumerator _waitToStickCoroutine;
+        private Coroutine _waitToStickCoroutine;
         private float _despawnTimer = 0.0f;
         private float _despawnTimerMax = 1.0f;
         private bool _startToDespawn = false;
@@ -34,6 +34,7 @@ namespace VinhLB
         private int _dissolveAmountPropID;
         private int _spiralStrengthPropID;
         private bool _destroyed = false;
+        private bool _isActive;
 
         private void OnEnable()
         {
@@ -82,12 +83,11 @@ namespace VinhLB
                 {
                     //Debug.Log("b");
                     _startToDespawn = false;
+                    _despawnTimer = 0.0f;
                     _startToDespawnTween.Kill();
                     _ballRenderer.material.SetFloat(_dissolveAmountPropID, 0.0f);
                     _trailRenderer.enabled = true;
                 }
-
-                _despawnTimer = 0.0f;
             }
         }
 
@@ -108,7 +108,12 @@ namespace VinhLB
 
         public bool IsActive()
         {
-            return gameObject.activeInHierarchy && _rigidbody2D.constraints != RigidbodyConstraints2D.FreezeAll;
+            return _isActive;
+        }
+
+        public void SetActive(bool isActive)
+        {
+            _isActive = isActive;
         }
 
         public void EnterSlot(Slot slot)
@@ -123,8 +128,7 @@ namespace VinhLB
                     }
 
                     _currentSlot = slot;
-                    _waitToStickCoroutine = WaitToStickCoroutine();
-                    StartCoroutine(_waitToStickCoroutine);
+                    _waitToStickCoroutine = StartCoroutine(WaitToStickCoroutine());
                 }
             }
         }
@@ -157,6 +161,12 @@ namespace VinhLB
             DOTween.Kill(_ballRenderer);
             DOTween.Kill(_doneRenderer);
 
+            if (_currentSlot != null)
+            {
+                _currentSlot.SetIsFilled(false);
+                _currentSlot = null;
+            }
+
             _destroyed = false;
             _despawnTimer = 0.0f;
             _startToDespawn = false;
@@ -168,12 +178,6 @@ namespace VinhLB
             _rigidbody2D.velocity = Vector3.zero;
             _rigidbody2D.angularVelocity = 0.0f;
             _rigidbody2D.inertia = 0.0f;
-
-            if (_currentSlot != null)
-            {
-                _currentSlot.SetIsFilled(false);
-                _currentSlot = null;
-            }
 
             _doneRenderer.DOFade(0.0f, 0.0f);
             _trailRenderer.enabled = true;

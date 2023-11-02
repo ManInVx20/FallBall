@@ -28,6 +28,8 @@ namespace VinhLB
         private Material _idleMaterial;
         [SerializeField]
         private Material _highlightMaterial;
+        [SerializeField]
+        private ParticleSystem _shootVFX;
 
         [Header("Settings")]
         [SerializeField]
@@ -50,8 +52,11 @@ namespace VinhLB
                     if (_canSpawn && LevelManager.Instance.CurrentLevel.MovesLeft > 0)
                     {
                         _canSpawn = false;
+
                         ICommand command = new SpawnCommand(this);
                         CommandInvoker.ExecuteCommand(command);
+
+                        _shootVFX.Play();
                     }
                 }
                 else

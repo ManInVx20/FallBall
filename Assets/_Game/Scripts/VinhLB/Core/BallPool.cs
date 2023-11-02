@@ -32,6 +32,7 @@ namespace VinhLB
             ball.SetBallType(ballType);
             ball.SetColorType(colorType);
             ball.ResetState();
+            ball.SetActive(true);
 
             return ball;
         }
@@ -63,6 +64,7 @@ namespace VinhLB
 
         private void OnPushCallback(Ball ball)
         {
+            ball.SetActive(false);
             ball.ResetState();
         }
     }
