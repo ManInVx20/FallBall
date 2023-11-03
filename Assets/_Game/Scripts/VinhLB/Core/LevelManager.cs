@@ -61,22 +61,28 @@ namespace VinhLB
 
         public void RestartLevel()
         {
-            CommandInvoker.UndoAllCommands();
+            //CommandInvoker.UndoAllCommands();
 
-            CommandInvoker.Clear();
+            //CommandInvoker.Clear();
 
-            _currentLevel.ResetState();
+            //_currentLevel.ResetState();
+            LoadLevel();
         }
 
         public void CompleteLevel(int starAchieved)
         {
-            _levelData.LevelItemArray[_currentLevelIndex].StarAchieved = starAchieved;
+            if (starAchieved > _levelData.LevelItemArray[_currentLevelIndex].StarAchieved)
+            {
+                _levelData.LevelItemArray[_currentLevelIndex].StarAchieved = starAchieved;
+            }
 
             if (!IsLastLevel() && _levelData.LastUnlockedLevelIndex < _currentLevelIndex + 1)
             {
                 _levelData.LastUnlockedLevelIndex = _currentLevelIndex + 1;
                 _levelData.LevelItemArray[_levelData.LastUnlockedLevelIndex].Unlocked = true;
             }
+
+            DataPersistenceManager.Instance.SaveGame();
         }
 
         public void LoadData(GameData data)

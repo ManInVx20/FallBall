@@ -945,13 +945,16 @@ MonoBehaviour:
   - {x: 0.25, y: -2}
   - {x: 0.25, y: 2}
   _meshUVType: 1
+  _meshMaterial: {fileID: 2100000, guid: 18c74766d69ddf6478599ba122dd0de4, type: 2}
   _canDropShadow: 1
+  _dropShadowMaterial: {fileID: 2100000, guid: 4234a3fbcea25bd4aaf956d972ee25c6, type: 2}
   _loop: 0
   _edgeVertexIndexRangeList:
   - From: 0
     Prev: 3
     To: 3
     Next: 0
+  _edgeMaterial: {fileID: 2100000, guid: 361714d2ce5752344976ec6eb8f8b779, type: 2}
   _edgeWidth: 0.06
   _edgeOffset: 0.03
 --- !u!1 &7858195101644815800
@@ -1159,13 +1162,16 @@ MonoBehaviour:
   - {x: 0.25, y: -2}
   - {x: 0.25, y: 2}
   _meshUVType: 1
+  _meshMaterial: {fileID: 2100000, guid: 18c74766d69ddf6478599ba122dd0de4, type: 2}
   _canDropShadow: 1
+  _dropShadowMaterial: {fileID: 2100000, guid: 4234a3fbcea25bd4aaf956d972ee25c6, type: 2}
   _loop: 0
   _edgeVertexIndexRangeList:
   - From: 0
     Prev: 3
     To: 3
     Next: 0
+  _edgeMaterial: {fileID: 2100000, guid: 361714d2ce5752344976ec6eb8f8b779, type: 2}
   _edgeWidth: 0.06
   _edgeOffset: 0.03
 --- !u!1001 &1359155537396031143

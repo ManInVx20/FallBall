@@ -54,7 +54,7 @@ namespace VinhLB
 
         private void Update()
         {
-            if (_destroyed)
+            if (_destroyed || !_isActive)
             {
                 return;
             }
@@ -63,9 +63,7 @@ namespace VinhLB
             {
                 if (!_startToDespawn)
                 {
-                    //Debug.Log("a");
                     _startToDespawn = true;
-                    //_startToDespawnTween = _ballRenderer.DOColor(Color.black, 0.25f).SetLoops(-1, LoopType.Yoyo);
                     _startToDespawnTween = _ballRenderer.material.DOFloat(1.0f, _dissolveAmountPropID, _despawnTimerMax);
                     _trailRenderer.enabled = false;
                 }
@@ -81,7 +79,6 @@ namespace VinhLB
             {
                 if (_startToDespawn)
                 {
-                    //Debug.Log("b");
                     _startToDespawn = false;
                     _despawnTimer = 0.0f;
                     _startToDespawnTween.Kill();
@@ -203,6 +200,7 @@ namespace VinhLB
             transform.DORotateQuaternion(Quaternion.identity, tweenDuration).SetEase(Ease.OutCubic);
             _doneRenderer.DOColor(Color.white, tweenDuration).OnComplete(() =>
             {
+                SetActive(false);
                 _currentSlot.SetIsFilled(true);
             });
 

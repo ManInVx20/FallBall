@@ -41,20 +41,6 @@ namespace VinhLB
 
         private void UpdatePortalVisual()
         {
-            //ParticleSystem.ColorOverLifetimeModule col = _portalVFX.colorOverLifetime;
-            //GradientColorKey[] gradientColorKeys = col.color.gradient.colorKeys;
-            //for (int i = 0; i < gradientColorKeys.Length - 1; i++)
-            //{
-            //    Color color = gradientColorKeys[i].color;
-            //    color.r = Utilities.RepeatValue(color.r + _colorOffset, 0.0f, 1.0f);
-            //    color.g = Utilities.RepeatValue(color.g + _colorOffset, 0.0f, 1.0f);
-            //    color.b = Utilities.RepeatValue(color.b + _colorOffset, 0.0f, 1.0f);
-            //    gradientColorKeys[i].color = color;
-            //}
-            //Gradient gradient = new Gradient();
-            //gradient.SetKeys(gradientColorKeys, col.color.gradient.alphaKeys);
-            //col.color = gradient;
-
             _portalRenderer.material.SetColor(_colorPropID, _color);
         }
     }

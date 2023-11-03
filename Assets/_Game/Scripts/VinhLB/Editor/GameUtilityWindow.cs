@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace VinhLB
 {
@@ -92,6 +91,10 @@ namespace VinhLB
             if (GUILayout.Button("Win 3 Stars"))
             {
                 LevelManager.Instance.CurrentLevel.Win(true, 3);
+            }
+            if (GUILayout.Button("Lose"))
+            {
+                LevelManager.Instance.CurrentLevel.Lose();
             }
         }
     }

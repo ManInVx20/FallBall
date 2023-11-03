@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static VinhLB.DrawPolygon2D;
 
 namespace VinhLB
 {
@@ -14,8 +13,11 @@ namespace VinhLB
         private const float HANDLE_SIZE = 0.15f;
 
         private SerializedProperty _meshUVTypeProp;
+        private SerializedProperty _meshMaterialProp;
         private SerializedProperty _canDropShadowProp;
+        private SerializedProperty _dropShadowMaterialProp;
         private SerializedProperty _vertexListProp;
+        private SerializedProperty _edgeMaterialProp;
         private SerializedProperty _edgeWidthProp;
         private SerializedProperty _edgeOffsetProp;
         private SerializedProperty _loopProp;
@@ -24,8 +26,11 @@ namespace VinhLB
         private void OnEnable()
         {
             _meshUVTypeProp = serializedObject.FindProperty("_meshUVType");
+            _meshMaterialProp = serializedObject.FindProperty("_meshMaterial");
             _canDropShadowProp = serializedObject.FindProperty("_canDropShadow");
+            _dropShadowMaterialProp = serializedObject.FindProperty("_dropShadowMaterial");
             _vertexListProp = serializedObject.FindProperty("VertexList");
+            _edgeMaterialProp = serializedObject.FindProperty("_edgeMaterial");
             _edgeWidthProp = serializedObject.FindProperty("_edgeWidth");
             _edgeOffsetProp = serializedObject.FindProperty("_edgeOffset");
             _loopProp = serializedObject.FindProperty("_loop");
@@ -64,9 +69,11 @@ namespace VinhLB
 
             GUILayout.Label("Draw Polygon", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_meshUVTypeProp);
+            EditorGUILayout.PropertyField(_meshMaterialProp);
             EditorGUILayout.PropertyField(_canDropShadowProp);
             if (_canDropShadowProp.boolValue)
             {
+                EditorGUILayout.PropertyField(_dropShadowMaterialProp);
                 foreach (DrawPolygon2D drawPolygon2D in targets)
                 {
                     if (!PrefabUtility.IsPartOfPrefabAsset(drawPolygon2D))
@@ -101,6 +108,7 @@ namespace VinhLB
             GUILayout.Space(10.0f);
 
             GUILayout.Label("Draw Edge", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(_edgeMaterialProp);
             EditorGUILayout.PropertyField(_edgeWidthProp);
             EditorGUILayout.PropertyField(_edgeOffsetProp);
             EditorGUILayout.PropertyField(_loopProp);

@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
 
 namespace VinhLB
@@ -32,11 +30,17 @@ namespace VinhLB
         [SerializeField]
         private UVType _meshUVType;
         [SerializeField]
+        private Material _meshMaterial;
+        [SerializeField]
         private bool _canDropShadow = false;
+        [SerializeField]
+        private Material _dropShadowMaterial;
         [SerializeField]
         private bool _loop = false;
         [SerializeField]
         private List<EdgeVertexIndexRange> _edgeVertexIndexRangeList;
+        [SerializeField]
+        private Material _edgeMaterial;
         [SerializeField]
         private float _edgeWidth = 0.06f;
         [SerializeField]
@@ -75,7 +79,8 @@ namespace VinhLB
                 return;
             }
 
-            UpdateMeshInternal(VertexList.ToArray(), _visualMesh, _visualMeshFilter, _meshUVType);
+            UpdateMeshInternal(VertexList.ToArray(), _visualMesh, _visualMeshFilter, 
+                _visualMeshRenderer, _meshUVType, _meshMaterial);
 
             if (_canDropShadow)
             {
@@ -100,7 +105,8 @@ namespace VinhLB
                     }
                 }
 
-                UpdateMeshInternal(vertexList.ToArray(), _dropShadowMesh, _dropShadowMeshFilter, _meshUVType);
+                UpdateMeshInternal(vertexList.ToArray(), _dropShadowMesh, _dropShadowMeshFilter, 
+                    _dropShadowMeshRenderer, _meshUVType, _dropShadowMaterial);
             }
         }
 
@@ -243,9 +249,8 @@ namespace VinhLB
                 _dropShadowGO.transform.SetParent(transform, false);
                 _dropShadowMeshFilter = _dropShadowGO.AddComponent<MeshFilter>();
                 _dropShadowMeshRenderer = _dropShadowGO.AddComponent<MeshRenderer>();
-#if UNITY_EDITOR
-                _dropShadowMeshRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/SpriteDropShadow.mat");
-#endif
+                _dropShadowMeshRenderer.material = _dropShadowMaterial;
+
                 SortingGroup sortingGroup = _dropShadowGO.AddComponent<SortingGroup>();
                 sortingGroup.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
                 sortingGroup.sortingOrder = 9;
@@ -262,6 +267,12 @@ namespace VinhLB
 
         private void UpdateComponents()
         {
+#if UNITY_EDITOR
+            _meshMaterial ??= AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Tube.mat");
+            _dropShadowMaterial ??= AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/SpriteDropShadow.mat");
+            _edgeMaterial ??= AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Edge.mat");
+#endif
+
             if (_visualGO == null)
             {
                 _visualGO = transform.Find("Visual")?.gameObject;
@@ -278,9 +289,8 @@ namespace VinhLB
                     _visualGO.transform.SetParent(transform, false);
                     _visualMeshFilter = _visualGO.AddComponent<MeshFilter>();
                     _visualMeshRenderer = _visualGO.AddComponent<MeshRenderer>();
-#if UNITY_EDITOR
-                    _visualMeshRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Tube.mat");
-#endif
+                    _visualMeshRenderer.material = _meshMaterial;
+
                     SortingGroup sortingGroup = _visualGO.AddComponent<SortingGroup>();
                     sortingGroup.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
                     sortingGroup.sortingOrder = 10;
@@ -325,7 +335,8 @@ namespace VinhLB
             }
         }
 
-        private void UpdateMeshInternal(Vector2[] vertexArray, Mesh mesh, MeshFilter filter, UVType UVtype)
+        private void UpdateMeshInternal(Vector2[] vertexArray, Mesh mesh, MeshFilter filter, 
+            MeshRenderer renderer, UVType UVtype, Material material)
         {
             Triangulator triangulator = new Triangulator(vertexArray);
             int[] triangleArray = triangulator.Triangulate();
@@ -362,6 +373,8 @@ namespace VinhLB
                 }
             }
             mesh.uv = uvArray;
+
+            renderer.material = material;
         }
 
         private void CreateEdgeRendererInternal(int index, Vector3[] pointArray, bool loop = false)
@@ -385,9 +398,7 @@ namespace VinhLB
                 edgeRenderer.loop = loop;
                 edgeRenderer.startWidth = _edgeWidth;
                 edgeRenderer.endWidth = _edgeWidth;
-#if UNITY_EDITOR
-                edgeRenderer.material = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/Edge.mat");
-#endif
+                edgeRenderer.material = _edgeMaterial;
                 edgeRenderer.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
                 edgeRenderer.sortingOrder = 20;
 

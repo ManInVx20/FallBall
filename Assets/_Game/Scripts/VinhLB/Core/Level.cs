@@ -69,7 +69,6 @@ namespace VinhLB
 
         public void Win(bool skipMoves = false, int forcedStarAmount = 3)
         {
-            //Debug.Log("Win");
             GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
 
             int starAmount;
@@ -98,7 +97,6 @@ namespace VinhLB
 
         public void Lose()
         {
-            //Debug.Log("Lose");
             GameUIManager.Instance.GetGameUIScreen<ResultScreen>().OpenLose();
         }
 
