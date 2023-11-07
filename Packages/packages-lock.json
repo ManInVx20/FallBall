@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "com.coffee.ui-effect": {
+      "version": "https://github.com/mob-sakai/UIEffect.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "b43e40508b167d143330d8b9eff0d5c9965cdf3c"
+    },
+    "com.coffee.ui-particle": {
+      "version": "https://github.com/mob-sakai/ParticleEffectForUGUI.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "447996ce0f1c9589d4fd3305ae2df99c91ca49a9"
+    },
     "com.coffee.unmask": {
       "version": "https://github.com/mob-sakai/UnmaskForUGUI.git",
       "depth": 0,
@@ -8,7 +22,7 @@
       "hash": "a276ef6e7eaba3a265abb9dd2fbd981ad2ef2cc3"
     },
     "com.unity.2d.animation": {
-      "version": "7.0.11",
+      "version": "7.0.12",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -93,7 +107,7 @@
       "dependencies": {}
     },
     "com.unity.2d.tilemap.extras": {
-      "version": "2.2.6",
+      "version": "2.2.7",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -105,7 +119,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.4",
+      "version": "1.8.9",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -114,7 +128,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "2.1.0",
+      "version": "2.2.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -132,13 +146,13 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.2d.animation": "7.0.11",
+        "com.unity.2d.animation": "7.0.12",
         "com.unity.2d.pixel-perfect": "5.0.3",
         "com.unity.2d.psdimporter": "6.0.7",
         "com.unity.2d.sprite": "1.0.0",
         "com.unity.2d.spriteshape": "7.0.7",
         "com.unity.2d.tilemap": "1.0.0",
-        "com.unity.2d.tilemap.extras": "2.2.6",
+        "com.unity.2d.tilemap.extras": "2.2.7",
         "com.unity.2d.aseprite": "1.0.1"
       }
     },
@@ -182,7 +196,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
-      "version": "12.1.12",
+      "version": "12.1.13",
       "depth": 1,
       "source": "builtin",
       "dependencies": {
@@ -192,14 +206,14 @@
       }
     },
     "com.unity.render-pipelines.universal": {
-      "version": "12.1.12",
+      "version": "12.1.13",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
-        "com.unity.burst": "1.8.4",
-        "com.unity.render-pipelines.core": "12.1.12",
-        "com.unity.shadergraph": "12.1.12"
+        "com.unity.burst": "1.8.9",
+        "com.unity.render-pipelines.core": "12.1.13",
+        "com.unity.shadergraph": "12.1.13"
       }
     },
     "com.unity.searcher": {
@@ -210,11 +224,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {
-      "version": "12.1.12",
+      "version": "12.1.13",
       "depth": 1,
       "source": "builtin",
       "dependencies": {
-        "com.unity.render-pipelines.core": "12.1.12",
+        "com.unity.render-pipelines.core": "12.1.13",
         "com.unity.searcher": "4.9.1"
       }
     },

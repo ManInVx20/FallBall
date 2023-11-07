@@ -1,3 +1,4 @@
+using Coffee.UIExtensions;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,6 +25,8 @@ namespace VinhLB
         private Button _nextButton;
         [SerializeField]
         private ParticleSystem _confettiVFX;
+        [SerializeField]
+        private UIParticle _confettiParticle;
 
         public override void Initialize()
         {
@@ -59,7 +62,8 @@ namespace VinhLB
 
         public override void Close()
         {
-            _confettiVFX.Stop();
+            //_confettiVFX.Stop();
+            _confettiParticle.Stop();
 
             base.Close();
         }
@@ -76,7 +80,8 @@ namespace VinhLB
 
             SetStar(starAmount);
 
-            _confettiVFX.Play();
+            //_confettiVFX.Play();
+            _confettiParticle.Play();
         }
 
         public void OpenLose()
