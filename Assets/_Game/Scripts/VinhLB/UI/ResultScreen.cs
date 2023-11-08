@@ -1,4 +1,5 @@
 using Coffee.UIExtensions;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,7 +27,7 @@ namespace VinhLB
         [SerializeField]
         private ParticleSystem _confettiVFX;
         [SerializeField]
-        private UIParticle _confettiParticle;
+        private UIParticle _winParticle;
 
         public override void Initialize()
         {
@@ -34,19 +35,17 @@ namespace VinhLB
             {
                 LevelManager.Instance.RestartLevel();
 
-                Close();
+                GameUIManager.Instance.Open<GameplayScreen>();
             });
             _homeButton.onClick.AddListener(() =>
             {
                 GameManager.Instance.ReturnHome();
-
-                Close();
             });
             _nextButton.onClick.AddListener(() =>
             {
                 if (LevelManager.Instance.TryLoadLevel(LevelManager.Instance.CurrentLevelIndex + 1))
                 {
-                    Close();
+                    GameUIManager.Instance.Open<GameplayScreen>();
 
                     GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateLevelText();
                 }
@@ -57,21 +56,26 @@ namespace VinhLB
         {
             base.Open();
 
-            
+            Level level = LevelManager.Instance.CurrentLevel;
+            if (level.Won)
+            {
+                OpenWin(level.StarAmount);
+            }
+            else
+            {
+                OpenLose();
+            }
         }
 
         public override void Close()
         {
-            //_confettiVFX.Stop();
-            _confettiParticle.Stop();
+            _winParticle.Stop();
 
             base.Close();
         }
 
         public void OpenWin(int starAmount)
         {
-            Open();
-
             _titleText.text = $"LEVEL {LevelManager.Instance.CurrentLevelIndex + 1} COMPLETED!";
 
             _nextButton.gameObject.SetActive(!LevelManager.Instance.IsLastLevel());
@@ -80,23 +84,22 @@ namespace VinhLB
 
             SetStar(starAmount);
 
-            //_confettiVFX.Play();
-            _confettiParticle.Play();
+            _winParticle.Play();
         }
 
         public void OpenLose()
         {
-            Open();
-
             _titleText.text = "LOSE";
 
             _nextButton.gameObject.SetActive(false);
 
-            SetStar(0);
+            SetStar(0, false);
         }
 
-        public void SetStar(int starAchieved)
+        public void SetStar(int starAchieved, bool animated = true)
         {
+            Sequence sequence = DOTween.Sequence();
+
             for (int i = 0; i < _starImageArray.Length; i++)
             {
                 if (i < starAchieved)
@@ -106,6 +109,16 @@ namespace VinhLB
                 else
                 {
                     _starImageArray[i].color = _lockColor;
+                }
+
+                if (animated)
+                {
+                    _starImageArray[i].transform.localScale = Vector3.zero;
+                    sequence.Append(_starImageArray[i].transform.DOScale(1.0f, 0.2f).SetEase(Ease.OutBack));
+                }
+                else
+                {
+                    _starImageArray[i].transform.localScale = Vector3.one;
                 }
             }
         }

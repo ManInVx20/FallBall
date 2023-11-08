@@ -10,6 +10,8 @@ namespace VinhLB
     {
         public List<Cannon> CannonList => _cannonList;
         public int MovesLeft => _movesLeft;
+        public bool Won => _won;
+        public int StarAmount => _starAmount;
 
         [SerializeField]
         private List<Cannon> _cannonList;
@@ -19,6 +21,8 @@ namespace VinhLB
         private LevelInfo _levelInfo;
         private List<Slot> _notFilledSlotList;
         private int _movesLeft;
+        private bool _won;
+        private int _starAmount;
         private Coroutine _waitingToLoseCoroutine;
 
         public void Initialize(LevelInfo info)
@@ -36,6 +40,8 @@ namespace VinhLB
         public void ResetState()
         {
             _movesLeft = _levelInfo.MaxMoves;
+            _won = false;
+            _starAmount = 0;
 
             GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText();
         }
@@ -69,35 +75,40 @@ namespace VinhLB
 
         public void Win(bool skipMoves = false, int forcedStarAmount = 3)
         {
+            _won = true;
+
             GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
 
-            int starAmount;
             if (skipMoves)
             {
-                starAmount = forcedStarAmount;
+                _starAmount = forcedStarAmount;
             }
             else
             {
                 int movesUsed = _levelInfo.MaxMoves - _movesLeft;
                 if (movesUsed <= _levelInfo.MaxMoves3Stars)
                 {
-                    starAmount = 3;
+                    _starAmount = 3;
                 }
                 else if (movesUsed <= _levelInfo.MaxMoves2Stars)
                 {
-                    starAmount = 2;
+                    _starAmount = 2;
                 }
                 else
                 {
-                    starAmount = 1;
+                    _starAmount = 1;
                 }
             }
-            GameUIManager.Instance.GetGameUIScreen<ResultScreen>().OpenWin(starAmount);
+
+            GameUIManager.Instance.Open<ResultScreen>();
         }
 
         public void Lose()
         {
-            GameUIManager.Instance.GetGameUIScreen<ResultScreen>().OpenLose();
+            _won = false;
+            _starAmount = 0;
+
+            GameUIManager.Instance.Open<ResultScreen>();
         }
 
         private void Slot_OnIsFilledChangedAction(Slot slot)
