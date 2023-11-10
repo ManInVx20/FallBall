@@ -332,7 +332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3288000139790437820, guid: fd9c2b4318fb328479d190a5227202d3, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3288000139790437820, guid: fd9c2b4318fb328479d190a5227202d3, type: 3}
       propertyPath: m_LocalScale.x
@@ -541,6 +541,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305598660}
   m_CullTransparentMesh: 1
+--- !u!1001 &314260155
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 604277711}
+    m_Modifications:
+    - target: {fileID: 7550599162982777280, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_Name
+      value: SunburstVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777281, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777281, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_ApplyActiveColorSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+--- !u!4 &314260156 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7550599162982777283, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+  m_PrefabInstance: {fileID: 314260155}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &314260157 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7550599162982777282, guid: 552f751b4f7deda4890358b21714ac9c, type: 3}
+  m_PrefabInstance: {fileID: 314260155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &321177647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,6 +1960,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 861353712}
+  - {fileID: 314260156}
   - {fileID: 229800037}
   m_Father: {fileID: 1270223415}
   m_RootOrder: 1
@@ -1921,6 +1997,7 @@ MonoBehaviour:
   m_AnimatableProperties: []
   m_Particles:
   - {fileID: 861353713}
+  - {fileID: 314260157}
   - {fileID: 229800038}
   m_MeshSharing: 1
   m_GroupId: 0
@@ -1988,7 +2065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7529412}
+  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

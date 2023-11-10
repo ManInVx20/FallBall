@@ -105,7 +105,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1144581475
   m_SortingLayer: 1
-  m_SortingOrder: 120
+  m_SortingOrder: 121
   m_Sprite: {fileID: -5177388603050735206, guid: 8884154dfe85442a3a3578be807dbcdf, type: 3}
   m_Color: {r: 0.062077243, g: 0.8773585, b: 0.78391606, a: 1}
   m_FlipX: 0
@@ -127,6 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8748290250563227198}
   - component: {fileID: 8748290250563227197}
+  - component: {fileID: 3740453212198949950}
   - component: {fileID: 8748290250563227196}
   m_Layer: 10
   m_Name: BouncePad
@@ -177,6 +178,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.55, y: 0.1}
   m_EdgeRadius: 0
+--- !u!95 &3740453212198949950
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8748290250563227199}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9c0e780cb3fe0e14bae0ed0107eac16a, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8748290250563227196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9787c2562ecda41a5cfffd5248d33c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 3740453212198949950}
   _bounciness: 1
 --- !u!1 &8748290250870596031
 GameObject:

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,8 @@ namespace VinhLB
         private List<T> _createdList = new List<T>();
         private Stack<T> _pooledStack = new Stack<T>();
         private GameObject _prefab;
-        private System.Action<T> _onPullAction;
-        private System.Action<T> _onPushAction;
+        private Action<T> _onPullAction;
+        private Action<T> _onPushAction;
 
         public int PooledCount => _pooledStack.Count;
 
@@ -21,7 +22,7 @@ namespace VinhLB
             Spawn(spawnAmount);
         }
 
-        public ObjectPool(GameObject prefab, System.Action<T> onPullAction, System.Action<T> onPushAction)
+        public ObjectPool(GameObject prefab, Action<T> onPullAction, Action<T> onPushAction)
         {
             _prefab = prefab;
             _onPullAction = onPullAction;

@@ -43,7 +43,7 @@ namespace VinhLB
             _won = false;
             _starAmount = 0;
 
-            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText();
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText(false);
         }
 
         public void IncreaseMoves()
@@ -75,6 +75,7 @@ namespace VinhLB
 
         public void Win(bool skipMoves = false, int forcedStarAmount = 3)
         {
+            //Debug.Log("Win");
             _won = true;
 
             GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
@@ -105,6 +106,7 @@ namespace VinhLB
 
         public void Lose()
         {
+            //Debug.Log("Lose");
             _won = false;
             _starAmount = 0;
 
@@ -140,7 +142,12 @@ namespace VinhLB
                 yield return null;
             }
 
-            Lose();
+            yield return new WaitForSeconds(0.1f);
+
+            if (!_won)
+            {
+                Lose();
+            }
 
             _waitingToLoseCoroutine = null;
         }

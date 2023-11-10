@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -70,9 +71,14 @@ namespace VinhLB
             _levelText.text = $"LEVEL {LevelManager.Instance.CurrentLevelIndex + 1}";
         }
 
-        public void UpdateMovesLeftText()
+        public void UpdateMovesLeftText(bool animated = true)
         {
             _movesLeftText.text = LevelManager.Instance.CurrentLevel.MovesLeft.ToString();
+
+            if (animated)
+            {
+                _movesLeftText.transform.DOPunchScale(Vector3.one * 0.5f, 0.2f);
+            }
         }
 
         public void OnNormalButtonClicked()
@@ -102,7 +108,7 @@ namespace VinhLB
                 _unmaskPanel.CloseUnmask(_rainbowButton.GetComponent<RectTransform>());
             }
         }
-        
+
         public void OnSpikeButtonClicked()
         {
             if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)

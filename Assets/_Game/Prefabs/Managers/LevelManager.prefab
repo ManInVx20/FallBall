@@ -118,11 +118,15 @@ MonoBehaviour:
     MaxMoves3Stars: 8
     MaxMoves2Stars: 11
   - Prefab: {fileID: 1359155538733991624, guid: d0094c4925ec7a84db326e0e381d2623, type: 3}
-    MaxMoves: 14
-    MaxMoves3Stars: 8
-    MaxMoves2Stars: 11
+    MaxMoves: 12
+    MaxMoves3Stars: 6
+    MaxMoves2Stars: 9
   - Prefab: {fileID: 1359155538733991624, guid: 8ea5a9b41311c9f49a6e8547db2ab532, type: 3}
     MaxMoves: 8
     MaxMoves3Stars: 4
     MaxMoves2Stars: 6
-  _unlockAll: 0
+  - Prefab: {fileID: 1359155538733991624, guid: 3e78bf4a0a1f18e4ea847b43fe476506, type: 3}
+    MaxMoves: 8
+    MaxMoves3Stars: 4
+    MaxMoves2Stars: 6
+  _unlockAll: 1
