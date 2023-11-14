@@ -36,17 +36,6 @@ namespace VinhLB
                 CommandInvoker.RedoCommand();
             }
             GUILayout.Label("Ball");
-            if (GUILayout.Button("Normal"))
-            {
-                //foreach (GameObject gameObject in Selection.gameObjects)
-                //{
-                //    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
-                //    {
-                //        cannon.AddBall(BallType.Normal);
-                //    }
-                //}
-                GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().OnNormalButtonClicked();
-            }
             if (GUILayout.Button("Rainbow"))
             {
                 //foreach (GameObject gameObject in Selection.gameObjects)
@@ -56,18 +45,7 @@ namespace VinhLB
                 //        cannon.AddBall(BallType.Rainbow);
                 //    }
                 //}
-                GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().OnRainbowButtonClicked();
-            }
-            if (GUILayout.Button("Spike"))
-            {
-                //foreach (GameObject gameObject in Selection.gameObjects)
-                //{
-                //    if (gameObject.TryGetComponent<Cannon>(out Cannon cannon))
-                //    {
-                //        cannon.AddBall(BallType.Spike);
-                //    }
-                //}
-                GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().OnSpikeButtonClicked();
+                GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().OnRainbowButtonClick();
             }
 
             GUILayout.Space(10.0f);

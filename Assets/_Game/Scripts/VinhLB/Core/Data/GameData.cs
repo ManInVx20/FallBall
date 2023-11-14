@@ -8,8 +8,9 @@ namespace VinhLB
     [Serializable]
     public class GameData
     {
-        public LevelData LevelData;
         public int CurrentStarAmount;
+        public LevelData LevelData;
+        public Dictionary<BoosterType, int> BoosterAmountDict;
 
         public GameData()
         {

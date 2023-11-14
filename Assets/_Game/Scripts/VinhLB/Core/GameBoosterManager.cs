@@ -5,32 +5,88 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class GameBoosterManager : MonoSingleton<GameBoosterManager>
+    public class GameBoosterManager : MonoSingleton<GameBoosterManager>, IDataPersistence
     {
-        public enum ActiveBooster
-        {
-            None = 0,
-            NormalBall = 1,
-            RainbowBall = 2,
-            SpikeBall = 3
-        }
+        public event Action OnActiveBoosterTypeChanged;
+        public event Action OnBoosterAmountDictChanged;
 
-        public event Action OnActiveBoosterChanged;
+        [SerializeField]
+        private int _initialAmount = 0;
 
-        private ActiveBooster _currentActiveBooster;
+        private Dictionary<BoosterType, int> _boosterAmountDict;
+        private BoosterType _currentActiveBoosterType;
 
-        public ActiveBooster CurrentActiveBooster
+        public BoosterType CurrentActiveBoosterType
         {
             get
             { 
-                return _currentActiveBooster;
+                return _currentActiveBoosterType;
             }
             set
             {
-                _currentActiveBooster = value;
+                _currentActiveBoosterType = value;
 
-                OnActiveBoosterChanged?.Invoke();
+                OnActiveBoosterTypeChanged?.Invoke();
             }
         }
+
+        public int GetBoosterAmountByType(BoosterType type)
+        {
+            if (!_boosterAmountDict.ContainsKey(type))
+            {
+                Debug.LogError($"BoosterAmountDict does not have {type} booster type.");
+
+                return -1;
+            }
+            
+            return _boosterAmountDict[type];
+        }
+
+        public void ModifyBoosterAmountByType(BoosterType type, int value)
+        {
+            if (!_boosterAmountDict.ContainsKey(type))
+            {
+                Debug.LogError($"BoosterAmountDict does not have {type} booster type.");
+
+                return;
+            }
+
+            _boosterAmountDict[type] += value;
+
+            OnBoosterAmountDictChanged?.Invoke();
+        }
+
+        public void LoadData(GameData data)
+        {
+            _boosterAmountDict = data.BoosterAmountDict;
+
+            if (_boosterAmountDict == null)
+            {
+                _boosterAmountDict = new Dictionary<BoosterType, int>();
+
+                foreach (BoosterType type in Enum.GetValues(typeof(BoosterType)))
+                {
+                    if (type == BoosterType.None)
+                    {
+                        continue;
+                    }
+
+                    _boosterAmountDict[type] = _initialAmount;
+                }
+            }
+        }
+
+        public void SaveData(GameData data)
+        {
+            data.BoosterAmountDict = _boosterAmountDict;
+        }
+    }
+
+    public enum BoosterType
+    {
+        None = 0,
+        UndoMove = 1,
+        AddMove = 2,
+        AddRainbowBall = 3,
     }
 }

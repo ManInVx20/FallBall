@@ -36,7 +36,7 @@ namespace VinhLB
 
         private void Update()
         {
-            if (Vector3.Distance(_centerPoint.position, _pointArray[_currentIndex].position) < GameConstants.FLOOR_MIN_DISTANCE)
+            if (Vector3.Distance(_centerPoint.position, _pointArray[_currentIndex].position) < GameConstants.CHECK_MIN_DISTANCE)
             {
                 _currentIndex = (_currentIndex + 1) % _pointArray.Length;
                 _moveDirection = (_pointArray[_currentIndex].position - _centerPoint.position).normalized;

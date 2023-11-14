@@ -17,12 +17,6 @@ namespace VinhLB
         [SerializeField]
         private Button _spawnButton;
         [SerializeField]
-        private Button _normalButton;
-        [SerializeField]
-        private Button _rainbowButton;
-        [SerializeField]
-        private Button _spikeButton;
-        [SerializeField]
         private SpriteRenderer[] _rendererArray;
         [SerializeField]
         private Material _idleMaterial;
@@ -45,55 +39,7 @@ namespace VinhLB
 
         private void Awake()
         {
-            _spawnButton.onClick.AddListener(() =>
-            {
-                if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
-                {
-                    if (_canSpawn && LevelManager.Instance.CurrentLevel.MovesLeft > 0)
-                    {
-                        _canSpawn = false;
-
-                        ICommand command = new SpawnCommand(this);
-                        CommandInvoker.ExecuteCommand(command);
-
-                        _shootVFX.Play();
-                    }
-                }
-                else
-                {
-                    if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.NormalBall)
-                    {
-                        AddBall(BallType.Normal);
-
-                        GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
-                    }
-                    else if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.RainbowBall)
-                    {
-                        AddBall(BallType.Rainbow);
-
-                        GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
-                    }
-                    else if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.SpikeBall)
-                    {
-                        AddBall(BallType.Spike);
-
-                        GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
-                    }
-                }
-
-            });
-            _normalButton.onClick.AddListener(() =>
-            {
-                AddBall(BallType.Normal);
-            });
-            _rainbowButton.onClick.AddListener(() =>
-            {
-                AddBall(BallType.Rainbow);
-            });
-            _spikeButton.onClick.AddListener(() =>
-            {
-                AddBall(BallType.Spike);
-            });
+            _spawnButton.onClick.AddListener(OnSpawnButtonClick);
         }
 
         private void Start()
@@ -204,6 +150,33 @@ namespace VinhLB
                 case BallType.Spike:
                     _spawnButton.image.color = Color.white;
                     break;
+            }
+        }
+
+        private void OnSpawnButtonClick()
+        {
+            if (GameBoosterManager.Instance.CurrentActiveBoosterType == BoosterType.None)
+            {
+                if (_canSpawn && LevelManager.Instance.CurrentLevel.MovesLeft > 0)
+                {
+                    _canSpawn = false;
+
+                    ICommand command = new SpawnCommand(this);
+                    CommandInvoker.ExecuteCommand(command);
+
+                    _shootVFX.Play();
+                }
+            }
+            else
+            {
+                if (GameBoosterManager.Instance.CurrentActiveBoosterType == BoosterType.AddRainbowBall)
+                {
+                    AddBall(BallType.Rainbow);
+
+                    GameBoosterManager.Instance.ModifyBoosterAmountByType(BoosterType.AddRainbowBall, -1);
+
+                    GameBoosterManager.Instance.CurrentActiveBoosterType = BoosterType.None;
+                }
             }
         }
     }

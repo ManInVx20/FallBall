@@ -34,14 +34,14 @@ namespace VinhLB
 
         private void Start()
         {
-            GameBoosterManager.Instance.OnActiveBoosterChanged += GameBoosterManager_OnActiveBoosterChanged;
+            GameBoosterManager.Instance.OnActiveBoosterTypeChanged += GameBoosterManager_OnActiveBoosterChanged;
 
             GameBoosterManager_OnActiveBoosterChanged();
         }
 
         private void GameBoosterManager_OnActiveBoosterChanged()
         {
-            if (GameBoosterManager.Instance.CurrentActiveBooster != GameBoosterManager.ActiveBooster.None)
+            if (GameBoosterManager.Instance.CurrentActiveBoosterType != BoosterType.None)
             {
                 Open();
             }

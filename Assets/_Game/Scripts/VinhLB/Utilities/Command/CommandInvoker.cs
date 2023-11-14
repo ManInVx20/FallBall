@@ -63,5 +63,10 @@ namespace VinhLB
             undoStack.Clear();
             redoStack.Clear();
         }
+
+        public static bool HasCommandToUndo()
+        {
+            return undoStack.Count > 0;
+        }
     }
 }

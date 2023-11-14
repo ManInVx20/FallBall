@@ -16,21 +16,26 @@ namespace VinhLB
         [SerializeField]
         private Button _restartButton;
         [SerializeField]
-        private Button _settingsButton;
-        [SerializeField]
         private Button _undoButton;
-        [SerializeField]
-        private Button _redoButton;
         [SerializeField]
         private Button _moveButton;
         [SerializeField]
-        private Button _normalButton;
-        [SerializeField]
         private Button _rainbowButton;
         [SerializeField]
-        private Button _spikeButton;
+        private TMP_Text _undoAmount;
+        [SerializeField]
+        private TMP_Text _moveAmount;
+        [SerializeField]
+        private TMP_Text _rainbowAmount;
+        [SerializeField]
+        private SettingsMenu _settingsMenu;
         [SerializeField]
         private UnmaskPanel _unmaskPanel;
+
+        private void Start()
+        {
+            GameBoosterManager.Instance.OnBoosterAmountDictChanged += GameBoosterManager_OnBoosterAmountDictChanged;
+        }
 
         public override void Initialize()
         {
@@ -38,25 +43,29 @@ namespace VinhLB
             {
                 LevelManager.Instance.RestartLevel();
             });
-            _settingsButton.onClick.AddListener(() =>
-            {
-                GameManager.Instance.ReturnHome();
-            });
             _undoButton.onClick.AddListener(() =>
             {
-                CommandInvoker.UndoCommand();
-            });
-            _redoButton.onClick.AddListener(() =>
-            {
-                CommandInvoker.RedoCommand();
+                if (GameBoosterManager.Instance.GetBoosterAmountByType(BoosterType.UndoMove) > 0)
+                {
+                    if (CommandInvoker.HasCommandToUndo())
+                    {
+                        GameBoosterManager.Instance.ModifyBoosterAmountByType(BoosterType.UndoMove, -1);
+
+                        CommandInvoker.UndoCommand();
+                    }
+                }
             });
             _moveButton.onClick.AddListener(() =>
             {
-                LevelManager.Instance.CurrentLevel.IncreaseMoves();
+                if (GameBoosterManager.Instance.GetBoosterAmountByType(BoosterType.AddMove) > 0)
+                {
+                    GameBoosterManager.Instance.ModifyBoosterAmountByType(BoosterType.AddMove, -1);
+
+                    //LevelManager.Instance.CurrentLevel.IncreaseMoves();
+                    LevelManager.Instance.CurrentLevel.ModifyMovesLeft(1);
+                }
             });
-            _normalButton.onClick.AddListener(OnNormalButtonClicked);
-            _rainbowButton.onClick.AddListener(OnRainbowButtonClicked);
-            _spikeButton.onClick.AddListener(OnSpikeButtonClicked);
+            _rainbowButton.onClick.AddListener(OnRainbowButtonClick);
         }
 
         public override void Open()
@@ -64,6 +73,8 @@ namespace VinhLB
             base.Open();
 
             UpdateLevelText();
+
+            UpdateBoosterUI();
         }
 
         public void UpdateLevelText()
@@ -81,45 +92,40 @@ namespace VinhLB
             }
         }
 
-        public void OnNormalButtonClicked()
+        public void UpdateBoosterUI()
         {
-            if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
-            {
-                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.NormalBall;
-                _unmaskPanel.OpenUnmask(_normalButton.GetComponent<RectTransform>(), UnmaskPanel.UnmaskShape.Square);
-            }
-            else
-            {
-                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
-                _unmaskPanel.CloseUnmask(_normalButton.GetComponent<RectTransform>());
-            }
+            int undoAmount = GameBoosterManager.Instance.GetBoosterAmountByType(BoosterType.UndoMove);
+            int moveAmount = GameBoosterManager.Instance.GetBoosterAmountByType(BoosterType.AddMove);
+            int rainbowAmount = GameBoosterManager.Instance.GetBoosterAmountByType(BoosterType.AddRainbowBall);
+
+            _undoButton.interactable = undoAmount > 0;
+            _moveButton.interactable = moveAmount > 0;
+            _rainbowButton.interactable = rainbowAmount > 0;
+
+            _undoAmount.text = undoAmount.ToString();
+            _moveAmount.text = moveAmount.ToString();
+            _rainbowAmount.text = rainbowAmount.ToString();
         }
 
-        public void OnRainbowButtonClicked()
+        private void GameBoosterManager_OnBoosterAmountDictChanged()
         {
-            if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
+            UpdateBoosterUI();
+        }
+
+        public void OnRainbowButtonClick()
+        {
+            if (GameBoosterManager.Instance.CurrentActiveBoosterType == BoosterType.None)
             {
-                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.RainbowBall;
-                _unmaskPanel.OpenUnmask(_rainbowButton.GetComponent<RectTransform>(), UnmaskPanel.UnmaskShape.Square);
+                if (GameBoosterManager.Instance.GetBoosterAmountByType(BoosterType.AddRainbowBall) > 0)
+                {
+                    GameBoosterManager.Instance.CurrentActiveBoosterType = BoosterType.AddRainbowBall;
+                    _unmaskPanel.OpenUnmask(_rainbowButton.GetComponent<RectTransform>(), UnmaskPanel.UnmaskShape.Square);
+                }
             }
             else
             {
-                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+                GameBoosterManager.Instance.CurrentActiveBoosterType = BoosterType.None;
                 _unmaskPanel.CloseUnmask(_rainbowButton.GetComponent<RectTransform>());
-            }
-        }
-
-        public void OnSpikeButtonClicked()
-        {
-            if (GameBoosterManager.Instance.CurrentActiveBooster == GameBoosterManager.ActiveBooster.None)
-            {
-                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.SpikeBall;
-                _unmaskPanel.OpenUnmask(_spikeButton.GetComponent<RectTransform>(), UnmaskPanel.UnmaskShape.Square);
-            }
-            else
-            {
-                GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
-                _unmaskPanel.CloseUnmask(_spikeButton.GetComponent<RectTransform>());
             }
         }
     }

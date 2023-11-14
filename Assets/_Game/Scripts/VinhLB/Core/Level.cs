@@ -46,6 +46,29 @@ namespace VinhLB
             GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText(false);
         }
 
+        public void ModifyMovesLeft(int value)
+        {
+            _movesLeft += value;
+            _movesLeft = Mathf.Clamp(_movesLeft, 0, _movesLeft);
+
+            GameUIManager.Instance.GetGameUIScreen<GameplayScreen>().UpdateMovesLeftText();
+
+            if (_movesLeft > 0)
+            {
+                if (_waitingToLoseCoroutine != null)
+                {
+                    StopCoroutine(_waitingToLoseCoroutine);
+                }
+            }
+            else if (_movesLeft <= 0)
+            {
+                if (_waitingToLoseCoroutine == null)
+                {
+                    _waitingToLoseCoroutine = StartCoroutine(WaitingToLoseCoroutine());
+                }
+            }
+        }
+
         public void IncreaseMoves()
         {
             _movesLeft += 1;
@@ -78,7 +101,7 @@ namespace VinhLB
             //Debug.Log("Win");
             _won = true;
 
-            GameBoosterManager.Instance.CurrentActiveBooster = GameBoosterManager.ActiveBooster.None;
+            GameBoosterManager.Instance.CurrentActiveBoosterType = BoosterType.None;
 
             if (skipMoves)
             {
