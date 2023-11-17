@@ -79,7 +79,7 @@ namespace VinhLB
                 return;
             }
 
-            UpdateMeshInternal(VertexList.ToArray(), _visualMesh, _visualMeshFilter, 
+            UpdateMeshInternal(VertexList.ToArray(), _visualMesh, _visualMeshFilter,
                 _visualMeshRenderer, _meshUVType, _meshMaterial);
 
             if (_canDropShadow)
@@ -105,7 +105,7 @@ namespace VinhLB
                     }
                 }
 
-                UpdateMeshInternal(vertexList.ToArray(), _dropShadowMesh, _dropShadowMeshFilter, 
+                UpdateMeshInternal(vertexList.ToArray(), _dropShadowMesh, _dropShadowMeshFilter,
                     _dropShadowMeshRenderer, _meshUVType, _dropShadowMaterial);
             }
         }
@@ -335,7 +335,7 @@ namespace VinhLB
             }
         }
 
-        private void UpdateMeshInternal(Vector2[] vertexArray, Mesh mesh, MeshFilter filter, 
+        private void UpdateMeshInternal(Vector2[] vertexArray, Mesh mesh, MeshFilter filter,
             MeshRenderer renderer, UVType UVtype, Material material)
         {
             Triangulator triangulator = new Triangulator(vertexArray);
@@ -396,15 +396,15 @@ namespace VinhLB
                 go.transform.SetParent(transform);
                 edgeRenderer = go.AddComponent<LineRenderer>();
                 edgeRenderer.loop = loop;
-                edgeRenderer.startWidth = _edgeWidth;
-                edgeRenderer.endWidth = _edgeWidth;
-                edgeRenderer.material = _edgeMaterial;
                 edgeRenderer.sortingLayerName = GameConstants.OBJECT_SORTING_LAYER_NAME;
                 edgeRenderer.sortingOrder = 20;
 
                 _edgeRendererList.Add(edgeRenderer);
             }
 
+            edgeRenderer.startWidth = _edgeWidth;
+            edgeRenderer.endWidth = _edgeWidth;
+            edgeRenderer.material = _edgeMaterial;
             edgeRenderer.positionCount = pointArray.Length;
             edgeRenderer.SetPositions(pointArray);
         }
@@ -428,11 +428,11 @@ namespace VinhLB
                 go.transform.SetParent(transform);
                 go.layer = LayerMask.NameToLayer(GameConstants.WALL_LAYER_NAME);
                 edgeCollider = go.AddComponent<EdgeCollider2D>();
-                edgeCollider.edgeRadius = _edgeWidth * 0.5f;
 
                 _edgeCollider2DList.Add(edgeCollider);
             }
 
+            edgeCollider.edgeRadius = _edgeWidth * 0.5f;
             edgeCollider.points = pointArray;
         }
 

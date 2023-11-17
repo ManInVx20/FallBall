@@ -125,8 +125,44 @@ MonoBehaviour:
     MaxMoves: 8
     MaxMoves3Stars: 4
     MaxMoves2Stars: 6
+  - Prefab: {fileID: 1359155538733991624, guid: 0b7247682dc5b24448778a161064de24, type: 3}
+    MaxMoves: 8
+    MaxMoves3Stars: 4
+    MaxMoves2Stars: 6
   - Prefab: {fileID: 1359155538733991624, guid: 3e78bf4a0a1f18e4ea847b43fe476506, type: 3}
     MaxMoves: 8
     MaxMoves3Stars: 4
     MaxMoves2Stars: 6
+  - Prefab: {fileID: 4673805534737256599, guid: 8252c06e80233fe4e80ca4ab6dbc64be, type: 3}
+    MaxMoves: 8
+    MaxMoves3Stars: 4
+    MaxMoves2Stars: 6
+  - Prefab: {fileID: 1359155538733991624, guid: 761d6394fa028504495e99b12518f8f0, type: 3}
+    MaxMoves: 8
+    MaxMoves3Stars: 4
+    MaxMoves2Stars: 6
+  - Prefab: {fileID: 4673805534737256599, guid: 4eda77788583fbf42b160a945c6509fe, type: 3}
+    MaxMoves: 8
+    MaxMoves3Stars: 4
+    MaxMoves2Stars: 6
+  - Prefab: {fileID: 5169939125648285702, guid: a8c529e087a47554a988bc4c613bd989, type: 3}
+    MaxMoves: 14
+    MaxMoves3Stars: 7
+    MaxMoves2Stars: 10
+  - Prefab: {fileID: 1359155538733991624, guid: d30c6edbe03edbe458d78493242d900c, type: 3}
+    MaxMoves: 8
+    MaxMoves3Stars: 4
+    MaxMoves2Stars: 6
+  - Prefab: {fileID: 4673805534737256599, guid: e090995825fc2104f97e2ef19c64e9fe, type: 3}
+    MaxMoves: 11
+    MaxMoves3Stars: 5
+    MaxMoves2Stars: 8
+  - Prefab: {fileID: 4673805534737256599, guid: 1ba07ac9edbafaa4b88d3d77f9c4f5ad, type: 3}
+    MaxMoves: 15
+    MaxMoves3Stars: 9
+    MaxMoves2Stars: 12
+  - Prefab: {fileID: 7152743207572421750, guid: 0cd9efd761b5ade49b17ca869d235349, type: 3}
+    MaxMoves: 19
+    MaxMoves3Stars: 12
+    MaxMoves2Stars: 15
   _unlockAll: 1
